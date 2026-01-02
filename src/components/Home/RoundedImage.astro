@@ -1,0 +1,121 @@
+---
+const { 
+  imageSrc = null,
+  altText = "Portrait",
+  size = 200,
+  showRing = true,
+  showFrame = true
+} = Astro.props;
+---
+
+<div class="portrait-container">
+  <div class="portrait-wrapper" style={`width: ${size}px; height: ${size}px;`}>
+    <!-- Contenitore per l'immagine -->
+    <div class="portrait-image" style={`width: ${size * 0.9}px; height: ${size * 0.9}px;`}>
+      {imageSrc ? (
+        <img src={imageSrc} alt={altText} loading="lazy" />
+      ) : (
+        <div class="portrait-placeholder">
+          <svg width={size * 0.8} height={size * 0.8} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="95" stroke="#333" stroke-width="2"/>
+            <circle cx="100" cy="80" r="20" fill="#333"/>
+            <path d="M100 120 C70 120, 70 160, 100 160 C130 160, 130 120, 100 120" fill="#333"/>
+          </svg>
+        </div>
+      )}
+    </div>
+    
+    <!-- Anello decorativo esterno -->
+    {showRing && <div class="portrait-ring" style={`width: ${size * 0.95}px; height: ${size * 0.95}px;`}></div>}
+    
+    <!-- Cornice in stile "light leak" -->
+    {showFrame && <div class="portrait-frame" style={`width: ${size}px; height: ${size}px;`}></div>}
+  </div>
+</div>
+
+<style>
+/* Stili simili alla versione sopra, ma ora responsive alle props */
+.portrait-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.portrait-wrapper {
+  position: relative;
+}
+
+.portrait-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  z-index: 2;
+}
+
+.portrait-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.portrait-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.portrait-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  z-index: 3;
+}
+
+.portrait-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.05) 100%);
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.1),
+    0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Effetto hover */
+.portrait-wrapper:hover .portrait-ring {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+</style>
