@@ -1,0 +1,16 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import "../../global.css"
+import Header from "../../components/Home/Header.astro";
+const { project } = Astro.params;
+
+const buttons: any[] = [];
+const specialButton = { text: "Contattami" };
+---
+
+<Layout>
+    <Header title={"UG Action Media"} buttons={buttons} specialButton={specialButton}/>
+    <h1>Project Page</h1>
+    <p>This is a dynamic project page.</p>
+    <p>Project: {project}</p>
+</Layout>

@@ -1,0 +1,30 @@
+---
+import Button from "./Button.astro";
+import SpecialButton from "./SpecialButton.astro";
+const { title, buttons, specialButton } = Astro.props;
+---
+
+<style>
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1%;
+    }
+
+    .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+</style>
+
+<header>
+    <div class="logo-container">
+        <img src="" alt="logo" />
+        <p>{title}</p>
+    </div>
+    <nav>
+        <SpecialButton text={specialButton.text} />
+    </nav>
+</header>

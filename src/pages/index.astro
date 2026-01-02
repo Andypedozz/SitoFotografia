@@ -1,16 +1,28 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import "../global.css";
+import Header from "../components/Home/Header.astro";
+import Hero from "../components/Home/Hero.astro";
+import ChiSiamo from "../components/Home/ChiSiamo.astro";
+import Servizi from "../components/Home/Servizi.astro";
+import CTA from "../components/Home/CTA.astro";
+import Footer from "../components/Home/Footer.astro";
+import Lavori from "../components/Home/Lavori.astro";
 
+const buttons = [
+    { text: "Home" },
+    { text: "Chi Siamo" },
+    { text: "Servizi" }
+];
+const specialButton = { text: "Contattami" };
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+    <Header title={"UG Action Media"} buttons={buttons} specialButton={specialButton}/>
+    <Hero />
+    <Lavori />
+    <ChiSiamo />
+    <Servizi />
+    <CTA />
+    <Footer />
+</Layout>

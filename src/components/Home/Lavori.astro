@@ -1,0 +1,56 @@
+---
+import PhotoCard from "./PhotoCard.astro";
+import Section from "./Section.astro";
+import SpecialButton from "./SpecialButton.astro";
+---
+
+<style>
+    .gallery {
+        display: flex;
+        width: fit-content;
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+        gap: 40px;
+    }
+
+    @media (min-width: 768px) {
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .explore-div {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    h1 {
+        text-align: center;
+        padding: 40px 0 40px 0;
+    }
+</style>
+<Section>
+    <h1>I nostri ultimi lavori</h1>
+    <div class="gallery">
+        <PhotoCard image="/images/opia.jpg"width="400px" height="640px" />
+        <PhotoCard image="/images/enoteca.jpg"width="400px" height="640px" />
+        <PhotoCard image="/images/supermoto.jpg"width="400px" height="640px" />
+        <PhotoCard image="/images/moda.jpg"width="400px" height="640px" />
+
+        <PhotoCard image="/images/opia.jpg"width="400px" height="640px" />
+        <PhotoCard image="/images/enoteca.jpg"width="400px" height="640px" />
+        <PhotoCard image="/images/supermoto.jpg"width="400px" height="640px" />
+        <PhotoCard image="/images/moda.jpg"width="400px" height="640px" />
+        
+        <PhotoCard image="/images/opia.jpg"width="400px" height="640px" />
+        <PhotoCard image="/images/enoteca.jpg"width="400px" height="640px" />
+        <PhotoCard image="/images/supermoto.jpg"width="400px" height="640px" />
+        <PhotoCard image="/images/moda.jpg"width="400px" height="640px" />
+    </div>
+    <div class="explore-div">
+        <SpecialButton link="/projects" text="Vedi tutti i progetti" />
+    </div>
+</Section>
