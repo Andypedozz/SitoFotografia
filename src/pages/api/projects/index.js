@@ -1,4 +1,4 @@
-import { Progetto } from "../../lib/db";
+import { Progetto } from "../../../lib/db.js";
 
 /**
  * Handle GET requests for projects.

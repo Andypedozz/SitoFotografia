@@ -1,0 +1,122 @@
+[
+  {
+    "nome": "villa-moderna-esterno-01.jpg",
+    "percorso": "/media/progetti/1/villa-moderna-esterno-01.jpg",
+    "idProgetto": 1
+  },
+  {
+    "nome": "villa-moderna-interno-salone.jpg",
+    "percorso": "/media/progetti/1/villa-moderna-interno-salone.jpg",
+    "idProgetto": 1
+  },
+  {
+    "nome": "villa-moderna-vista-lago.jpg",
+    "percorso": "/media/progetti/1/villa-moderna-vista-lago.jpg",
+    "idProgetto": 1
+  },
+  {
+    "nome": "loft-industriale-prima.jpg",
+    "percorso": "/media/progetti/2/loft-industriale-prima.jpg",
+    "idProgetto": 2
+  },
+  {
+    "nome": "loft-industriale-dopo-01.jpg",
+    "percorso": "/media/progetti/2/loft-industriale-dopo-01.jpg",
+    "idProgetto": 2
+  },
+  {
+    "nome": "loft-industriale-dopo-02.jpg",
+    "percorso": "/media/progetti/2/loft-industriale-dopo-02.jpg",
+    "idProgetto": 2
+  },
+  {
+    "nome": "uffici-green-render-3d.jpg",
+    "percorso": "/media/progetti/3/uffici-green-render-3d.jpg",
+    "idProgetto": 3
+  },
+  {
+    "nome": "uffici-green-facciata-detail.jpg",
+    "percorso": "/media/progetti/3/uffici-green-facciata-detail.jpg",
+    "idProgetto": 3
+  },
+  {
+    "nome": "casa-campagna-esterno.jpg",
+    "percorso": "/media/progetti/4/casa-campagna-esterno.jpg",
+    "idProgetto": 4
+  },
+  {
+    "nome": "casa-campagna-interno.jpg",
+    "percorso": "/media/progetti/4/casa-campagna-interno.jpg",
+    "idProgetto": 4
+  },
+  {
+    "nome": "piazza-centrale-plant.jpg",
+    "percorso": "/media/progetti/5/piazza-centrale-plant.jpg",
+    "idProgetto": 5
+  },
+  {
+    "nome": "piazza-centrale-render.jpg",
+    "percorso": "/media/progetti/5/piazza-centrale-render.jpg",
+    "idProgetto": 5
+  },
+  {
+    "nome": "museo-arte-model.jpg",
+    "percorso": "/media/progetti/6/museo-arte-model.jpg",
+    "idProgetto": 6
+  },
+  {
+    "nome": "museo-arte-sezione.jpg",
+    "percorso": "/media/progetti/6/museo-arte-sezione.jpg",
+    "idProgetto": 6
+  },
+  {
+    "nome": "appartamento-storico-01.jpg",
+    "percorso": "/media/progetti/7/appartamento-storico-01.jpg",
+    "idProgetto": 7
+  },
+  {
+    "nome": "appartamento-storico-02.jpg",
+    "percorso": "/media/progetti/7/appartamento-storico-02.jpg",
+    "idProgetto": 7
+  },
+  {
+    "nome": "resort-sardegna-aerea.jpg",
+    "percorso": "/media/progetti/8/resort-sardegna-aerea.jpg",
+    "idProgetto": 8
+  },
+  {
+    "nome": "resort-sardegna-villette.jpg",
+    "percorso": "/media/progetti/8/resort-sardegna-villette.jpg",
+    "idProgetto": 8
+  },
+  {
+    "nome": "scuola-innovativa-planimetria.pdf",
+    "percorso": "/media/progetti/9/scuola-innovativa-planimetria.pdf",
+    "idProgetto": 9
+  },
+  {
+    "nome": "torre-residenziale-render-01.jpg",
+    "percorso": "/media/progetti/10/torre-residenziale-render-01.jpg",
+    "idProgetto": 10
+  },
+  {
+    "nome": "torre-residenziale-render-02.jpg",
+    "percorso": "/media/progetti/10/torre-residenziale-render-02.jpg",
+    "idProgetto": 10
+  },
+  {
+    "nome": "villa-moderna-video-tour.mp4",
+    "percorso": "/media/progetti/1/villa-moderna-video-tour.mp4",
+    "idProgetto": 1
+  },
+  {
+    "nome": "museo-arte-video-presentazione.mp4",
+    "percorso": "/media/progetti/6/museo-arte-video-presentazione.mp4",
+    "idProgetto": 6
+  },
+  {
+    "nome": "resort-sardegna-drone-video.mp4",
+    "percorso": "/media/progetti/8/resort-sardegna-drone-video.mp4",
+    "idProgetto": 8
+  }
+]

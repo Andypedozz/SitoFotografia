@@ -1,0 +1,42 @@
+[
+  {
+    "email": "admin@studio.it",
+    "passwordHash": "$2b$10$KjZQJ3lQ7rWpJpYbJtF8D.L6aY9gRcT2oV7uX5pL9qR3sD1fG2hJkL",
+    "ruolo": "admin"
+  },
+  {
+    "email": "designer.maria@studio.it",
+    "passwordHash": "$2b$10$hJkLmNpOqR3sT5uV7wX9z.A1cD2eF4gH6jK8lM0nO1pQ3rS5tU7vW9y",
+    "ruolo": "editor"
+  },
+  {
+    "email": "developer.luca@studio.it",
+    "passwordHash": "$2b$10$mNpOqR3sT5uV7wX9z.A1cD2eF4gH6jK8lM0nO1pQ3rS5tU7vW9yB1",
+    "ruolo": "editor"
+  },
+  {
+    "email": "client.giovanni@gmail.com",
+    "passwordHash": "$2b$10$qR3sT5uV7wX9z.A1cD2eF4gH6jK8lM0nO1pQ3rS5tU7vW9yB1d3",
+    "ruolo": "viewer"
+  },
+  {
+    "email": "architetto.anna@studio.it",
+    "passwordHash": "$2b$10$sT5uV7wX9z.A1cD2eF4gH6jK8lM0nO1pQ3rS5tU7vW9yB1d3f5",
+    "ruolo": "editor"
+  },
+  {
+    "email": "fotografo.marco@studio.it",
+    "passwordHash": "$2b$10$uV7wX9z.A1cD2eF4gH6jK8lM0nO1pQ3rS5tU7vW9yB1d3f5g7",
+    "ruolo": "editor"
+  },
+  {
+    "email": "direttore.paolo@studio.it",
+    "passwordHash": "$2b$10$wX9z.A1cD2eF4gH6jK8lM0nO1pQ3rS5tU7vW9yB1d3f5g7h9",
+    "ruolo": "admin"
+  },
+  {
+    "email": "stagista.elisa@studio.it",
+    "passwordHash": "$2b$10$z.A1cD2eF4gH6jK8lM0nO1pQ3rS5tU7vW9yB1d3f5g7h9j1",
+    "ruolo": "viewer"
+  }
+]

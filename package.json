@@ -5,11 +5,13 @@
   "scripts": {
     "start": "astro dev",
     "update-db": "node ./src/lib/updateDb.js",
+    "start-prod": "node ./dist/server/entry.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^9.5.1",
     "astro": "^5.16.6",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
