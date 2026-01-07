@@ -48,6 +48,10 @@ export const Progetto = sequelize.define("Progetto", {
     anno: {
         type: INTEGER,
         allowNull: true
+    },
+    homepage: {
+        type: INTEGER,
+        defaultValue: 0
     }
 })
 

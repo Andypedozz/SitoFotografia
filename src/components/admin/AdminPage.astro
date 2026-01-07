@@ -1,3 +1,7 @@
+---
+import Table from "./Table.astro";
+
+---
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -82,6 +86,7 @@
       text-decoration: none;
       transition: all 0.2s;
       border-left: 3px solid transparent;
+      cursor: pointer;
     }
 
     .nav-item:hover {
@@ -399,6 +404,15 @@
       font-size: 1.25rem;
     }
 
+    /* Stili per le pagine */
+    .page-content {
+      display: none;
+    }
+
+    .page-content.active {
+      display: block;
+    }
+
     /* Responsive */
     @media (max-width: 1200px) {
       .form-section {
@@ -508,104 +522,31 @@
       <header class="header">
         <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
         <div class="header-subtitle">
-          <span>Progetti</span>
+          <span id="current-section">Gestione Homepage</span>
           <span>•</span>
-          <span>Foto e video</span>
+          <span>Sistema di amministrazione</span>
         </div>
       </header>
 
       <!-- Contenuto delle pagine -->
       <main class="main-content">
-        <!-- Pagina Gestione Progetti (attiva di default) -->
-        <div id="projects-page" class="page-content active">
+        <!-- Pagina Gestione Homepage -->
+        <div id="homepage-page" class="page-content active">
+          <div class="card">
+            <h3 class="section-title">
+              <i class="fas fa-home"></i>
+              Gestione Homepage
+            </h3>
+            <p>Gestisci i contenuti della homepage.</p>
+            <!-- Qui puoi aggiungere il contenuto specifico per la gestione utenti -->
+          </div>
+        </div>
+
+        <!-- Pagina Gestione Progetti -->
+        <div id="projects-page" class="page-content">
           <section class="table-section">
             <div class="card">
-              <div class="table-container">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Nome</th>
-                      <th>Anno</th>
-                      <th>Azioni</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Riga 1 -->
-                    <tr>
-                      <td>
-                        <span class="badge">1</span>
-                      </td>
-                      <td>Opla</td>
-                      <td>2025</td>
-                      <td>
-                        <div class="table-actions">
-                          <button class="btn-icon btn-edit" title="Modifica">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                          <button class="btn-icon btn-delete" title="Elimina">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <!-- Riga 2 -->
-                    <tr>
-                      <td>
-                        <span class="badge">1</span>
-                      </td>
-                      <td>Opla</td>
-                      <td>2025</td>
-                      <td>
-                        <div class="table-actions">
-                          <button class="btn-icon btn-edit" title="Modifica">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                          <button class="btn-icon btn-delete" title="Elimina">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <!-- Riga 3 -->
-                    <tr>
-                      <td>
-                        <span class="badge">1</span>
-                      </td>
-                      <td>Opla</td>
-                      <td>2025</td>
-                      <td>
-                        <div class="table-actions">
-                          <button class="btn-icon btn-edit" title="Modifica">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                          <button class="btn-icon btn-delete" title="Elimina">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <!-- Riga 4 -->
-                    <tr>
-                      <td>
-                        <span class="badge">1</span>
-                      </td>
-                      <td>Opla</td>
-                      <td>2025</td>
-                      <td>
-                        <div class="table-actions">
-                          <button class="btn-icon btn-edit" title="Modifica">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                          <button class="btn-icon btn-delete" title="Elimina">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <Table />
             </div>
           </section>
 
@@ -746,19 +687,89 @@
               Gestione Media
             </h3>
             <p>Carica, modifica e gestisci foto e video dei progetti.</p>
-            <!-- Qui puoi aggiungere il contenuto specifico per i media -->
-          </div>
-        </div>
+            
+            <div class="form-section" style="margin-top: 2rem;">
+              <div class="card">
+                <h4><i class="fas fa-upload"></i> Carica nuovi media</h4>
+                <form class="form-row">
+                  <div class="form-group">
+                    <label for="media-project">Progetto associato</label>
+                    <div class="select-wrapper">
+                      <select id="media-project">
+                        <option value="">Seleziona progetto</option>
+                        <option value="1">Opla</option>
+                        <option value="2">Alone</option>
+                        <option value="3">Nexus</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="media-type">Tipo di media</label>
+                    <div class="select-wrapper">
+                      <select id="media-type">
+                        <option value="image">Immagine</option>
+                        <option value="video">Video</option>
+                        <option value="document">Documento</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="media-file">File</label>
+                    <input type="file" id="media-file" style="padding: 0.5rem;" />
+                  </div>
+                  
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-upload"></i>
+                      Carica file
+                    </button>
+                  </div>
+                </form>
+              </div>
 
-        <!-- Pagina Gestione Homepage -->
-        <div id="homepage-page" class="page-content">
-          <div class="card">
-            <h3 class="section-title">
-              <i class="fas fa-home"></i>
-              Gestione Homepage
-            </h3>
-            <p>Configura i contenuti della homepage del sito.</p>
-            <!-- Qui puoi aggiungere il contenuto specifico per la homepage -->
+              <div class="card">
+                <h4><i class="fas fa-images"></i> Galleria media</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
+                  <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 6px; text-align: center;">
+                    <i class="fas fa-image" style="font-size: 2rem; color: var(--accent-primary); margin-bottom: 0.5rem;"></i>
+                    <p style="font-size: 0.8rem;">opla-01.jpg</p>
+                  </div>
+                  <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 6px; text-align: center;">
+                    <i class="fas fa-video" style="font-size: 2rem; color: var(--accent-primary); margin-bottom: 0.5rem;"></i>
+                    <p style="font-size: 0.8rem;">alone-demo.mp4</p>
+                  </div>
+                  <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 6px; text-align: center;">
+                    <i class="fas fa-image" style="font-size: 2rem; color: var(--accent-primary); margin-bottom: 0.5rem;"></i>
+                    <p style="font-size: 0.8rem;">nexus-preview.png</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h4><i class="fas fa-cog"></i> Impostazioni media</h4>
+                <form class="form-row">
+                  <div class="form-group">
+                    <label for="image-quality">Qualità immagini (%)</label>
+                    <input type="range" id="image-quality" min="10" max="100" value="85" />
+                    <span style="font-size: 0.8rem; color: var(--text-tertiary);">85%</span>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="max-file-size">Dimensione massima file (MB)</label>
+                    <input type="number" id="max-file-size" min="1" max="100" value="10" />
+                  </div>
+                  
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-secondary">
+                      <i class="fas fa-save"></i>
+                      Salva impostazioni
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -770,6 +781,7 @@
               Gestione Utenti
             </h3>
             <p>Gestisci gli utenti e i permessi dell'amministrazione.</p>
+            <!-- Qui puoi aggiungere il contenuto specifico per la gestione utenti -->
           </div>
         </div>
 
@@ -781,6 +793,7 @@
               Impostazioni
             </h3>
             <p>Configura le impostazioni generali del sistema.</p>
+            <!-- Qui puoi aggiungere il contenuto specifico per le impostazioni -->
           </div>
         </div>
       </main>
@@ -795,6 +808,7 @@
       const sidebar = document.getElementById('sidebar');
       const navItems = document.querySelectorAll('.nav-item');
       const pageContents = document.querySelectorAll('.page-content');
+      const currentSectionElement = document.getElementById('current-section');
       
       // Gestione menu mobile
       mobileMenuBtn.addEventListener('click', function() {
@@ -803,6 +817,25 @@
           ? '<i class="fas fa-times"></i>' 
           : '<i class="fas fa-bars"></i>';
       });
+      
+      // Funzione per cambiare pagina
+      function switchPage(pageId) {
+        // Nascondi tutti i contenuti delle pagine
+        pageContents.forEach(page => page.classList.remove('active'));
+        
+        // Mostra il contenuto della pagina selezionata
+        const targetPage = document.getElementById(`${pageId}-page`);
+        if (targetPage) {
+          targetPage.classList.add('active');
+        }
+        
+        // Aggiorna il titolo della sezione
+        const activeNavItem = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+        if (activeNavItem && currentSectionElement) {
+          const pageTitle = activeNavItem.querySelector('span').textContent;
+          currentSectionElement.textContent = pageTitle;
+        }
+      }
       
       // Gestione navigazione
       navItems.forEach(item => {
@@ -814,15 +847,9 @@
           // Aggiungi classe active all'item cliccato
           this.classList.add('active');
           
-          // Nascondi tutti i contenuti delle pagine
-          pageContents.forEach(page => page.classList.remove('active'));
-          
-          // Mostra il contenuto della pagina selezionata
+          // Cambia pagina
           const pageId = this.getAttribute('data-page');
-          const targetPage = document.getElementById(`${pageId}-page`);
-          if (targetPage) {
-            targetPage.classList.add('active');
-          }
+          switchPage(pageId);
           
           // Aggiorna il titolo della pagina
           const pageTitle = this.querySelector('span').textContent;
@@ -836,6 +863,9 @@
           }
         });
       });
+      
+      // Inizializzazione: mostra la homepage di default
+      switchPage('homepage');
       
       // Selezione automatica per demo
       document.getElementById('project-name').value = 'Alone';
@@ -899,8 +929,26 @@
             showNotification(`Progetto #${id} eliminato con successo!`, 'success');
             document.getElementById('delete-id').value = '';
           }
+          
+          if (this.querySelector('#homepage-title')) {
+            showNotification(`Impostazioni homepage salvate con successo!`, 'success');
+          }
+          
+          if (this.querySelector('#media-file')) {
+            showNotification(`File caricato con successo!`, 'success');
+            this.reset();
+          }
         });
       });
+      
+      // Aggiorna valore slider qualità immagini
+      const imageQualitySlider = document.getElementById('image-quality');
+      if (imageQualitySlider) {
+        const qualityValue = imageQualitySlider.nextElementSibling;
+        imageQualitySlider.addEventListener('input', function() {
+          qualityValue.textContent = `${this.value}%`;
+        });
+      }
       
       // Funzione per mostrare notifiche
       function showNotification(message, type = 'info') {

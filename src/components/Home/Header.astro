@@ -1,4 +1,5 @@
 ---
+import Anchor from "./Anchor.astro";
 import Button from "./Button.astro";
 import SpecialButton from "./SpecialButton.astro";
 const { title, buttons, specialButton } = Astro.props;
@@ -25,6 +26,7 @@ const { title, buttons, specialButton } = Astro.props;
         <p>{title}</p>
     </div>
     <nav>
+        {buttons.map(btn => <Anchor text={btn.text} link={btn.link}/>)}
         <SpecialButton text={specialButton.text} />
     </nav>
 </header>

@@ -1,0 +1,110 @@
+---
+const projects = [
+	{ id: 1, nome: "Opia", anno: 2025 },
+	{ id: 2, nome: "Opia", anno: 2025 },
+	{ id: 3, nome: "Opia", anno: 2025 },
+	{ id: 4, nome: "Opia", anno: 2025 }
+]
+---
+
+<div class="table-container">
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nome</th>
+				<th>Anno</th>
+				<th>Azioni</th>
+			</tr>
+		</thead>
+		<tbody>
+			{projects.map(project => 
+				<tr>
+					<td>
+						<span class="badge">{project.id}</span>
+					</td>
+					<td>{project.nome}</td>
+					<td>{project.anno}</td>
+					<td>
+						<div class="table-actions">
+							<button class="btn-icon btn-edit" title="Modifica">
+								<i class="fas fa-edit"></i>
+							</button>
+							<button class="btn-icon btn-delete" title="Elimina">
+								<i class="fas fa-trash"></i>
+							</button>
+						</div>
+					</td>
+				</tr>
+			)}
+		</tbody>
+	</table>
+</div>
+<style>
+	.table-container {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th {
+      background: var(--bg-tertiary);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    tr:hover {
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .btn-edit:hover {
+      color: #3b82f6;
+    }
+
+    .btn-delete:hover {
+      color: #ef4444;
+    }
+</style>
