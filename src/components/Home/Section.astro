@@ -1,9 +1,14 @@
-<style>
-    .my-section {
-        background-color: rgb(24, 24, 24);
-    }
-</style>
-
-<section class="my-section">
+---
+const { background } = Astro.props;
+---
+<section class="my-section" style={`--bg: ${background}`}>
     <slot />
 </section>
+
+<style>
+    .my-section {
+        background: var(--bg);
+        padding-top: 2%;
+        padding-bottom: 2%;
+    }
+</style>

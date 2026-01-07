@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS globale - Tema Dark */
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --bg-sidebar: #111827;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+      --accent-primary: #3b82f6;
+      --accent-secondary: #2563eb;
+      --accent-danger: #ef4444;
+      --accent-success: #10b981;
+      --border-color: #475569;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-header h2 {
+      font-size: 1.25rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-menu {
+      padding: 1rem 0;
+      flex-grow: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 1.5rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--text-primary);
+      border-left-color: var(--accent-primary);
+    }
+
+    .nav-item.active {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-primary);
+      border-left-color: var(--accent-primary);
+    }
+
+    .nav-item i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-tertiary);
+      font-size: 0.85rem;
+    }
+
+    /* Contenuto principale */
+    .main-wrapper {
+      flex: 1;
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      padding: 1.5rem 0;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-subtitle {
+      color: var(--text-tertiary);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Layout principale */
+    .main-content {
+      gap: 2rem;
+    }
+
+    /* Sezione sinistra - Tabella */
+    .table-section {
+      grid-column: 1;
+    }
+
+    /* Sezione destra - Form */
+    .form-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    /* Titoli sezioni */
+    .section-title {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .section-title i {
+      color: var(--accent-primary);
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Tabella progetti */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th {
+      background: var(--bg-tertiary);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    tr:hover {
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .btn-edit:hover {
+      color: #3b82f6;
+    }
+
+    .btn-delete:hover {
+      color: #ef4444;
+    }
+
+    /* Form styles */
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    input, select, textarea {
+      padding: 0.75rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    /* Bottoni */
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border: none;
+      font-size: 0.95rem;
+      flex: 1;
+    }
+
+    .btn-primary {
+      background: var(--accent-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-secondary);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border-color);
+      border-color: var(--text-tertiary);
+    }
+
+    .btn-danger {
+      background: var(--accent-danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    /* Select wrapper */
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: "▼";
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      pointer-events: none;
+      font-size: 0.8rem;
+    }
+
+    /* Warning message */
+    .warning-message {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 6px;
+      padding: 1rem;
+      color: var(--accent-danger);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .warning-message i {
+      font-size: 1rem;
+    }
+
+    /* Mobile menu button */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 101;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.25rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .form-section {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-wrapper {
+        margin-left: 0;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .form-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .card {
+        padding: 1rem;
+      }
+      
+      .form-actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+      
+      .sidebar {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Menu Button -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>
+        <i class="fas fa-cog"></i>
+        Admin Panel
+      </h2>
+    </div>
+    
+    <nav class="nav-menu">
+      <a href="#homepage" class="nav-item active" data-page="homepage">
+        <i class="fas fa-home"></i>
+        <span>Gestione Homepage</span>
+      </a>
+      
+      <a href="#projects" class="nav-item" data-page="projects">
+        <i class="fas fa-folder"></i>
+        <span>Gestione Progetti</span>
+      </a>
+      
+      <a href="#media" class="nav-item" data-page="media">
+        <i class="fas fa-photo-video"></i>
+        <span>Gestione Media</span>
+      </a>
+      
+      <a href="#users" class="nav-item" data-page="users">
+        <i class="fas fa-users"></i>
+        <span>Gestione Utenti</span>
+      </a>
+      
+      <a href="#settings" class="nav-item" data-page="settings">
+        <i class="fas fa-sliders-h"></i>
+        <span>Impostazioni</span>
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <p>© 2024 Admin Dashboard</p>
+      <p>v1.0.0</p>
+    </div>
+  </aside>
+
+  <!-- Contenuto principale -->
+  <div class="main-wrapper">
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+        <div class="header-subtitle">
+          <span>Progetti</span>
+          <span>•</span>
+          <span>Foto e video</span>
+        </div>
+      </header>
+
+      <!-- Contenuto delle pagine -->
+      <main class="main-content">
+        <!-- Pagina Gestione Progetti (attiva di default) -->
+        <div id="projects-page" class="page-content active">
+          <section class="table-section">
+            <div class="card">
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nome</th>
+                      <th>Anno</th>
+                      <th>Azioni</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Riga 1 -->
+                    <tr>
+                      <td>
+                        <span class="badge">1</span>
+                      </td>
+                      <td>Opla</td>
+                      <td>2025</td>
+                      <td>
+                        <div class="table-actions">
+                          <button class="btn-icon btn-edit" title="Modifica">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="btn-icon btn-delete" title="Elimina">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- Riga 2 -->
+                    <tr>
+                      <td>
+                        <span class="badge">1</span>
+                      </td>
+                      <td>Opla</td>
+                      <td>2025</td>
+                      <td>
+                        <div class="table-actions">
+                          <button class="btn-icon btn-edit" title="Modifica">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="btn-icon btn-delete" title="Elimina">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- Riga 3 -->
+                    <tr>
+                      <td>
+                        <span class="badge">1</span>
+                      </td>
+                      <td>Opla</td>
+                      <td>2025</td>
+                      <td>
+                        <div class="table-actions">
+                          <button class="btn-icon btn-edit" title="Modifica">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="btn-icon btn-delete" title="Elimina">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- Riga 4 -->
+                    <tr>
+                      <td>
+                        <span class="badge">1</span>
+                      </td>
+                      <td>Opla</td>
+                      <td>2025</td>
+                      <td>
+                        <div class="table-actions">
+                          <button class="btn-icon btn-edit" title="Modifica">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="btn-icon btn-delete" title="Elimina">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Sezione destra: Form -->
+          <section class="form-section">
+            <!-- Card Aggiungi Progetto -->
+            <div class="card">
+              <h3 class="section-title">
+                <i class="fas fa-plus-circle"></i>
+                Aggiungi progetto
+              </h3>
+              
+              <form class="form-row">
+                <div class="form-group">
+                  <label for="project-name">Nome</label>
+                  <input type="text" id="project-name" placeholder="Alone" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-description">Descrizione</label>
+                  <textarea id="project-description" placeholder="Descrizione del progetto..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="project-year">Anno</label>
+                  <div class="select-wrapper">
+                    <select id="project-year">
+                      <option value="2023">2023</option>
+                      <option value="2024">2024</option>
+                      <option value="2025" selected>2025</option>
+                      <option value="2026">2026</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i>
+                    Conferma
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Card Modifica Progetto -->
+            <div class="card">
+              <h3 class="section-title">
+                <i class="fas fa-edit"></i>
+                Modifica
+              </h3>
+              
+              <form class="form-row">
+                <div class="form-group">
+                  <label for="edit-id">ID</label>
+                  <div class="select-wrapper">
+                    <select id="edit-id">
+                      <option value="">(select id)</option>
+                      <option value="1">1 - Opla</option>
+                      <option value="2">2 - Alone</option>
+                      <option value="3">3 - Nexus</option>
+                      <option value="4">4 - Quantum</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="edit-name">Nome</label>
+                  <input type="text" id="edit-name" placeholder="Nome progetto" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="edit-description">Descrizione</label>
+                  <textarea id="edit-description" placeholder="Descrizione del progetto..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="edit-year">Anno</label>
+                  <div class="select-wrapper">
+                    <select id="edit-year">
+                      <option value="2023">2023</option>
+                      <option value="2024">2024</option>
+                      <option value="2025">2025</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-secondary">
+                    <i class="fas fa-save"></i>
+                    Conferma
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Card Elimina Progetto -->
+            <div class="card">
+              <h3 class="section-title">
+                <i class="fas fa-trash"></i>
+                Elimina
+              </h3>
+              
+              <form class="form-row">
+                <div class="form-group">
+                  <label for="delete-id">ID</label>
+                  <div class="select-wrapper">
+                    <select id="delete-id">
+                      <option value="">(select id)</option>
+                      <option value="1">1 - Opla</option>
+                      <option value="2">2 - Alone</option>
+                      <option value="3">3 - Nexus</option>
+                      <option value="4">4 - Quantum</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="warning-message">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Questa azione non può essere annullata. Il progetto verrà eliminato permanentemente.</span>
+                </div>
+                
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i>
+                    Elimina
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+
+        <!-- Pagina Gestione Media -->
+        <div id="media-page" class="page-content">
+          <div class="card">
+            <h3 class="section-title">
+              <i class="fas fa-photo-video"></i>
+              Gestione Media
+            </h3>
+            <p>Carica, modifica e gestisci foto e video dei progetti.</p>
+            <!-- Qui puoi aggiungere il contenuto specifico per i media -->
+          </div>
+        </div>
+
+        <!-- Pagina Gestione Homepage -->
+        <div id="homepage-page" class="page-content">
+          <div class="card">
+            <h3 class="section-title">
+              <i class="fas fa-home"></i>
+              Gestione Homepage
+            </h3>
+            <p>Configura i contenuti della homepage del sito.</p>
+            <!-- Qui puoi aggiungere il contenuto specifico per la homepage -->
+          </div>
+        </div>
+
+        <!-- Pagina Gestione Utenti -->
+        <div id="users-page" class="page-content">
+          <div class="card">
+            <h3 class="section-title">
+              <i class="fas fa-users"></i>
+              Gestione Utenti
+            </h3>
+            <p>Gestisci gli utenti e i permessi dell'amministrazione.</p>
+          </div>
+        </div>
+
+        <!-- Pagina Impostazioni -->
+        <div id="settings-page" class="page-content">
+          <div class="card">
+            <h3 class="section-title">
+              <i class="fas fa-sliders-h"></i>
+              Impostazioni
+            </h3>
+            <p>Configura le impostazioni generali del sistema.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script is:inline>
+    // Script per interattività base
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elementi DOM
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const sidebar = document.getElementById('sidebar');
+      const navItems = document.querySelectorAll('.nav-item');
+      const pageContents = document.querySelectorAll('.page-content');
+      
+      // Gestione menu mobile
+      mobileMenuBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('active');
+        mobileMenuBtn.innerHTML = sidebar.classList.contains('active') 
+          ? '<i class="fas fa-times"></i>' 
+          : '<i class="fas fa-bars"></i>';
+      });
+      
+      // Gestione navigazione
+      navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Rimuovi classe active da tutti gli item
+          navItems.forEach(nav => nav.classList.remove('active'));
+          // Aggiungi classe active all'item cliccato
+          this.classList.add('active');
+          
+          // Nascondi tutti i contenuti delle pagine
+          pageContents.forEach(page => page.classList.remove('active'));
+          
+          // Mostra il contenuto della pagina selezionata
+          const pageId = this.getAttribute('data-page');
+          const targetPage = document.getElementById(`${pageId}-page`);
+          if (targetPage) {
+            targetPage.classList.add('active');
+          }
+          
+          // Aggiorna il titolo della pagina
+          const pageTitle = this.querySelector('span').textContent;
+          document.querySelector('.header h1').innerHTML = 
+            `<i class="fas fa-tachometer-alt"></i> ${pageTitle}`;
+          
+          // Chiudi il menu mobile su dispositivi piccoli
+          if (window.innerWidth <= 1024) {
+            sidebar.classList.remove('active');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+          }
+        });
+      });
+      
+      // Selezione automatica per demo
+      document.getElementById('project-name').value = 'Alone';
+      document.getElementById('project-description').value = 'Descrizione del progetto Alone';
+      
+      // Logica per pulsanti di azione nella tabella
+      const editButtons = document.querySelectorAll('.btn-edit');
+      const deleteButtons = document.querySelectorAll('.btn-delete');
+      
+      editButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const row = this.closest('tr');
+          const id = row.cells[0].textContent.trim();
+          const name = row.cells[1].textContent;
+          const year = row.cells[2].textContent;
+          
+          // Popola il form di modifica
+          document.getElementById('edit-id').value = id;
+          document.getElementById('edit-name').value = name;
+          document.getElementById('edit-year').value = year;
+          document.getElementById('edit-description').value = `Descrizione del progetto ${name}`;
+          
+          // Mostra notifica
+          showNotification(`Modifica progetto #${id}: ${name} (${year})`, 'info');
+        });
+      });
+      
+      deleteButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const row = this.closest('tr');
+          const id = row.cells[0].textContent.trim();
+          const name = row.cells[1].textContent;
+          
+          // Popola il form di eliminazione
+          document.getElementById('delete-id').value = id;
+          
+          if (confirm(`Sei sicuro di voler eliminare il progetto #${id}: ${name}?`)) {
+            row.remove();
+            showNotification(`Progetto #${id} eliminato con successo!`, 'success');
+          }
+        });
+      });
+      
+      // Gestione form
+      const forms = document.querySelectorAll('form');
+      forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          if (this.querySelector('#project-name')) {
+            const name = document.getElementById('project-name').value;
+            const year = document.getElementById('project-year').value;
+            showNotification(`Progetto "${name}" (${year}) aggiunto con successo!`, 'success');
+            this.reset();
+          }
+          
+          if (this.querySelector('#delete-id') && document.getElementById('delete-id').value) {
+            const id = document.getElementById('delete-id').value;
+            showNotification(`Progetto #${id} eliminato con successo!`, 'success');
+            document.getElementById('delete-id').value = '';
+          }
+        });
+      });
+      
+      // Funzione per mostrare notifiche
+      function showNotification(message, type = 'info') {
+        // Crea elemento notifica
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: ${type === 'success' ? '#10b981' : type === 'danger' ? '#ef4444' : '#3b82f6'};
+          color: white;
+          padding: 1rem 1.5rem;
+          border-radius: 6px;
+          box-shadow: var(--shadow);
+          z-index: 1000;
+          animation: slideIn 0.3s ease;
+        `;
+        
+        notification.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'danger' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+          </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Rimuovi la notifica dopo 3 secondi
+        setTimeout(() => {
+          notification.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
+            }
+          }, 300);
+        }, 3000);
+        
+        // Aggiungi animazioni CSS
+        if (!document.querySelector('#notification-styles')) {
+          const style = document.createElement('style');
+          style.id = 'notification-styles';
+          style.textContent = `
+            @keyframes slideIn {
+              from {
+                transform: translateX(100%);
+                opacity: 0;
+              }
+              to {
+                transform: translateX(0);
+                opacity: 1;
+              }
+            }
+            
+            @keyframes slideOut {
+              from {
+                transform: translateX(0);
+                opacity: 1;
+              }
+              to {
+                transform: translateX(100%);
+                opacity: 0;
+              }
+            }
+          `;
+          document.head.appendChild(style);
+        }
+      }
+      
+      // Chiudi il menu se si clicca fuori (solo mobile)
+      document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 1024 && 
+            !sidebar.contains(e.target) && 
+            !mobileMenuBtn.contains(e.target) && 
+            sidebar.classList.contains('active')) {
+          sidebar.classList.remove('active');
+          mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

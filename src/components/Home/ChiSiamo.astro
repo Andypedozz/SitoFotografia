@@ -1,15 +1,28 @@
 ---
 import RoundedImage from "./RoundedImage.astro";
 import Section from "./Section.astro";
+
+const gradient = "linear-gradient(90deg,rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1) 0%, rgba(0, 0, 0, 1) 100%)"
 ---
 
-<Section>
-    <RoundedImage imageSrc="/images/supermoto.jpg" size={400} showRing={false} showFrame={false} />
-    <div class="about-caption">
-        <h2>Chi siamo</h2>
-        <p>UG Action Media è un'azienda specializzata nella produzione cinematografica e nella creazione di contenuti visivi di alta qualità. Con un team di professionisti esperti, ci impegniamo a trasformare le vostre idee in immagini che raccontano storie coinvolgenti e memorabili.</p>
-    </div>
-    <div class="about-socials">
+<style>
+    .about-container {
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
+        padding: 2rem;
+    }
+</style>
 
+<Section background={gradient}>
+    <div class="about-container">
+        <RoundedImage imageSrc="/images/about-me.jpg" size={400} showRing={false} showFrame={false} />
+        <div class="about-caption">
+            <h2>Chi siamo</h2>
+            <p>UG Action Media è un'azienda specializzata nella produzione cinematografica e nella creazione di contenuti visivi di alta qualità. Con un team di professionisti esperti, ci impegniamo a trasformare le vostre idee in immagini che raccontano storie coinvolgenti e memorabili.</p>
+        </div>
+        <div class="about-socials">
+    
+        </div>
     </div>
 </Section>

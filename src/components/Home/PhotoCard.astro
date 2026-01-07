@@ -4,15 +4,13 @@ const {
   title, 
   link, 
   description, 
-  width = "300px", 
-  height = "200px", 
-  animate = false // nuova prop per abilitare animazione all'apparizione
+  height = "640px", // Altezza fissa
+  animate = false
 } = Astro.props;
 ---
 
 <article 
   class={`photocard ${animate ? 'animate-on-scroll' : ''}`} 
-  style={`width:${width};`}
   data-animate={animate}
 >
   <div class="photocard-image" style={`height:${height};`}>
@@ -37,11 +35,29 @@ const {
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 400px; /* Larghezza massima per l'altezza di 640px */
 
   /* stato iniziale per animazione */
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Assicura che l'immagine non superi mai i limiti */
+.photocard-image {
+  width: 100%;
+  height: var(--card-height, 640px);
+  overflow: hidden;
+  flex-shrink: 0; /* Impedisce il ridimensionamento */
+}
+
+.photocard-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Mantiene l'aspect ratio senza distorsioni */
+  filter: grayscale(100%);
+  transition: filter 0.3s;
 }
 
 /* Stato animato quando visibile */
@@ -61,14 +77,6 @@ const {
   transform: translateY(-5px);
 }
 
-.photocard-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(100%);
-  transition: filter 0.3s;
-}
-
 .photocard:hover .photocard-image img {
   filter: grayscale(0%);
 }
@@ -77,6 +85,7 @@ const {
 .photocard-content {
   padding: 16px;
   color: #f0f0f0;
+  flex-grow: 1;
 }
 
 .photocard-content h3 {
@@ -95,40 +104,47 @@ const {
   color: #f0f0f0;
   text-decoration: none;
 }
+
+/* Stili responsive */
+@media (max-width: 639px) {
+  .photocard {
+    max-width: 100%; /* Su mobile occupa tutta la larghezza disponibile */
+  }
+  
+  .photocard-image {
+    max-height: 500px; /* Riduci leggermente su mobile se necessario */
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .photocard {
+    max-width: 350px; /* Riduci leggermente per tablet */
+  }
+  
+  .photocard-image {
+    height: 600px; /* Riduci proporzionalmente */
+  }
+}
 </style>
 
 <script>
-// Attendi che il DOM sia completamente caricato
+// Il JavaScript rimane invariato
 document.addEventListener('DOMContentLoaded', () => {
-  // Seleziona tutte le card che hanno l'attributo data-animate="true"
   const photoCards = document.querySelectorAll('.photocard[data-animate="true"]');
   
-  // Se non ci sono card da animare, esci
   if (photoCards.length === 0) return;
   
-  // Crea un IntersectionObserver per rilevare quando le card entrano nel viewport
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      // Se la card è nel viewport, aggiungi la classe 'visible'
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        
-        // Opzionale: smetti di osservare dopo che l'animazione è stata attivata
-        // per migliorare le performance
-        // observer.unobserve(entry.target);
-      } else {
-        // Opzionale: rimuovi la classe quando esce dal viewport
-        // per ri-animare ogni volta che rientra
-        // entry.target.classList.remove('visible');
       }
     });
   }, {
-    // Opzioni dell'Observer
-    threshold: 0.1, // Attiva quando almeno il 10% della card è visibile
-    rootMargin: '0px 0px -50px 0px' // Riduce leggermente il viewport per un effetto più naturale
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
   });
   
-  // Inizia a osservare ogni card
   photoCards.forEach(card => {
     observer.observe(card);
   });

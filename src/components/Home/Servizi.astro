@@ -1,13 +1,27 @@
 ---
-import ServiceCard from "../ServiceCard.astro";
 import Section from "./Section.astro";
+import ServiceCard from "./ServiceCard.astro";
+const gradient = "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1) 0%, rgba(0, 0, 0, 1) 100%)"
 ---
 
-<Section>
+<style>
+    .services-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        padding: 2rem;
+    }
+
+    h2 {
+        text-align: center;
+    }
+</style>
+
+<Section background={gradient}>
     <h2>Di cosa ci occupiamo</h2>
-    <div>
-        <ServiceCard title="Produzione cinematografica" description="Creiamo film e video di alta qualità per ogni tipo di progetto." />
-        <ServiceCard title="Creazione contenuti visivi" description="Realizziamo immagini e video che raccontano storie coinvolgenti." />
-        <ServiceCard title="Servizi fotografici" description="Fotografia professionale per eventi, prodotti e personale." />
+    <div class="services-container">
+        <ServiceCard title="Produzione cinematografica" description="Creiamo film e video di alta qualità per ogni tipo di progetto." buttonText="Scopri di più" />
+        <ServiceCard title="Creazione contenuti visivi" description="Realizziamo immagini e video che raccontano storie coinvolgenti." buttonText="Scopri di più" />
+        <ServiceCard title="Servizi fotografici" description="Fotografia professionale per eventi, prodotti e personale." buttonText="Scopri di più" />
     </div>
 </Section>

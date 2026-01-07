@@ -5,18 +5,35 @@ import SpecialButton from "./SpecialButton.astro";
 ---
 
 <style>
-    .gallery {
-        display: flex;
-        width: fit-content;
-        flex-direction: column;
-        align-items: center;
-        margin: auto;
-        gap: 40px;
+    .gallery-container {
+        width: 100%;
+        max-width: 1600px; /* Limite massimo */
+        margin: 0 auto;
+        padding: 0 20px; /* Padding laterale */
+        box-sizing: border-box;
     }
 
-    @media (min-width: 768px) {
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 30px;
+        justify-items: center; /* Centra le card nella griglia */
+    }
+
+    @media (min-width: 640px) {
         .gallery {
-            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .gallery {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .gallery {
             grid-template-columns: repeat(4, 1fr);
         }
     }
@@ -34,21 +51,24 @@ import SpecialButton from "./SpecialButton.astro";
 </style>
 <Section>
     <h1>I nostri ultimi lavori</h1>
-    <div class="gallery">
-        <PhotoCard image="/images/opia.jpg" width="400px" height="640px" animate={true}/>
-        <PhotoCard image="/images/enoteca.jpg" width="400px" height="640px" animate={true}/>
-        <PhotoCard image="/images/supermoto.jpg" width="400px" height="640px" animate={true}/>
-        <PhotoCard image="/images/moda.jpg" width="400px" height="640px" animate={true}/>
+    <div class="gallery-container">
+        <div class="gallery">
+            <!-- Rimuovi width dalle props, mantieni solo height -->
+            <PhotoCard image="/images/opia.jpg" height="640px" animate={true}/>
+            <PhotoCard image="/images/enoteca.jpg" height="640px" animate={true}/>
+            <PhotoCard image="/images/supermoto.jpg" height="640px" animate={true}/>
+            <PhotoCard image="/images/moda.jpg" height="640px" animate={true}/>
 
-        <PhotoCard image="/images/opia.jpg" width="400px" height="640px" animate={true}/>
-        <PhotoCard image="/images/enoteca.jpg" width="400px" height="640px" animate={true}/>
-        <PhotoCard image="/images/supermoto.jpg" width="400px" height="640px" animate={true}/>
-        <PhotoCard image="/images/moda.jpg" width="400px" height="640px" animate={true}/>
+            <PhotoCard image="/images/opia.jpg" height="640px" animate={true}/>
+            <PhotoCard image="/images/enoteca.jpg" height="640px" animate={true}/>
+            <PhotoCard image="/images/supermoto.jpg" height="640px" animate={true}/>
+            <PhotoCard image="/images/moda.jpg" height="640px" animate={true}/>
 
-        <PhotoCard image="/images/opia.jpg" width="400px" height="640px" animate={true}/>
-        <PhotoCard image="/images/enoteca.jpg" width="400px" height="640px" animate={true}/>
-        <PhotoCard image="/images/supermoto.jpg" width="400px" height="640px" animate={true}/>
-        <PhotoCard image="/images/moda.jpg" width="400px" height="640px" animate={true}/>
+            <PhotoCard image="/images/opia.jpg" height="640px" animate={true}/>
+            <PhotoCard image="/images/enoteca.jpg" height="640px" animate={true}/>
+            <PhotoCard image="/images/supermoto.jpg" height="640px" animate={true}/>
+            <PhotoCard image="/images/moda.jpg" height="640px" animate={true}/>
+        </div>
     </div>
     <div class="explore-div">
         <SpecialButton link="/projects" text="Vedi tutti i progetti" />
