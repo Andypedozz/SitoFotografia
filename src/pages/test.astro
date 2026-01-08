@@ -1,12 +1,218 @@
----
-import PhotoCard from "../components/Home/PhotoCard.astro";
-import Layout from "../layouts/Layout.astro";
----
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fade + Slide Effect - Esempio Semplice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            min-height: 200vh; /* Per fare scroll */
+            padding: 50px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .box {
+            background: white;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            background: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: #3a5a8a;
+        }
+        
+        .spacer {
+            height: 500px;
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+            margin: 40px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Esempio Fade + Slide Effect</h1>
+        <p>Scrolla verso il basso per vedere gli effetti!</p>
+        
+        <!-- Box 1: Appare automaticamente -->
+        <div id="box1" class="box">
+            <h2>Box 1 - Appare automaticamente</h2>
+            <p>Questo box apparirà automaticamente quando la pagina si carica.</p>
+        </div>
+        
+        <!-- Box 2: Appare con un click -->
+        <div id="box2" class="box">
+            <h2>Box 2 - Controllato da bottone</h2>
+            <p>Questo box verrà mostrato/nascosto quando clicchi il bottone.</p>
+            <button id="toggleBtn" class="btn">Mostra/Nascondi Box 2</button>
+        </div>
+        
+        <!-- Box 3: Appare allo scroll -->
+        <div id="box3" class="box">
+            <h2>Box 3 - Appare allo scroll</h2>
+            <p>Questo box apparirà quando lo scorri in vista.</p>
+        </div>
+        
+        <!-- Spazio per fare scroll -->
+        <div class="spacer">
+            ⇣ SCROLLA QUI SOTTO ⇣
+        </div>
+        
+        <!-- Box 4: Altro box per scroll -->
+        <div id="box4" class="box">
+            <h2>Box 4 - Anche questo appare allo scroll</h2>
+            <p>Altro contenuto che appare quando arrivi qui.</p>
+        </div>
+        
+        <!-- Box 5: Stagger effect -->
+        <div id="box5" class="box">
+            <h2>Box 5 - Effetto a catena</h2>
+            <p>Questi elementi appariranno uno dopo l'altro:</p>
+            <div class="item-list">
+                <div class="item">Elemento 1</div>
+                <div class="item">Elemento 2</div>
+                <div class="item">Elemento 3</div>
+                <div class="item">Elemento 4</div>
+                <div class="item">Elemento 5</div>
+            </div>
+            <button id="staggerBtn" class="btn">Avvia effetto a catena</button>
+        </div>
+    </div>
 
-<Layout>
-    <PhotoCard
-        image="/images/opia.jpg"
-        title="Montagna"
-        description="Un panorama mozzafiato tra le cime innevate."
-    />
-</Layout>
+    <!-- Importa lo script -->
+    <script src="../scripts/fade-slide-effect.js"></script>
+    
+    <!-- Script di utilizzo SUPER SEMPLICE -->
+    <script is:inline>
+
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const animator = new FadeSlideEffect({
+                duration: 800,
+                distance: 50
+            })
+
+            const element = document.getElementById("id");
+            const controller = animator.applyTo(element, {
+                trigger: "auto"
+            })
+        })
+
+
+        // Aspetta che la pagina sia completamente caricata
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. CREA L'ANIMATORE
+            const animator = new FadeSlideEffect({
+                duration: 800,      // Durata animazione: 800ms
+                distance: 50        // Distanza slide: 50px
+            });
+            
+            // 2. BOX 1 - Appare automaticamente
+            const box1 = document.getElementById('box1');
+            const box1Controller = animator.applyTo(box1, {
+                trigger: 'auto'  // Appare appena pronto
+            });
+            
+            // 3. BOX 2 - Controllato da bottone
+            const box2 = document.getElementById('box2');
+            const box2Controller = animator.applyTo(box2, {
+                trigger: 'manual'  // Lo controllo io manualmente
+            });
+            
+            // Bottone per mostrare/nascondere box2
+            document.getElementById('toggleBtn').addEventListener('click', function() {
+                box2Controller.toggle();  // Alterna mostrato/nascosto
+            });
+            
+            // 4. BOX 3 - Appare quando lo scrolli in vista
+            const box3 = document.getElementById('box3');
+            animator.applyTo(box3, {
+                trigger: 'scroll',  // Appare quando è visibile
+                threshold: 0.1      // Deve essere visibile almeno al 10%
+            });
+            
+            // 5. BOX 4 - Altro box per scroll
+            const box4 = document.getElementById('box4');
+            animator.applyTo(box4, {
+                trigger: 'scroll',
+                direction: 'left'  // Slide da sinistra invece che dall'alto
+            });
+            
+            // 6. BOX 5 - Effetto a catena (stagger)
+            const items = document.querySelectorAll('.item');
+            const staggerBtn = document.getElementById('staggerBtn');
+            
+            // Applica l'effetto a tutti gli item
+            items.forEach(item => {
+                animator.applyTo(item, {
+                    trigger: 'manual'  // Li mostrerò manualmente
+                });
+            });
+            
+            // Bottone per attivare l'effetto a catena
+            staggerBtn.addEventListener('click', function() {
+                // Nascondi prima tutti gli item
+                items.forEach(item => {
+                    item.classList.remove('fade-slide-active');
+                });
+                
+                // Aspetta un attimo e poi mostra a catena
+                setTimeout(() => {
+                    animator.stagger(items, {
+                        staggerDelay: 200,  // 200ms tra un item e l'altro
+                        direction: 'up'
+                    });
+                }, 300);
+            });
+            
+            // 7. EXTRA: Applica a TUTTI gli elementi con una classe
+            // animator.applyToAll('.box', {
+            //     trigger: 'scroll',
+            //     delay: 100
+            // });
+            
+            console.log('Animator pronto! Prova a scrollare o cliccare i bottoni.');
+        });
+    </script>
+</body>
+</html>

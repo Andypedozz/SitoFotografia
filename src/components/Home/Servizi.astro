@@ -18,10 +18,28 @@ const gradient = "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1
 </style>
 
 <Section background={gradient}>
-    <h2>Di cosa ci occupiamo</h2>
-    <div class="services-container">
+    <h2 class="slide-item">Di cosa ci occupiamo</h2>
+    <div class="services-container slide-item">
         <ServiceCard title="Produzione cinematografica" description="Creiamo film e video di alta qualità per ogni tipo di progetto." buttonText="Scopri di più" />
         <ServiceCard title="Creazione contenuti visivi" description="Realizziamo immagini e video che raccontano storie coinvolgenti." buttonText="Scopri di più" />
         <ServiceCard title="Servizi fotografici" description="Fotografia professionale per eventi, prodotti e personale." buttonText="Scopri di più" />
     </div>
+    <script src="../../scripts/slide.js"></script>
+    <script is:inline>
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const animator = new FadeSlideEffect({
+                duration: 800,
+                distance: 50
+            })
+
+            const elements = document.querySelectorAll(".slide-item");
+            elements.forEach(elem => {
+                animator.applyTo(elem, {
+                    trigger: 'scroll',  // Appare quando è visibile
+                    threshold: 0.1      // Deve essere visibile almeno al 10%
+                })
+            })
+        })
+    </script>
 </Section>
