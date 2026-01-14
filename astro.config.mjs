@@ -1,8 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import { initDb } from './src/lib/initDb';
+import { findDb, initDb } from './src/lib/initDb';
 
 import node from '@astrojs/node';
+import { fillDb } from './fillDb';
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,3 +15,4 @@ export default defineConfig({
 });
 
 initDb();
+fillDb();

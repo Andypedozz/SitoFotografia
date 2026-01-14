@@ -1,8 +1,11 @@
 import { INTEGER, Sequelize, STRING } from "sequelize";
+import path from 'path';
+
+const dbPath = path.resolve(process.cwd(), "db.sqlite");
 
 export const sequelize = new Sequelize({
     dialect: "sqlite",
-    storage: "db.sqlite",
+    storage: dbPath,
     logging: false,
     define: {
         freezeTableName: true,

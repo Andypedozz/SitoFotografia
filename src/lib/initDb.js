@@ -1,3 +1,4 @@
+import path from "path";
 import { sequelize } from "./db.js";
 
 export async function initDb() {
@@ -8,4 +9,9 @@ export async function initDb() {
     } catch (error) {
         console.error("Error synchronizing database:", error);
     }
+}
+
+export async function findDb() {
+    const dbPath = path.resolve(process.cwd(), "db.sqlite");
+    console.log(dbPath);
 }
