@@ -1,4 +1,5 @@
 ---
+import MyTitle from "./MyTitle.astro";
 import RoundedImage from "./RoundedImage.astro";
 import Section from "./Section.astro";
 
@@ -12,6 +13,19 @@ const gradient = "linear-gradient(90deg,rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1)
         gap: 1.5rem;
         padding: 2rem;
     }
+
+    .about-caption {
+        font-size: larger;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .about-container {
+            display: flex;
+            flex-direction: row;
+            width: 50%;
+            margin: auto;
+        }
+    }
 </style>
 
 <Section background={gradient}>
@@ -20,11 +34,8 @@ const gradient = "linear-gradient(90deg,rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1)
             <RoundedImage imageSrc="/images/about-me.jpg" size={400} showRing={false} showFrame={false} />
         </div>
         <div class="about-caption slide-item">
-            <h2>Chi siamo</h2>
+            <MyTitle title={"Chi siamo"}/>
             <p>UG Action Media è un'azienda specializzata nella produzione cinematografica e nella creazione di contenuti visivi di alta qualità. Con un team di professionisti esperti, ci impegniamo a trasformare le vostre idee in immagini che raccontano storie coinvolgenti e memorabili.</p>
-        </div>
-        <div class="about-socials slide-item">
-    
         </div>
     </div>
 

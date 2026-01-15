@@ -1,4 +1,5 @@
 ---
+import MyTitle from "./MyTitle.astro";
 import Section from "./Section.astro";
 import ServiceCard from "./ServiceCard.astro";
 const gradient = "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1) 0%, rgba(0, 0, 0, 1) 100%)"
@@ -6,8 +7,8 @@ const gradient = "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1
 
 <style>
     .services-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        display: flex;
+        flex-direction: column;
         gap: 1.5rem;
         padding: 2rem;
     }
@@ -15,10 +16,20 @@ const gradient = "radial-gradient(circle,rgba(0, 0, 0, 1) 0%, rgba(36, 36, 36, 1
     h2 {
         text-align: center;
     }
+
+    @media only screen and (min-width: 768px) {
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            /* display: flex;
+            flex-direction: row;
+            justify-content: center; */
+        }
+    }
 </style>
 
 <Section background={gradient}>
-    <h2 class="slide-item">Di cosa ci occupiamo</h2>
+    <MyTitle title="Di cosa ci occupiamo" type="h2"/>
     <div class="services-container slide-item">
         <ServiceCard title="Produzione cinematografica" description="Creiamo film e video di alta qualità per ogni tipo di progetto." buttonText="Scopri di più" />
         <ServiceCard title="Creazione contenuti visivi" description="Realizziamo immagini e video che raccontano storie coinvolgenti." buttonText="Scopri di più" />

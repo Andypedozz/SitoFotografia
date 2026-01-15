@@ -1,4 +1,5 @@
 ---
+import MyTitle from "./MyTitle.astro";
 import PhotoCard from "./PhotoCard.astro";
 import Section from "./Section.astro";
 import SpecialButton from "./SpecialButton.astro";
@@ -50,7 +51,7 @@ import SpecialButton from "./SpecialButton.astro";
     }
 </style>
 <Section>
-    <h1>I nostri ultimi lavori</h1>
+    <MyTitle title="I nostri ultimi lavori" type="h1"/>
     <div class="gallery-container">
         <div class="gallery">
             <!-- Rimuovi width dalle props, mantieni solo height -->

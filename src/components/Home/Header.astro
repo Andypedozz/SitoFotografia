@@ -1,6 +1,5 @@
 ---
 import Anchor from "./Anchor.astro";
-import Button from "./Button.astro";
 import SpecialButton from "./SpecialButton.astro";
 const { title, buttons, specialButton } = Astro.props;
 ---
@@ -18,15 +17,27 @@ const { title, buttons, specialButton } = Astro.props;
         align-items: center;
         gap: 20px;
     }
+
+    nav {
+        display: flex;
+        gap: 10px;
+    }
+
+    @media only screen and (max-width: 500px) {
+        header nav {
+            display: none;
+        }
+    }
+
 </style>
 
 <header>
     <div class="logo-container">
-        <img src="" alt="logo" />
+        <img src="" alt="logo" width="50px"/>
         <p>{title}</p>
     </div>
     <nav>
-        {buttons.map(btn => <Anchor text={btn.text} link={btn.link}/>)}
+        {buttons.map((btn: any) => <Anchor text={btn.text} link={btn.link}/>)}
         <SpecialButton text={specialButton.text} />
     </nav>
 </header>
