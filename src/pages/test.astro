@@ -1,53 +1,14 @@
 ---
+import Sidebar from "../components/admin/Sidebar.astro";
 import Layout from "../layouts/Layout.astro";
+
+const buttons = [
+    "Gestione Homepage",
+    "Gestione Progetti",
+    "Gestione Media"
+]
 ---
 
-<style>
-    body {
-        background-color: black;
-        color: white;
-    }
-
-    a {
-        text-decoration: none;
-        color: white;
-    }
-</style>
-
 <Layout>
-    <header>
-        <div class="logo">
-            <img src="" alt="">
-            <p>UG Action Media</p>
-        </div>
-        <nav>
-            <a href="#lavori">Lavori</a>
-            <a href="#about">Chi siamo</a>
-            <a href="#servizi">Servizi</a>
-            <a href="">Contattaci</a>
-        </nav>
-    </header>
-    <section id="hero">
-        <p>Photography is the art of catching retain</p>
-        <p>Bing your creativity to your life.</p>
-    </section>
-    <section id="lavori">
-        <h1>I nostri ultimi lavori</h1>
-    </section>
-    <section id="about">
-        <h2>Chi siamo</h2>
-    </section>
-    <section id="servizi">
-        <h2>Di cosa ci occupiamo</h2>
-    </section>
-    <section id="cta">
-        <h1>Sei pronto a iniziare un nuovo progetto con noi?</h1>
-        <p>
-            Change the workflow for your WordPress site, control everything from
-            Site editor without using any extra plugins. Improved speed, web
-            vitals score and SEO to get better positions
-        </p>
-        <button>Contattaci</button>
-    </section>
-    <footer></footer>
+    <Sidebar title="Admin Panel" buttons={buttons}/>
 </Layout>
