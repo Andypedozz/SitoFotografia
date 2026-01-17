@@ -1,14 +1,4 @@
 ---
-import Sidebar from "../components/admin/Sidebar.astro";
-import Layout from "../layouts/Layout.astro";
-
-const buttons = [
-    "Gestione Homepage",
-    "Gestione Progetti",
-    "Gestione Media"
-]
+import Page from "../components/admin/Page.astro";
 ---
-
-<Layout>
-    <Sidebar title="Admin Panel" buttons={buttons}/>
-</Layout>
+<Page />
