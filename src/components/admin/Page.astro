@@ -1,16 +1,34 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import GestioneProgetti from "./GestioneProgetti.astro";
 import Panel from "./Panel.astro";
 import Sidebar from "./Sidebar.astro";
+
+const buttons = [
+    { text: "Gestione Homepage", page: "homepage" },
+    { text: "Gestione Progetti", page: "progetti" },
+    { text: "Gestione Media", page: "media" },
+]
 ---
+
+<style>
+    .container {
+        display: flex;
+        height: 100vh;
+    }
+</style>
 <Layout>
-    <div>
-        <Sidebar />
-        <Panel title="Gestione Homepage">
+    <script src="../../scripts/page-switcher.js"></script>
+    <div class="container">
+        <Sidebar buttons={buttons}/>
+        <Panel title="Gestione Homepage" pageId="homepage">
+
+        </Panel>
+        <Panel title="Gestione Progetti" pageId="progetti">
+
+        </Panel>
+        <Panel title="Gestione Media" pageId="media">
 
         </Panel>
     </div>
-    <script>
-        
-    </script>    
 </Layout>

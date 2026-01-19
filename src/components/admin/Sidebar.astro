@@ -1,0 +1,27 @@
+---
+import Button from "./Button.astro";
+
+const { title, buttons } = Astro.props;
+---
+<style>
+    .sidebar {
+        display: flex;
+        background-color: #111827;
+        flex-direction: column;
+        width: 15%;
+        border-right: 1px solid #475569;
+    }
+    
+    .sidebar nav {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+<div class="sidebar">
+    <div>
+        <h1>{title}</h1>
+    </div>
+    <nav>
+        {buttons.map((btn: any) => <Button dataPage={btn.page} text={btn.text} />)}
+    </nav>
+</div>
