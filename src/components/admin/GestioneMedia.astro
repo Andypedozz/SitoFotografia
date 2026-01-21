@@ -17,6 +17,9 @@ const medias = [
     { url: "images/supermoto.jpg", name: "supermoto.jpg"}
 ]
 
+const url = new URL("/api/media", Astro.request.url);
+const res = await fetch(url);
+const media = await res.json();
 ---
 
 <Panel title="Gestione Media" pageId="media">
@@ -29,6 +32,6 @@ const medias = [
     </style>
     <div class="container">
         <FormGroup title="Aggiungi nuovi media" fields={uploadMediaFields}/>
-        <MediaContainer medias={medias}/>
+        <MediaContainer medias={media}/>
     </div>
 </Panel>
