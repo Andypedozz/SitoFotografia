@@ -6,9 +6,9 @@ import GestioneHomepage from "./GestioneHomepage.astro";
 import Sidebar from "./Sidebar.astro";
 
 const buttons = [
-    { text: "Gestione Homepage", page: "homepage" },
     { text: "Gestione Progetti", page: "progetti" },
     { text: "Gestione Media", page: "media" },
+    { text: "Gestione Homepage", page: "homepage" },
 ]
 ---
 
@@ -21,8 +21,8 @@ const buttons = [
     <script src="../../scripts/page-switcher.js"></script>
     <div class="container">
         <Sidebar buttons={buttons}/>
-        <GestioneHomepage />
         <GestioneProgetti />
         <GestioneMedia />
+        <GestioneHomepage />
     </div>
 </Layout>
