@@ -1,7 +1,34 @@
 ---
 import Panel from "./Panel.astro";
+import MediaContainer from "./MediaContainer.astro"
+import FormGroup from "./FormGroup.astro";
+
+const uploadMediaFields = [
+    { id: 1 , label: "Progetto associato", type: "text", placeholder: "Progetto associato" },
+    { id: 1 , label: "Tipo di media", type: "text", placeholder: "Tipo di media" },
+    { id: 1 , label: "File", type: "file", placeholder: "File" },
+]
+
+const medias = [
+    { url: "images/enoteca.jpg", name: "enoteca.jpg"},
+    { url: "images/robys.jpg", name: "robys.jpg"},
+    { url: "images/moda.jpg", name: "moda.jpg"},
+    { url: "images/opia.jpg", name: "opia.jpg"},
+    { url: "images/supermoto.jpg", name: "supermoto.jpg"}
+]
+
 ---
 
 <Panel title="Gestione Media" pageId="media">
-
+    <style>
+        .container {
+            display: flex;
+            flex-direction: row;
+            margin: 2%;
+        }
+    </style>
+    <div class="container">
+        <FormGroup title="Aggiungi nuovi media" fields={uploadMediaFields}/>
+        <MediaContainer medias={medias}/>
+    </div>
 </Panel>

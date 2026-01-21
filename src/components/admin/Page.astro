@@ -1,7 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import GestioneProgetti from "./GestioneProgetti.astro";
-import Panel from "./Panel.astro";
+import GestioneMedia from "./GestioneMedia.astro";
+import GestioneHomepage from "./GestioneHomepage.astro";
 import Sidebar from "./Sidebar.astro";
 
 const buttons = [
@@ -14,21 +15,14 @@ const buttons = [
 <style>
     .container {
         display: flex;
-        height: 100vh;
     }
 </style>
 <Layout>
     <script src="../../scripts/page-switcher.js"></script>
     <div class="container">
         <Sidebar buttons={buttons}/>
-        <Panel title="Gestione Homepage" pageId="homepage">
-
-        </Panel>
-        <Panel title="Gestione Progetti" pageId="progetti">
-
-        </Panel>
-        <Panel title="Gestione Media" pageId="media">
-
-        </Panel>
+        <GestioneHomepage />
+        <GestioneProgetti />
+        <GestioneMedia />
     </div>
 </Layout>

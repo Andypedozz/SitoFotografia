@@ -1,7 +1,39 @@
 ---
+import FormGroup from "./FormGroup.astro";
 import Panel from "./Panel.astro";
+import Table from "./Table.astro"
+
+const addProjectFields = [
+    { id: 1 , label: "Nome", type: "text", placeholder: "Nome progetto" },
+    { id: 2 , label: "Descrizione", type: "text", placeholder: "Descrizione" },
+    { id: 3 , label: "Anno", type: "text", placeholder: "Anno" },
+]
+
+const editProjectFields = [
+    { id: 1 , label: "ID", type: "select", placeholder: "Nome progetto" },
+    { id: 2 , label: "Nome", type: "text", placeholder: "Nome progetto" },
+    { id: 3 , label: "Descrizione", type: "text", placeholder: "Descrizione" },
+    { id: 4 , label: "Anno", type: "text", placeholder: "Anno" },
+]
+
+const deleteProjectFields = [
+    { id: 1 , label: "ID", type: "select", placeholder: "Nome progetto" }
+]
 ---
 
 <Panel title="Gestione Progetti" pageId="progetti">
-    
+    <style>
+        .forms {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 2%;
+        }
+    </style>
+    <Table />
+    <div class="forms">
+        <FormGroup title="Aggiungi Progetto" fields={addProjectFields}/>
+        <FormGroup title="Modifica Progetto" fields={editProjectFields}/>
+        <FormGroup title="Elimina Progetto" fields={deleteProjectFields}/>
+    </div>
 </Panel>
