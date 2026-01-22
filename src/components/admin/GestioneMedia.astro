@@ -4,9 +4,9 @@ import MediaContainer from "./MediaContainer.astro"
 import FormGroup from "./FormGroup.astro";
 
 const uploadMediaFields = [
-    { id: 1 , label: "Progetto associato", type: "text", placeholder: "Progetto associato" },
-    { id: 1 , label: "Tipo di media", type: "text", placeholder: "Tipo di media" },
-    { id: 1 , label: "File", type: "file", placeholder: "File" },
+    { id: "progetto_associato" , label: "Progetto associato", type: "input", inputType: "text" , placeholder: "Progetto associato" },
+    { id: "tipo" , label: "Tipo di media", type: "input", inputType: "text" , placeholder: "Tipo di media" },
+    { id: "file" , label: "File", type: "input", inputType: "file", placeholder: "File" }
 ]
 
 const medias = [

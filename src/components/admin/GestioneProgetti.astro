@@ -4,20 +4,30 @@ import Panel from "./Panel.astro";
 import Table from "./Table.astro"
 
 const addProjectFields = [
-    { id: 1 , label: "Nome", type: "text", placeholder: "Nome progetto" },
-    { id: 2 , label: "Descrizione", type: "text", placeholder: "Descrizione" },
-    { id: 3 , label: "Anno", type: "text", placeholder: "Anno" },
+    { id: "name" , label: "Nome", type: "input", inputType: "text" , placeholder: "Nome progetto" },
+    { id: "description" , label: "Descrizione", type: "input", inputType: "text" , placeholder: "Descrizione" },
+    { id: "year" , label: "Anno", type: "input", inputType: "text" , placeholder: "Anno" },
 ]
 
 const editProjectFields = [
-    { id: 1 , label: "ID", type: "select", placeholder: "Nome progetto" },
-    { id: 2 , label: "Nome", type: "text", placeholder: "Nome progetto" },
-    { id: 3 , label: "Descrizione", type: "text", placeholder: "Descrizione" },
-    { id: 4 , label: "Anno", type: "text", placeholder: "Anno" },
+    { id: "id" , label: "ID", type: "select", options: [
+        { value: "1", label: "1 - Opla" },
+        { value: "2", label: "2 - Alone" },
+        { value: "3", label: "3 - Nexus" },
+        { value: "4", label: "4 - Quantum" }]
+    },
+    { id: "name" , label: "Nome", type: "input", inputType: "text" , placeholder: "Nome progetto" },
+    { id: "description" , label: "Descrizione", type: "input", inputType: "text" , placeholder: "Descrizione" },
+    { id: "year" , label: "Anno", type: "input", inputType: "text" , placeholder: "Anno" }
 ]
 
 const deleteProjectFields = [
-    { id: 1 , label: "ID", type: "select", placeholder: "Nome progetto" }
+    { id: "id" , label: "ID", type: "select", options: [
+        { value: "1", label: "1 - Opla" },
+        { value: "2", label: "2 - Alone" },
+        { value: "3", label: "3 - Nexus" },
+        { value: "4", label: "4 - Quantum" }]
+    }
 ]
 ---
 
