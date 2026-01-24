@@ -1,4 +1,4 @@
-import { Progetto } from "../../../lib/db.js";
+import { Progetto } from "../../../db/models.js";
 
 export async function GET({ request }) {
     const url = new URL(request.url);
