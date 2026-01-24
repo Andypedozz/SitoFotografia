@@ -1,62 +1,42 @@
 [
   {
-    "nome": "Villa Moderna sul Lago",
-    "descrizione": "Residenza unifamiliare con vista panoramica sul lago di Como",
-    "anno": 2023,
-    "homepage": 1
-  },
-  {
-    "nome": "Ristrutturazione Loft Industriale",
-    "descrizione": "Recupero di un ex spazio industriale in loft residenziale a Milano",
-    "anno": 2022,
-    "homepage": 1
-  },
-  {
-    "nome": "Edificio Uffici Green",
-    "descrizione": "Palazzo per uffici con certificazione LEED Platinum e facciata ventilata",
-    "anno": 2024,
-    "homepage": 0
-  },
-  {
-    "nome": "Casa Minimalista in Campagna",
-    "descrizione": "Abitazione monofamiliare con design minimalista immersa nella natura",
-    "anno": 2021,
-    "homepage": 1
-  },
-  {
-    "nome": "Riqualificazione Piazza Centrale",
-    "descrizione": "Intervento di rigenerazione urbana della piazza principale",
-    "anno": 2023,
-    "homepage": 0
-  },
-  {
-    "nome": "Museo di Arte Contemporanea",
-    "descrizione": "Nuova sede museale con gallerie espositive flessibili",
+    "nome": "Opia",
+    "slug": "opia",
+    "descrizione": "OpiaSS25",
     "anno": 2025,
+    "copertina": "images/opia.jpg",
     "homepage": 1
   },
   {
-    "nome": "Appartamento in Centro Storico",
-    "descrizione": "Restauro conservativo di un appartamento nel centro storico di Roma",
-    "anno": 2022,
-    "homepage": 0
-  },
-  {
-    "nome": "Resort Sostenibile in Sardegna",
-    "descrizione": "Villaggio turistico ecosostenibile con architettura integrata nel paesaggio",
-    "anno": 2024,
-    "homepage": 1
-  },
-  {
-    "nome": "Scuola Elementare Innovativa",
-    "descrizione": "Nuovo plesso scolastico con spazi didattici modulari",
-    "anno": 2023,
-    "homepage": 0
-  },
-  {
-    "nome": "Torre Residenziale",
-    "descrizione": "Grattacielo residenziale di 30 piani con giardini pensili",
+    "nome": "Supermoto",
+    "slug": "supermoto",
+    "descrizione": "Supermoto",
     "anno": 2025,
-    "homepage": 0
+    "copertina": "images/supermoto.jpg",
+    "homepage": 1
+  },
+  {
+    "nome": "Pizzeria Roby's",
+    "slug": "robys",
+    "descrizione": "Roby's",
+    "anno": 2025,
+    "copertina": "images/robys.jpg",
+    "homepage": 1
+  },
+  {
+    "nome": "Moda",
+    "slug": "moda",
+    "descrizione": "Moda",
+    "anno": 2025,
+    "copertina": "images/moda.jpg",
+    "homepage": 1
+  },
+  {
+    "nome": "Enoteca Montevecchio",
+    "slug": "enoteca",
+    "descrizione": "Enoteca",
+    "anno": 2025,
+    "copertina": "images/enoteca.jpg",
+    "homepage": 1
   }
 ]

@@ -1,5 +1,15 @@
 ---
+import ProjectCard from "../components/Home/ProjectCard.astro";
 import Layout from "../layouts/Layout.astro";
+
+function openUrl() {
+    window.open("/admin");
+}
+
+const url = new URL("/api/projects", Astro.request.url);
+const res = await fetch(url);
+const homeProjects = await res.json();
+
 ---
     <style>
         /* Reset e variabili */
@@ -658,99 +668,7 @@ import Layout from "../layouts/Layout.astro";
                 </div>
                 
                 <div class="gallery">
-                    <div class="gallery-item fade-in">
-                        <img src="images/opia.jpg" alt="Fotografia moda">
-                        <div class="gallery-overlay">
-                            <h3>Moda & Stile</h3>
-                            <p>Campagna pubblicitaria per brand di moda</p>
-                        </div>
-                    </div>
-                    
-                    <div class="gallery-item fade-in">
-                        <img src="images/moda.jpg" alt="Fotografia culinaria">
-                        <div class="gallery-overlay">
-                            <h3>Food & Beverage</h3>
-                            <p>Servizio fotografico per enoteca e ristorante</p>
-                        </div>
-                    </div>
-                    
-                    <div class="gallery-item fade-in">
-                        <img src="images/supermoto.jpg" alt="Fotografia motori">
-                        <div class="gallery-overlay">
-                            <h3>Motori & Azione</h3>
-                            <p>Shooting per evento supermoto e automotive</p>
-                        </div>
-                    </div>
-                    
-                    <div class="gallery-item fade-in">
-                        <img src="images/enoteca.jpg" alt="Fotografia ritratto">
-                        <div class="gallery-overlay">
-                            <h3>Ritratti Artistici</h3>
-                            <p>Sessioni personali e corporate</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item fade-in">
-                        <img src="images/opia.jpg" alt="Fotografia moda">
-                        <div class="gallery-overlay">
-                            <h3>Moda & Stile</h3>
-                            <p>Campagna pubblicitaria per brand di moda</p>
-                        </div>
-                    </div>
-                    
-                    <div class="gallery-item fade-in">
-                        <img src="images/moda.jpg" alt="Fotografia culinaria">
-                        <div class="gallery-overlay">
-                            <h3>Food & Beverage</h3>
-                            <p>Servizio fotografico per enoteca e ristorante</p>
-                        </div>
-                    </div>
-                    
-                    <div class="gallery-item fade-in">
-                        <img src="images/supermoto.jpg" alt="Fotografia motori">
-                        <div class="gallery-overlay">
-                            <h3>Motori & Azione</h3>
-                            <p>Shooting per evento supermoto e automotive</p>
-                        </div>
-                    </div>
-                    
-                    <div class="gallery-item fade-in">
-                        <img src="images/enoteca.jpg" alt="Fotografia ritratto">
-                        <div class="gallery-overlay">
-                            <h3>Ritratti Artistici</h3>
-                            <p>Sessioni personali e corporate</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item fade-in">
-                        <img src="images/opia.jpg" alt="Fotografia moda">
-                        <div class="gallery-overlay">
-                            <h3>Moda & Stile</h3>
-                            <p>Campagna pubblicitaria per brand di moda</p>
-                        </div>
-                    </div>
-                    
-                    <div class="gallery-item fade-in">
-                        <img src="images/moda.jpg" alt="Fotografia culinaria">
-                        <div class="gallery-overlay">
-                            <h3>Food & Beverage</h3>
-                            <p>Servizio fotografico per enoteca e ristorante</p>
-                        </div>
-                    </div>
-                    
-                    <div class="gallery-item fade-in">
-                        <img src="images/supermoto.jpg" alt="Fotografia motori">
-                        <div class="gallery-overlay">
-                            <h3>Motori & Azione</h3>
-                            <p>Shooting per evento supermoto e automotive</p>
-                        </div>
-                    </div>
-                    
-                    <div class="gallery-item fade-in">
-                        <img src="images/enoteca.jpg" alt="Fotografia ritratto">
-                        <div class="gallery-overlay">
-                            <h3>Ritratti Artistici</h3>
-                            <p>Sessioni personali e corporate</p>
-                        </div>
-                    </div>
+                    {homeProjects.map(project => <ProjectCard project={project}/>)}
                 </div>
                 
                 <div class="center-btn">

@@ -1,9 +1,8 @@
-import { Progetto } from "../../../lib/db.js";
+import { Progetto } from "../../../db/models.js";
 
 /**
  * Handle GET requests for projects.
  */
-
 export async function GET({ request }) {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
@@ -13,7 +12,7 @@ export async function GET({ request }) {
 
     try {
         if (id) {
-            result = await Progetto.findByPk(id);
+            result = await Progetto.findOne({ where: { id } });
         } else if (nome) {
             result = await Progetto.findOne({ where: { nome } });
         } else {

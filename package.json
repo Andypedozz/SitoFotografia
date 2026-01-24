@@ -13,7 +13,6 @@
   "dependencies": {
     "@astrojs/node": "^9.5.1",
     "astro": "^5.16.6",
-    "sequelize": "^6.37.7",
-    "sqlite3": "^5.1.7"
+    "better-sqlite3": "^12.6.2"
   }
 }
