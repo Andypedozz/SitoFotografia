@@ -1,4 +1,28 @@
 ---
-import Page from "../components/admin/Page.astro";
+import GestioneHomepage from "../components/admin/GestioneHomepage.astro"
+import GestioneMedia from "../components/admin/GestioneMedia.astro"
+import GestioneProgetti from "../components/admin/GestioneProgetti.astro"
+import Sidebar from "../components/admin/Sidebar.astro"
+import Layout from "../layouts/Layout.astro"
+
+const buttons = [
+    { text: "Gestione Progetti", page: "progetti" },
+    { text: "Gestione Media", page: "media" },
+    { text: "Gestione Homepage", page: "homepage" },
+]
 ---
-<Page />
+
+<style>
+    .container {
+        display: flex;
+    }
+</style>
+<Layout>
+    <script src="../scripts/page-switcher.js"></script>
+    <div class="container">
+        <Sidebar buttons={buttons}/>
+        <GestioneProgetti />
+        <GestioneMedia />
+        <GestioneHomepage />
+    </div>
+</Layout>
