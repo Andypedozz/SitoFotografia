@@ -11,15 +11,19 @@ function fillDb() {
     const mediaData = JSON.parse(fs.readFileSync(join(__dirname, "/mockdata/media.json")))
     const userData = JSON.parse(fs.readFileSync(join(__dirname, "/mockdata/utenti.json")))
 
-    projectsData.forEach(row => {
-        Progetto.create(row);
-    })
-    mediaData.forEach(row => {
-        Media.create(row);
-    })
-    userData.forEach(row => {
-        Utente.create(row);
-    })
+    Progetto.bulkCreate(projectsData);
+    Media.bulkCreate(mediaData);
+    Utente.bulkCreate(userData);
+    
+    // projectsData.forEach(row => {
+    //     Progetto.create(row);
+    // })
+    // mediaData.forEach(row => {
+    //     Media.create(row);
+    // })
+    // userData.forEach(row => {
+    //     Utente.create(row);
+    // })
 }
 
 fillDb();
