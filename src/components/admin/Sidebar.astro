@@ -1,4 +1,5 @@
 ---
+import Anchor from "./Anchor.astro";
 import Button from "./Button.astro";
 
 const { title, buttons } = Astro.props;
@@ -11,6 +12,10 @@ const { title, buttons } = Astro.props;
         width: 15%;
         border-right: 1px solid #475569;
     }
+
+    h1 {
+        color: white;
+    }
     
     .sidebar nav {
         display: flex;
@@ -21,7 +26,10 @@ const { title, buttons } = Astro.props;
     <div>
         <h1>{title}</h1>
     </div>
-    <nav>
-        {buttons.map((btn: any) => <Button dataPage={btn.page} text={btn.text} />)}
-    </nav>
+    <div class="menu">
+        <nav>
+            {buttons.map((btn: any) => <Button dataPage={btn.page} text={btn.text} />)}
+            <Anchor href="/" text="Torna alla home"/>
+        </nav>
+    </div>
 </div>

@@ -1,122 +1,17 @@
-<style>
-    .btn {
-        display: inline-block;
-        padding: 12px 28px;
-        background-color: var(--primary);
-        color: var(--text-light);
-        border: none;
-        border-radius: var(--radius);
-        font-size: 16px;
-        font-weight: 600;
-        transition: var(--transition);
-    }
-
-    .btn:hover {
-        background-color: var(--primary-dark);
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn-outline {
-        background-color: transparent;
-        border: 2px solid var(--primary);
-    }
-
-    .btn-outline:hover {
-        background-color: var(--primary);
-    }
-
-    header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 20px 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: rgba(0, 0, 0, 0.9);
-        z-index: 1000;
-        transition: var(--transition);
-    }
-
-    header.scrolled {
-        padding: 15px 5%;
-        backdrop-filter: blur(10px);
-        background-color: rgba(0, 0, 0, 0.85);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .logo {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .logo img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    .logo-text {
-        font-size: 1.5rem;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    .logo-text span {
-        color: var(--primary);
-    }
-
-    nav {
-        display: flex;
-        align-items: center;
-        gap: 25px;
-    }
-
-    nav a {
-        font-weight: 500;
-        position: relative;
-        padding: 5px 0;
-    }
-
-    nav a:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background-color: var(--primary);
-        transition: var(--transition);
-    }
-
-    nav a:hover:after {
-        width: 100%;
-    }
-
-    .mobile-toggle {
-        display: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-    }
-</style>
+---
+---
 <header id="header">
     <div class="logo">
         <div class="logo-img">
-            <i
-                class="fas fa-camera"
-                style="font-size: 32px; color: var(--primary);"></i>
+            <i class="fas fa-camera" style="font-size: 32px; color: var(--primary);"></i>
         </div>
         <div class="logo-text">UG <span>Action Media</span></div>
     </div>
-
+    
     <div class="mobile-toggle" id="mobileToggle">
         <i class="fas fa-bars"></i>
     </div>
-
+    
     <nav id="mainNav">
         <a href="#home">Home</a>
         <a href="#gallery">Lavori</a>
@@ -126,15 +21,3 @@
         <a href="/admin" class="btn">Admin</a>
     </nav>
 </header>
-
-<!-- 
-    Classi usate:
-    logo
-    logo-img
-    fas fa-camera
-    logo-text
-    mobile-toggle
-    fas fa-bars
-    mainNav
-    btn
--->

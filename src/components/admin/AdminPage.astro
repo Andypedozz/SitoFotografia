@@ -1,14 +1,9 @@
 ---
+import Layout from "../../layouts/Layout.astro";
 import Table from "./Table.astro";
 ---
-<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
+<Layout>
+    <style>
     /* CSS globale - Tema Dark */
     :root {
       --bg-primary: #0f172a;
@@ -59,7 +54,7 @@ import Table from "./Table.astro";
       padding: 1.5rem;
       border-bottom: 1px solid var(--border-color);
     }
-k
+
     .sidebar-header h2 {
       font-size: 1.25rem;
       background: linear-gradient(135deg, #3b82f6, #8b5cf6);
@@ -465,9 +460,8 @@ k
       }
     }
   </style>
-</head>
-<body>
-  <!-- Mobile Menu Button -->
+  <div>
+    <!-- Mobile Menu Button -->
   <button class="mobile-menu-btn" id="mobileMenuBtn">
     <i class="fas fa-bars"></i>
   </button>
@@ -1025,5 +1019,5 @@ k
       });
     });
   </script>
-</body>
-</html>
+  </div>
+</Layout>
