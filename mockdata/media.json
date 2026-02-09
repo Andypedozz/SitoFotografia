@@ -2,26 +2,31 @@
   {
     "nome": "opia.jpg",
     "percorso": "images/opia.jpg",
+    "tipo": "image",
     "idProgetto": 1
   },
   {
     "nome": "supermoto.jpg",
     "percorso": "images/supermoto.jpg",
+    "tipo": "image",
     "idProgetto": 2
   },
   {
     "nome": "robys.jpg",
     "percorso": "images/robys.jpg",
+    "tipo": "image",
     "idProgetto": 3
   },
   {
     "nome": "moda.jpg",
     "percorso": "images/moda.jpg",
+    "tipo": "image",
     "idProgetto": 4
   },
   {
     "nome": "enoteca.jpg",
     "percorso": "images/enoteca.jpg",
+    "tipo": "image",
     "idProgetto": 5
   }
 ]

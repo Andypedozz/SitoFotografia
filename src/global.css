@@ -6,8 +6,8 @@
 }
 
 :root {
-    --primary: #947752;
-    --primary-dark: #695234;
+    --primary: rgb(164, 0, 0);
+    --primary-dark: #650000;
     --dark: #000000;
     --dark-gray: #222222;
     --light-gray: #333333;
@@ -293,8 +293,8 @@ nav a:hover:after {
     overflow: hidden;
     margin: 0 auto;
     position: relative;
-    border: 5px solid rgba(148, 119, 82, 0.3);
-    box-shadow: 0 0 30px rgba(148, 119, 82, 0.2);
+    border: 5px solid var(--primary-dark);
+    box-shadow: 0 0 30px var(--primary-dark);
 }
 
 .portrait img {
@@ -376,7 +376,7 @@ nav a:hover:after {
 
 .service-card:hover .service-icon {
     transform: scale(1.1) translateY(-5px);
-    color: #ffd18c;
+    color: var(--primary);
 }
 
 .service-card:hover h3 {
@@ -390,12 +390,12 @@ nav a:hover:after {
 
 .service-card:hover .btn {
     transform: translateY(-3px);
-    background-color: var(--primary-dark);
+    background-color: var(--primary);
 }
 
 .service-icon {
     font-size: 3.2rem;
-    color: var(--primary);
+    color: var(--primary-dark);
     margin-bottom: 25px;
     transition: var(--transition-slow);
 }

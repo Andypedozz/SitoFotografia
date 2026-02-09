@@ -1,6 +1,7 @@
 import { db } from "../../../db/db.js"
 import { query } from "../../../db/db_utils.js"
 
+// GET projects
 export async function GET({ request }) {
     let result;
     try {
@@ -15,6 +16,7 @@ export async function GET({ request }) {
     })
 }
 
+// POST project
 export async function POST({ request }) {
     const data = await request.json();
     let result;
@@ -30,6 +32,7 @@ export async function POST({ request }) {
     })
 }
 
+// PUT project
 export async function PUT({ request }) {
     const result = []
 
@@ -38,6 +41,7 @@ export async function PUT({ request }) {
     })
 }
 
+// DLETE project
 export async function DELETE({ request }) {
     const result = []
 

@@ -2,40 +2,30 @@
   {
     "nome": "Opia",
     "slug": "opia",
-    "descrizione": "OpiaSS25",
-    "anno": 2025,
     "copertina": "images/opia.jpg",
     "homepage": 1
   },
   {
     "nome": "Supermoto",
     "slug": "supermoto",
-    "descrizione": "Supermoto",
-    "anno": 2025,
     "copertina": "images/supermoto.jpg",
     "homepage": 1
   },
   {
     "nome": "Pizzeria Roby's",
     "slug": "robys",
-    "descrizione": "Roby's",
-    "anno": 2025,
     "copertina": "images/robys.jpg",
     "homepage": 1
   },
   {
     "nome": "Moda",
     "slug": "moda",
-    "descrizione": "Moda",
-    "anno": 2025,
     "copertina": "images/moda.jpg",
     "homepage": 1
   },
   {
     "nome": "Enoteca Montevecchio",
     "slug": "enoteca",
-    "descrizione": "Enoteca",
-    "anno": 2025,
     "copertina": "images/enoteca.jpg",
     "homepage": 1
   }

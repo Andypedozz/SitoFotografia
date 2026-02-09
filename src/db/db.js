@@ -20,35 +20,11 @@ function initDatabase() {
         
         console.log(`Database creato/aperto: ${DB_PATH}`);
         
-        // Crea le tabelle se non esistono
-        createTables(db);
-        
         return db;
     } catch (error) {
         console.error('Errore durante l\'inizializzazione del database:', error);
         throw error;
     }
-}
-
-// Crea le tabelle necessarie
-function createTables(db) {
-    // Tabella Progetti
-    db.exec(`
-        CREATE TABLE IF NOT EXISTS Progetto (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            descrizione TEXT,
-            anno INTEGER,
-            copertina TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    `);
-    
-    // Aggiungi altre tabelle qui se necessario
-    // db.exec(`CREATE TABLE IF NOT EXISTS ...`);
-    
-    console.log('Tabelle verificate/creato con successo');
 }
 
 // Esporta l'istanza del database

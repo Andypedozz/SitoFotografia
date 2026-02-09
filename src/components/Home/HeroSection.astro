@@ -1,0 +1,12 @@
+---
+const { title, paragraph, cta } = Astro.props
+---
+
+<style>
+</style>
+<section class="hero" id="home">
+    <h1>{title}</h1>
+    <p>{paragraph}</p>
+    <a href={cta.href}>{cta.text}</a>
+    <a href="#contact" class="btn">Inizia un progetto</a>
+</section>
