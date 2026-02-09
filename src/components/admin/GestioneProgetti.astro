@@ -3,10 +3,9 @@ import FormGroup from "./FormGroup.astro";
 import Panel from "./Panel.astro";
 import Table from "./Table.astro"
 
-// const url = new URL("/api/projects", Astro.request.url);
-// const res = await fetch(url);
-// const projects = await res.json();
-const projects = [];
+const url = new URL("/api/projects", Astro.request.url);
+const res = await fetch(url);
+const projects = await res.json();
 
 const addProjectFields = [
     { id: "name" , label: "Nome", type: "input", inputType: "text" , placeholder: "Nome progetto" },

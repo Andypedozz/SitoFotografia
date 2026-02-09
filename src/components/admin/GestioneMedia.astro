@@ -9,17 +9,9 @@ const uploadMediaFields = [
     { id: "file" , label: "File", type: "input", inputType: "file", placeholder: "File" }
 ]
 
-const media = [
-    { url: "images/enoteca.jpg", name: "enoteca.jpg"},
-    { url: "images/robys.jpg", name: "robys.jpg"},
-    { url: "images/moda.jpg", name: "moda.jpg"},
-    { url: "images/opia.jpg", name: "opia.jpg"},
-    { url: "images/supermoto.jpg", name: "supermoto.jpg"}
-]
-
-// const url = new URL("/api/media", Astro.request.url);
-// const res = await fetch(url);
-// const media = await res.json();
+const url = new URL("/api/media", Astro.request.url);
+const res = await fetch(url);
+const medias = await res.json();
 ---
 
 <Panel title="Gestione Media" pageId="media">
@@ -32,6 +24,6 @@ const media = [
     </style>
     <div class="container">
         <FormGroup title="Aggiungi nuovi media" fields={uploadMediaFields}/>
-        <MediaContainer medias={media}/>
+        <MediaContainer medias={medias}/>
     </div>
 </Panel>

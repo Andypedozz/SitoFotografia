@@ -1,4 +1,5 @@
-
+import { db } from "../../db/db.js"
+import { query } from "../../db/db_utils.js"
 
 export async function GET({ request }) {
     let result;
