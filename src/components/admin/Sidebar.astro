@@ -6,6 +6,11 @@ const { title, buttons } = Astro.props;
 ---
 <style>
     .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        overflow-y: auto;
         display: flex;
         background-color: #111827;
         flex-direction: column;
@@ -15,6 +20,7 @@ const { title, buttons } = Astro.props;
 
     h1 {
         color: white;
+        text-align: center;
     }
     
     .sidebar nav {
