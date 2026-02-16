@@ -27,3 +27,4 @@ pnpm-debug.log*
 public/videos/*
 # Mantieni la directory vuota con un file .gitkeep
 !public/videos/.gitkeep
+.vercel
