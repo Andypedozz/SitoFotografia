@@ -1,0 +1,47 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Home/Header.astro";
+import VideoPlayer from "../Home/VideoPlayer.astro";
+import "../../global.css";
+import PhotoCard from "../Home/PhotoCard.astro";
+
+const project = {
+    id: 1,
+    nome: "Opia",
+    descrizione: "",
+    slug: "opia",
+    copertina: "images/opia.jpg",
+    homepage: 1
+}
+
+const url = new URL("/api/media/project/"+project.id, Astro.request.url);
+const res = await fetch(url);
+const medias = await res.json();
+const photos = medias.filter((media: any) => media.tipo === "photo");
+const video = medias.find((media: any) => media.tipo === "video");
+
+---
+<style>
+    .content {
+        color: white;
+    }
+</style>
+<Layout>
+    <Header />
+    <div class="project-header">
+        <h1>{project.nome}</h1>
+        <p>{project.descrizione}</p>
+    </div>
+    <div class="gallery">
+        <div class="video-container">
+            <VideoPlayer videoPath={video} controls={false}/>
+        </div>
+        <div class="photos-container">
+            {
+                photos.map((photo: any) => (
+                    <PhotoCard photo={photo} />
+                ))
+            }
+        </div>
+    </div>
+</Layout>

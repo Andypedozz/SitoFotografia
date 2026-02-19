@@ -9,5 +9,9 @@ import "./src/db/db.js"
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
-  adapter: vercel(),
+  adapter: node(
+    {
+      mode: 'standalone',
+    },
+  )
 });
