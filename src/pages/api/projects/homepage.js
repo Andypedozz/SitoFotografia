@@ -1,3 +1,5 @@
+import { db } from "../../../db/db";
+import { query } from "../../../db/db_utils";
 
 // GET homepage projects
 export async function GET({ request }) {

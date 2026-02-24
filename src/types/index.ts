@@ -1,4 +1,4 @@
-export interface Project {
+export interface Progetto {
     id: number;
     nome: string;
     descrizione: string;
@@ -12,4 +12,16 @@ export interface Media {
     percorso: string;
     tipo: string;
     projectId: number;
+}
+
+export interface Utente {
+    id: number;
+    email: string;
+    password_hash: string;
+    ruolo: string;
+}
+
+export interface ResponseMessage {
+    success: boolean;
+    message: string;
 }

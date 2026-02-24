@@ -1,4 +1,17 @@
 ---
-import ProjectTemplate1 from "../../components/ProjectTemplate1.astro";
+import ProjectTemplate from "../../components/ProjectTemplate/ProjectTemplate.astro";
+
+const { projectSlug } = Astro.params;
+// const url = new URL("/api/projects/"+projectSlug, Astro.request.url);
+// const res = await fetch(url);
+// const project = await res.json();
+const project = {
+    id: 1,
+    nome: "Example Project",
+    descrizione: "Descrizione del progetto di esempio.",
+    slug: "progetto-esempio",
+    copertina: "/images/opia.jpg",
+}
+
 ---
-<ProjectTemplate1 />
+<ProjectTemplate project={project}/>

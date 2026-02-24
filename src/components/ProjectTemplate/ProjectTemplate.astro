@@ -1,33 +1,33 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import Header from "../../components/Home/Header.astro";
-import VideoPlayer from "../Home/VideoPlayer.astro";
-import "../../global.css";
+import Header from "../Home/Header.astro";
 import PhotoCard from "../Home/PhotoCard.astro";
+import VideoPlayer from "../Home/VideoPlayer.astro";
+import { fetchApi } from "../../scripts/fetchApi.js"
+import "../../global.css";
+import logo from "../../../public/logo-nobg.png"
 
-const project = {
-    id: 1,
-    nome: "Opia",
-    descrizione: "",
-    slug: "opia",
-    copertina: "images/opia.jpg",
-    homepage: 1
-}
+const { project } = Astro.props;
 
+// Fetch related media
 const url = new URL("/api/media/project/"+project.id, Astro.request.url);
-const res = await fetch(url);
-const medias = await res.json();
+const medias = await fetchApi(url);
+
 const photos = medias.filter((media: any) => media.tipo === "photo");
 const video = medias.find((media: any) => media.tipo === "video");
-
 ---
+
 <style>
     .content {
         color: white;
     }
+
+    h1 {
+        text-align: center;
+    }
 </style>
 <Layout>
-    <Header />
+    <Header logo={logo} />
     <div class="project-header">
         <h1>{project.nome}</h1>
         <p>{project.descrizione}</p>

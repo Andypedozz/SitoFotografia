@@ -3,10 +3,20 @@ import { query } from "../../../db/db_utils.js"
 
 // GET projects
 export async function GET({ request }) {
+    const url = new URL(request.url);
+    const slug = url.searchParams.get("slug");
+
     let result;
+    let sql;
+
     try {
-        const sql = "SELECT * FROM Progetto";
-        result = query(db, sql);
+        if(slug) {
+            sql = "SELECT * FROM Progetto WHERE slug = ?";
+            result = query(db, sql, [slug]);
+        } else {
+            sql = "SELECT * FROM Progetto";
+            result = query(db, sql);
+        }
     } catch (error) {
         result = error;
     }
@@ -34,7 +44,8 @@ export async function POST({ request }) {
 
 // PUT project
 export async function PUT({ request }) {
-    const result = []
+    // Return updated row/s
+    const result = [];
 
     return new Response(JSON.stringify(result), {
         headers: { 'Content-Type': 'application/json' }
@@ -43,7 +54,15 @@ export async function PUT({ request }) {
 
 // DLETE project
 export async function DELETE({ request }) {
-    const result = []
+    let result;
+
+    try {
+        const data = await request.json();
+        const sql = "DELETE FROM Progetto WHERE id = ?";
+        result = query(db, sql, [data]);
+    } catch (error) {
+        result = error;
+    }
 
     return new Response(JSON.stringify(result), {
         headers: { 'Content-Type': 'application/json' }
