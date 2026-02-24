@@ -1,8 +1,11 @@
+import Panel from "./Panel";
 
 export default function GestioneHomepage() {
     return (
-        <div>
-            <h1>Gestione Homepage</h1>
-        </div>
+        <Panel>
+            <header>
+                <h1>Gestione Homepage</h1>
+            </header>
+        </Panel>
     )
 }

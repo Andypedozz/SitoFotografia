@@ -1,8 +1,11 @@
+import Panel from "./Panel";
 
 export default function GestioneMedia() {
     return (
-        <div>
-            <h1>Gestione Media</h1>
-        </div>
+        <Panel>
+            <header>
+                <h1>Gestione Media</h1>
+            </header>
+        </Panel>
     )
 }
