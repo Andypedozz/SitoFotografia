@@ -1,5 +1,6 @@
 // hooks/useProgetti.js
 import { useState, useEffect, useCallback } from 'react';
+import { create, destroy, getAll, update } from '../../../../scripts/progettiApi';
 
 const INITIAL_FORM_STATE = {
     nome: '',
@@ -16,23 +17,20 @@ export function useProgetti() {
     const [editingProject, setEditingProject] = useState(null);
     const [formData, setFormData] = useState(INITIAL_FORM_STATE);
 
-    // ==================== API CALLS ====================
+    // ==================== API CALLS - DA IMPLEMENTARE ====================
     
+    /**
+     * GET /api/projects
+     * Ottiene tutti i progetti dal database
+     */
     const fetchProgetti = useCallback(async () => {
         setIsLoading(true);
         setError(null);
         
         try {
-            // TODO: Implementare chiamata API
-            // const response = await fetch('/api/projects');
-            // if (!response.ok) throw new Error('Errore nel caricamento dei progetti');
-            // const data = await response.json();
-            // setProgetti(data);
-            
-            // Mock temporaneo - DA RIMUOVERE
-            await new Promise(resolve => setTimeout(resolve, 500));
-            console.log('TODO: Implementare fetch GET /api/projects');
-            
+            const data = await getAll();
+            setProgetti(data);
+            return { success: true };
         } catch (err) {
             setError(err.message);
             console.error('Errore fetch progetti:', err);
@@ -41,35 +39,34 @@ export function useProgetti() {
         }
     }, []);
 
+    /**
+     * POST /api/projects
+     * Crea un nuovo progetto
+     * @param {Object} projectData - Dati del progetto da creare
+     */
     const createProgetto = async (projectData) => {
         try {
-            // TODO: Implementare chiamata API
-            console.log('TODO: Implementare fetch POST /api/projects', projectData);
-            
-            // Mock temporaneo - DA RIMUOVERE
-            const newProject = {
-                id: Date.now(),
-                ...projectData
-            };
+            const newProject = await create(projectData);
             setProgetti(prev => [...prev, newProject]);
-            
-            return { success: true, data: newProject };
+            return { success: true };
         } catch (err) {
             console.error('Errore creazione progetto:', err);
             return { success: false, error: err.message };
         }
     };
 
+    /**
+     * PUT /api/projects
+     * Aggiorna un progetto esistente
+     * @param {number} id - ID del progetto da aggiornare
+     * @param {Object} projectData - Nuovi dati del progetto
+     */
     const updateProgetto = async (id, projectData) => {
         try {
-            // TODO: Implementare chiamata API
-            console.log('TODO: Implementare fetch PUT /api/projects', { id, ...projectData });
-            
-            // Mock temporaneo - DA RIMUOVERE
+            const updatedProject = await update(id, projectData);
             setProgetti(prev => prev.map(p =>
                 p.id === id ? { ...p, ...projectData } : p
             ));
-            
             return { success: true };
         } catch (err) {
             console.error('Errore aggiornamento progetto:', err);
@@ -77,14 +74,15 @@ export function useProgetti() {
         }
     };
 
+    /**
+     * DELETE /api/projects
+     * Elimina un progetto
+     * @param {number} id - ID del progetto da eliminare
+     */
     const deleteProgetto = async (id) => {
         try {
-            // TODO: Implementare chiamata API
-            console.log('TODO: Implementare fetch DELETE /api/projects', { id });
-            
-            // Mock temporaneo - DA RIMUOVERE
+            const response = await destroy(id);
             setProgetti(prev => prev.filter(p => p.id !== id));
-            
             return { success: true };
         } catch (err) {
             console.error('Errore eliminazione progetto:', err);

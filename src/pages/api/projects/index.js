@@ -1,70 +1,122 @@
-import { db } from "../../../db/db.js"
-import { query } from "../../../db/db_utils.js"
+import { progettoService } from "../../../scripts/progettoService";
 
-// GET projects
+const jsonResponse = (data, status = 200) => {
+    return new Response(JSON.stringify(data), {
+        status,
+        headers: { 'Content-Type': 'application/json' }
+    });
+};
+
+const handleError = (error) => {
+    console.error('API Error:', error);
+    return jsonResponse({ 
+        error: true, 
+        message: error.message 
+    }, 500);
+};
+
+// GET /api/projects?slug=xxx
 export async function GET({ request }) {
-    const url = new URL(request.url);
-    const slug = url.searchParams.get("slug");
-
-    let result;
-    let sql;
-
     try {
-        if(slug) {
-            sql = "SELECT * FROM Progetto WHERE slug = ?";
-            result = query(db, sql, [slug]);
-        } else {
-            sql = "SELECT * FROM Progetto";
-            result = query(db, sql);
-        }
-    } catch (error) {
-        result = error;
-    }
+        const url = new URL(request.url);
+        const slug = url.searchParams.get("slug");
 
-    return new Response(JSON.stringify(result), {
-        headers: { 'Content-Type': 'application/json' }
-    })
+        const result = slug 
+            ? await progettoService.getBySlug(slug)
+            : await progettoService.getAll();
+
+        return jsonResponse(result);
+
+    } catch (error) {
+        return handleError(error);
+    }
 }
 
-// POST project
+// POST /api/projects
 export async function POST({ request }) {
-    const data = await request.json();
-    let result;
-    try {
-        const sql = "INSERT INTO Progetto (nome, descrizione, anno) VALUES (?, ?, ?, ?)";
-        result = query(db, sql, [data]);
-    } catch (error) {
-        result = error;
-    }
-
-    return new Response(JSON.stringify(result), {
-        headers: { 'Content-Type': 'application/json' }
-    })
-}
-
-// PUT project
-export async function PUT({ request }) {
-    // Return updated row/s
-    const result = [];
-
-    return new Response(JSON.stringify(result), {
-        headers: { 'Content-Type': 'application/json' }
-    })
-}
-
-// DLETE project
-export async function DELETE({ request }) {
-    let result;
-
     try {
         const data = await request.json();
-        const sql = "DELETE FROM Progetto WHERE id = ?";
-        result = query(db, sql, [data]);
-    } catch (error) {
-        result = error;
-    }
+        console.log(data);
+        
+        if (!data.nome || !data.slug) {
+            return jsonResponse({
+                error: true,
+                message: 'Nome e slug sono obbligatori'
+            }, 400);
+        }
 
-    return new Response(JSON.stringify(result), {
-        headers: { 'Content-Type': 'application/json' }
-    })
+        const newProject = await progettoService.create(data);
+        
+        return jsonResponse({
+            success: true,
+            data: newProject
+        }, 201);
+
+    } catch (error) {
+        return handleError(error);
+    }
+}
+
+// PUT /api/projects
+export async function PUT({ request }) {
+    try {
+        const { id, ...data } = await request.json();
+        console.log({ id, data });
+
+        if (!id) {
+            return jsonResponse({
+                error: true,
+                message: 'ID progetto obbligatorio'
+            }, 400);
+        }
+
+        const updatedProject = await progettoService.update(id, data);
+
+        if (!updatedProject) {
+            return jsonResponse({
+                error: true,
+                message: 'Progetto non trovato'
+            }, 404);
+        }
+
+        return jsonResponse({
+            success: true,
+            data: updatedProject
+        });
+
+    } catch (error) {
+        return handleError(error);
+    }
+}
+
+// DELETE /api/projects
+export async function DELETE({ request }) {
+    try {
+        const { id } = await request.json();
+        console.log(id);
+
+        if (!id) {
+            return jsonResponse({
+                error: true,
+                message: 'ID progetto obbligatorio'
+            }, 400);
+        }
+
+        const deleted = await progettoService.delete(id);
+
+        if (!deleted) {
+            return jsonResponse({
+                error: true,
+                message: 'Progetto non trovato'
+            }, 404);
+        }
+
+        return jsonResponse({
+            success: true,
+            message: 'Progetto eliminato con successo'
+        });
+
+    } catch (error) {
+        return handleError(error);
+    }
 }
