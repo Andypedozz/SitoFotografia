@@ -15,17 +15,6 @@ const FORM_FIELDS = (formData, handleInputChange, editingProject) => [
         required: true,
         description: 'Il nome del progetto sarà usato per identificarlo'
     },
-    // {
-    //     id: 'descrizione',
-    //     name: 'descrizione',
-    //     label: 'Descrizione',
-    //     type: 'textarea',
-    //     placeholder: 'Descrivi il progetto...',
-    //     rows: 3,
-    //     value: formData.descrizione,
-    //     onChange: handleInputChange,
-    //     required: true
-    // },
     {
         id: 'slug',
         name: 'slug',

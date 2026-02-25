@@ -22,14 +22,6 @@ const TABLE_COLUMNS = (handleEdit, handleDuplicate, handleDelete) => [
         )
     },
     {
-        key: 'descrizione',
-        label: 'Descrizione',
-        type: 'text',
-        render: (value) => (
-            <span className="text-gray-300 text-sm line-clamp-2">{value}</span>
-        )
-    },
-    {
         key: 'slug',
         label: 'Slug',
         type: 'text',
