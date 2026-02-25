@@ -1,4 +1,4 @@
-import Panel from "./Panel";
+import Panel from "../common/Panel";
 
 export default function GestioneHomepage() {
     return (

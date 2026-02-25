@@ -1,9 +1,9 @@
 // GestioneMedia.jsx
 import { useState } from "react";
-import FormGroup from "./FormGroup";
-import Panel from "./Panel";
 import UploadMedia from "./UploadMedia";
 import MediaContainer from "./MediaContainer";
+import Panel from "../common/Panel";
+import FormGroup from "../common/FormGroup";
 
 export default function GestioneMedia() {
     const [mediaType, setMediaType] = useState("tutti");

@@ -1,11 +1,11 @@
 // AdminPage.jsx
 import { useState } from "react";
-import GestioneProgetti from "./GestioneProgetti";
-import GestioneMedia from "./GestioneMedia";
-import GestioneHomepage from "./GestioneHomepage";
-import Sidebar from "./Sidebar";
-import Panel from "./Panel";
 import "../../styles/tailwind.css";
+import GestioneMedia from "./GestioneMedia/GestioneMedia";
+import GestioneProgetti from "./GestioneProgetti/GestioneProgetti";
+import GestioneHomepage from "./GestioneHomepage/GestioneHomepage";
+import Sidebar from "./common/Sidebar";
+import Panel from "./common/Panel";
 
 export default function AdminPage() {
     const [page, setPage] = useState("Gestione Progetti");
