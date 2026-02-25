@@ -1,11 +1,13 @@
 // FormGroup.jsx
+import React from 'react';
 
-export default function FormGroup({
-    title,
-    fields = [],
+export default function FormGroup({ 
+    title, 
+    fields = [], 
     onSubmit,
     submitLabel = "Conferma",
-    variant = "default"
+    variant = "default",
+    children
 }) {
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -51,16 +53,19 @@ export default function FormGroup({
                         <span className="w-1.5 h-6 bg-red-600 rounded-full mr-3"></span>
                         {title}
                     </h1>
-
-                    {/* Indicatore di stato */}
-                    <div className="flex items-center space-x-2 text-xs">
-                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                        <span className="text-gray-600">modifica in corso</span>
-                    </div>
+                    
+                    {/* Indicatore di stato (solo per variant default) */}
+                    {variant === 'default' && (
+                        <div className="flex items-center space-x-2 text-xs">
+                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                            <span className="text-gray-600">modifica in corso</span>
+                        </div>
+                    )}
                 </div>
             )}
 
             <form onSubmit={handleSubmit}>
+                {/* Campi del form */}
                 {fields.map((field, index) => (
                     <div key={field.id || index} className={currentVariant.formGroup}>
                         <label htmlFor={field.id} className={currentVariant.label}>
@@ -100,8 +105,8 @@ export default function FormGroup({
                                     </option>
                                 )}
                                 {field.options?.map((option, optIndex) => (
-                                    <option
-                                        key={optIndex}
+                                    <option 
+                                        key={optIndex} 
                                         value={option.value}
                                         className="bg-[rgb(19,19,19)] text-white"
                                     >
@@ -146,30 +151,37 @@ export default function FormGroup({
                     </div>
                 ))}
 
-                {/* Pulsante submit */}
-                <button
-                    type="submit"
-                    className={`${currentVariant.button} group relative overflow-hidden`}
-                >
-                    {/* Effetto hover shine */}
-                    <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent 
-                                   -translate-x-full group-hover:translate-x-full 
-                                   transition-transform duration-1000 ease-in-out" />
+                {/* Children personalizzati */}
+                {children}
 
-                    {/* Testo del pulsante */}
-                    <span className="relative flex items-center justify-center space-x-2">
-                        <span>{submitLabel}</span>
-                        <span className="text-lg group-hover:translate-x-1 transition-transform duration-300">
-                            →
+                {/* Pulsante submit (solo se submitLabel è presente e non vuoto) */}
+                {submitLabel && submitLabel !== "" && (
+                    <button 
+                        type="submit" 
+                        className={`${currentVariant.button} group relative overflow-hidden`}
+                    >
+                        {/* Effetto hover shine */}
+                        <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent 
+                                       -translate-x-full group-hover:translate-x-full 
+                                       transition-transform duration-1000 ease-in-out" />
+                        
+                        {/* Testo del pulsante */}
+                        <span className="relative flex items-center justify-center space-x-2">
+                            <span>{submitLabel}</span>
+                            <span className="text-lg group-hover:translate-x-1 transition-transform duration-300">
+                                →
+                            </span>
                         </span>
-                    </span>
-                </button>
+                    </button>
+                )}
             </form>
 
-            {/* Footer con info (opzionale) */}
-            <div className="mt-4 text-[10px] text-gray-800 flex justify-end">
-                <span className="text-red-900/50">* campi obbligatori</span>
-            </div>
+            {/* Footer con info (opzionale) - solo se ci sono campi obbligatori */}
+            {fields.some(f => f.required) && (
+                <div className="mt-4 text-[10px] text-gray-800 flex justify-end">
+                    <span className="text-red-900/50">* campi obbligatori</span>
+                </div>
+            )}
         </div>
     );
 }

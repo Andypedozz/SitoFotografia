@@ -18,7 +18,7 @@ const Sidebar = ({ buttons, setPage }) => {
       <div className="p-6 border-b border-red-900/30">
         <div className="flex items-center space-x-2">
           <div className="w-3 h-3 bg-red-600 rounded-full animate-pulse" />
-          <span className="text-white font-bold text-lg tracking-wider">DARK GUI</span>
+          <span className="text-white font-bold text-lg tracking-wider">UG Admin</span>
         </div>
       </div>
 
