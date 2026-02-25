@@ -1,0 +1,9 @@
+---
+import ProjectTemplate from "../../components/ProjectTemplate/ProjectTemplate.astro";
+import { progettoService } from "../../scripts/progettoService";
+
+const { projectSlug } = Astro.params;
+// const project = await progettoService.getBySlug(projectSlug);
+---
+<!-- <ProjectTemplate project={project}/> -->
+<h1>{projectSlug}</h1>

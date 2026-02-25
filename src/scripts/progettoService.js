@@ -29,14 +29,9 @@ export const progettoService = {
 
     async update(id, data) {
         const { nome, slug, copertina } = data;
+        const sql = "UPDATE Progetto SET nome = COALESCE(?, nome), slug = COALESCE(?, slug), copertina = COALESCE(?, copertina) WHERE id = ?";
         
-        const result = await query(db, `
-            UPDATE Progetto 
-            SET nome = COALESCE(?, nome),
-                slug = COALESCE(?, slug),
-                copertina = COALESCE(?, copertina),
-            WHERE id = ?
-        `, [nome, slug, copertina, id]);
+        const result = await query(db, sql, [nome, slug, copertina, id]);
 
         if (result.changes === 0) return null;
 
