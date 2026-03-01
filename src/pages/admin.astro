@@ -1,6 +1,15 @@
 ---
 import AdminPage from "../components/admin_react/AdminPage";
 import Layout from "../layouts/Layout.astro";
+
+import { requireAdmin } from "../middleware/auth";
+
+const auth = await requireAdmin({
+    request: Astro.request,
+    redirect: Astro.redirect
+})
+
+const { user } = auth;
 ---
 <Layout>
     <AdminPage client:load/>

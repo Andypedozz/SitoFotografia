@@ -1,3 +1,4 @@
+import { checkApiPermission } from "../../../middleware/auth";
 import { progettoService } from "../../../scripts/progettoService";
 
 const jsonResponse = (data, status = 200) => {
@@ -33,7 +34,17 @@ export async function GET({ request }) {
 }
 
 // POST /api/projects
-export async function POST({ request }) {
+export async function POST({ request, locals }) {
+    const permission = await checkApiPermission({ request, locals })
+
+    if(!permission.allowed) {
+        return jsonResponse({
+            error: true,
+            message: permission.error,
+            status: permission.status
+        }, permission.status);
+    }
+
     try {
         const data = await request.json();
         console.log(data);
@@ -58,7 +69,17 @@ export async function POST({ request }) {
 }
 
 // PUT /api/projects
-export async function PUT({ request }) {
+export async function PUT({ request, locals }) {
+    const permission = await checkApiPermission({ request, locals })
+
+    if(!permission.allowed) {
+        return jsonResponse({
+            error: true,
+            message: permission.error,
+            status: permission.status
+        }, permission.status);
+    }
+
     try {
         const { id, ...data } = await request.json();
         console.log({ id, data });
@@ -90,7 +111,17 @@ export async function PUT({ request }) {
 }
 
 // DELETE /api/projects
-export async function DELETE({ request }) {
+export async function DELETE({ request, locals }) {
+    const permission = await checkApiPermission({ request, locals })
+
+    if(!permission.allowed) {
+        return jsonResponse({
+            error: true,
+            message: permission.error,
+            status: permission.status
+        }, permission.status);
+    }
+
     try {
         const { id } = await request.json();
         console.log(id);

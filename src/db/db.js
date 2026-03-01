@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 // Percorso del database (nella root del progetto)
-const DB_PATH = path.join(process.cwd(), 'db.sqlite');
+const DB_PATH = import.meta.env.DB_PATH;
 
 // Inizializza il database
 function initDatabase() {
@@ -14,7 +14,7 @@ function initDatabase() {
         const db = new Database(DB_PATH);
         
         // Configurazioni consigliate
-        db.pragma('journal_mode = WAL');
+        // db.pragma('journal_mode = WAL');
         db.pragma('foreign_keys = ON');
         db.pragma('encoding = "UTF-8"');
         
