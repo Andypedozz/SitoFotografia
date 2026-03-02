@@ -1,6 +1,4 @@
 import Database from 'better-sqlite3';
-import fs from 'fs';
-import path from 'path';
 
 // Percorso del database (nella root del progetto)
 const DB_PATH = import.meta.env.DB_PATH;

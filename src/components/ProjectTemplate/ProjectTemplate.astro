@@ -3,15 +3,15 @@ import Layout from "../../layouts/Layout.astro";
 import Header from "../Home/Header.astro";
 import PhotoCard from "../Home/PhotoCard.astro";
 import VideoPlayer from "../Home/VideoPlayer.astro";
-import { fetchApi } from "../../scripts/fetchApi.js"
-import "../../global.css";
 import logo from "../../../public/logo-nobg.png"
+import "../../global.css";
 
 const { project } = Astro.props;
 
 // Fetch related media
 const url = new URL("/api/media/project/"+project.id, Astro.request.url);
-const medias = await fetchApi(url);
+const res = await fetch(url);
+const medias = await res.json();
 
 const photos = medias.filter((media: any) => media.tipo === "photo");
 const video = medias.find((media: any) => media.tipo === "video");
