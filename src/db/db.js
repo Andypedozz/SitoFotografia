@@ -12,7 +12,7 @@ function initDatabase() {
         const db = new Database(DB_PATH);
         
         // Configurazioni consigliate
-        // db.pragma('journal_mode = WAL');
+        db.pragma('journal_mode = WAL');
         db.pragma('foreign_keys = ON');
         db.pragma('encoding = "UTF-8"');
         

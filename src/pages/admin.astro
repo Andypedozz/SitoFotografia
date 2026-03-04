@@ -1,6 +1,10 @@
 ---
 import AdminPage from "../components/admin_react/AdminPage";
 import Layout from "../layouts/Layout.astro";
+
+if(!Astro.locals.user) {
+    return Astro.redirect("/login");
+}
 ---
 <Layout>
     <AdminPage client:load/>

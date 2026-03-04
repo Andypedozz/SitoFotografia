@@ -33,6 +33,9 @@ const Sidebar = ({ buttons, setPage }) => {
             />
           ))}
           <Anchor label="Torna alla home" href="/" />
+          <form action="/api/logout" method='POST'>
+            <input type="submit" value={"Disconnetti"}/>
+          </form>
         </div>
       </nav>
 

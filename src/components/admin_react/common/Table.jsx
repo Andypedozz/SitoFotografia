@@ -97,7 +97,7 @@ const Table = ({
                   key={index}
                   scope="col"
                   className={`${currentVariant.cell} font-medium ${
-                    sortable && column.sortable !== false ? 'cursor-pointer hover:text-red-600 transition-colors' : ''
+                    sortable && column.sortable !== false ? 'hover:text-red-600 transition-colors' : ''
                   }`}
                   onClick={() => sortable && column.sortable !== false && requestSort(column.key)}
                 >
@@ -141,7 +141,7 @@ const Table = ({
                   onClick={() => onRowClick && onRowClick(row)}
                   className={`
                     ${currentVariant.row}
-                    ${hoverable ? 'hover:bg-red-600/5 hover:border-red-600/30 transition-colors cursor-pointer' : ''}
+                    ${hoverable ? 'hover:bg-red-600/5 hover:border-red-600/30 transition-colors' : ''}
                     ${striped && rowIndex % 2 === 1 ? 'bg-red-950/5' : ''}
                   `}
                 >

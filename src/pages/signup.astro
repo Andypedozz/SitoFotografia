@@ -2,11 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import "../styles/tailwind.css"
 
-// login.astro
-// Pagina di login in stile dark/red per la admin dashboard
+// register.astro
+// Pagina di registrazione in stile dark/red per la admin dashboard
 
 // Meta data della pagina
-const pageTitle = "Login - Admin Dashboard";
+const pageTitle = "Registrazione - Admin Dashboard";
 ---
 <Layout>
 <style>
@@ -44,7 +44,31 @@ const pageTitle = "Login - Admin Dashboard";
     .btn-shine:hover::after {
         left: 100%;
     }
+    
+    /* Animazione per la validazione dei campi */
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+        20%, 40%, 60%, 80% { transform: translateX(2px); }
+    }
+    
+    .input-error {
+        border-color: rgb(220, 38, 38) !important;
+        animation: shake 0.5s ease-in-out;
+    }
+    
+    /* Progress bar per la forza della password */
+    .password-strength-bar {
+        height: 4px;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+    
+    .strength-weak { background: linear-gradient(90deg, #ef4444, #f87171); width: 33.33%; }
+    .strength-medium { background: linear-gradient(90deg, #f59e0b, #fbbf24); width: 66.66%; }
+    .strength-strong { background: linear-gradient(90deg, #10b981, #34d399); width: 100%; }
 </style>
+
 <div class="bg-[rgb(19,19,19)] text-white min-h-screen flex items-center justify-center p-4">
     
     <!-- Background decoration -->
@@ -63,28 +87,29 @@ const pageTitle = "Login - Admin Dashboard";
                 <div class="w-3 h-3 bg-red-600 rounded-full animate-pulse-red"></div>
                 <span class="text-white font-bold text-2xl tracking-wider">DARK GUI</span>
             </div>
-            <h1 class="text-3xl font-bold text-white mb-2">Benvenuto</h1>
-            <p class="text-gray-500 text-sm">Accedi alla dashboard amministrativa</p>
+            <h1 class="text-3xl font-bold text-white mb-2">Crea Account</h1>
+            <p class="text-gray-500 text-sm">Registrati per accedere alla dashboard</p>
         </div>
         
-        <!-- Login Card -->
+        <!-- Registration Card -->
         <div class="bg-black border border-red-900/30 rounded-2xl p-8 shadow-2xl shadow-black/50">
             
-            <!-- Form di login -->
-            <form class="space-y-6" method="POST" action="/api/login">
-                
-                <!-- Campo Username/Email -->
+            <!-- Form di registrazione -->
+            <form class="space-y-6" method="POST" action="/api/register">
+
+                <!-- Campo Email -->
                 <div class="space-y-2">
                     <label for="username" class="block text-sm font-medium text-gray-300">
                         Username
                         <span class="text-red-500 text-xs ml-1">*</span>
                     </label>
                     <div class="relative">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg">✉️</span>
                         <input
                             type="text"
                             id="username"
                             name="username"
-                            placeholder="Inserisci username"
+                            placeholder="Inserisci uno username"
                             required
                             class="w-full pl-10 pr-4 py-3 bg-[rgb(19,19,19)] border border-red-900/30 rounded-xl
                                    text-white placeholder-gray-600
@@ -96,21 +121,48 @@ const pageTitle = "Login - Admin Dashboard";
                 
                 <!-- Campo Password -->
                 <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                        <label for="password" class="block text-sm font-medium text-gray-300">
-                            Password
-                            <span class="text-red-500 text-xs ml-1">*</span>
-                        </label>
-                        <a href="/forgot-password" class="text-xs text-red-600 hover:text-red-500 transition-colors">
-                            Password dimenticata?
-                        </a>
-                    </div>
+                    <label for="password" class="block text-sm font-medium text-gray-300">
+                        Password
+                        <span class="text-red-500 text-xs ml-1">*</span>
+                    </label>
                     <div class="relative">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg">🔒</span>
                         <input
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="Inserisci password"
+                            placeholder="Crea una password sicura"
+                            required
+                            class="w-full pl-10 pr-4 py-3 bg-[rgb(19,19,19)] border border-red-900/30 rounded-xl
+                                   text-white placeholder-gray-600
+                                   focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600/30
+                                   transition-all duration-300"
+                        />
+                    </div>
+                    <!-- Password strength indicator -->
+                    <div class="mt-2">
+                        <div class="flex space-x-1 password-strength-bar strength-weak"></div>
+                        <div class="flex justify-between mt-1 text-[10px] text-gray-600">
+                            <span>Debole</span>
+                            <span>Media</span>
+                            <span>Forte</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Campo Conferma Password -->
+                <div class="space-y-2">
+                    <label for="confirm_password" class="block text-sm font-medium text-gray-300">
+                        Conferma Password
+                        <span class="text-red-500 text-xs ml-1">*</span>
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg">✓</span>
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Reinserisci la password"
                             required
                             class="w-full pl-10 pr-4 py-3 bg-[rgb(19,19,19)] border border-red-900/30 rounded-xl
                                    text-white placeholder-gray-600
@@ -120,27 +172,7 @@ const pageTitle = "Login - Admin Dashboard";
                     </div>
                 </div>
                 
-                <!-- Checkbox Remember me -->
-                <div class="flex items-center justify-between">
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            name="remember"
-                            class="w-4 h-4 bg-[rgb(19,19,19)] border border-red-900/30 rounded 
-                                   text-red-600 focus:ring-red-600/30 focus:ring-offset-0
-                                   transition-colors duration-300"
-                        />
-                        <span class="text-sm text-gray-400">Ricordami</span>
-                    </label>
-                    
-                    <!-- Indicatore di sicurezza -->
-                    <div class="flex items-center space-x-1 text-xs text-gray-600">
-                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                        <span>Connessione sicura</span>
-                    </div>
-                </div>
-                
-                <!-- Pulsante di login -->
+                <!-- Pulsante di registrazione -->
                 <button
                     type="submit"
                     class="btn-shine w-full px-6 py-3.5 bg-red-600 text-white font-medium rounded-xl
@@ -149,7 +181,7 @@ const pageTitle = "Login - Admin Dashboard";
                            transition-all duration-300 mt-6
                            flex items-center justify-center space-x-2 group"
                 >
-                    <span>Accedi alla Dashboard</span>
+                    <span>Crea Account</span>
                     <span class="text-lg group-hover:translate-x-1 transition-transform duration-300">→</span>
                 </button>
                 
@@ -159,15 +191,15 @@ const pageTitle = "Login - Admin Dashboard";
                         <div class="w-full border-t border-red-900/30"></div>
                     </div>
                     <div class="relative flex justify-center text-xs">
-                        <span class="px-2 bg-black text-gray-500">accesso riservato</span>
+                        <span class="px-2 bg-black text-gray-500">📝 registrazione protetta</span>
                     </div>
                 </div>
                 
-                <!-- Link per registrazione (opzionale) -->
+                <!-- Link per login -->
                 <p class="text-center text-sm text-gray-500">
-                    Non hai un account?
-                    <a href="/signup" class="text-red-600 hover:text-red-500 transition-colors font-medium">
-                        Registrati
+                    Hai già un account?
+                    <a href="/login" class="text-red-600 hover:text-red-500 transition-colors font-medium">
+                        Accedi ora
                     </a>
                 </p>
             </form>
@@ -179,6 +211,9 @@ const pageTitle = "Login - Admin Dashboard";
                 © 2026 DARK GUI - Admin Panel v2.0
             </p>
             <div class="flex items-center justify-center space-x-4 mt-2 text-[10px] text-gray-800">
+                <a href="/privacy" class="hover:text-red-600 transition-colors">📄 Privacy</a>
+                <a href="/terms" class="hover:text-red-600 transition-colors">📋 Termini</a>
+                <a href="/security" class="hover:text-red-600 transition-colors">🛡️ Sicurezza</a>
             </div>
         </div>
         
@@ -186,7 +221,15 @@ const pageTitle = "Login - Admin Dashboard";
         <div class="mt-4 p-4 bg-red-600/10 border border-red-600/30 rounded-lg hidden">
             <p class="text-red-500 text-sm flex items-center">
                 <span class="mr-2">⚠️</span>
-                Credenziali non valide. Riprova.
+                Errore durante la registrazione. Riprova.
+            </p>
+        </div>
+        
+        <!-- Messaggio di successo (esempio, nascosto di default) -->
+        <div class="mt-4 p-4 bg-green-600/10 border border-green-600/30 rounded-lg hidden">
+            <p class="text-green-500 text-sm flex items-center">
+                <span class="mr-2">✅</span>
+                Registrazione completata! Controlla la tua email per la verifica.
             </p>
         </div>
     </div>
