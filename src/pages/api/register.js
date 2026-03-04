@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs"
 import { query } from "../../db/db_utils.js"
 import { db } from "../../db/db.js";
 
-export async function POST({ request }) {
+export async function POST({ request, redirect }) {
   const formData = await request.formData();
 
   const username = formData.get("username");
@@ -10,10 +10,14 @@ export async function POST({ request }) {
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  await query(db,
-    "INSERT INTO Utente (username, passwordHash) VALUES (?, ?)",
-    [username, passwordHash]
-  );
+  try {
+    await query(db,
+      "INSERT INTO Utente (username, passwordHash) VALUES (?, ?)",
+      [username, passwordHash]
+    );
+  } catch (error) {
+    return new Response(error.message, { status: 500 });
+  }
 
-  return new Response(JSON.stringify({ ok: true }));
+  return redirect("/admin");
 }

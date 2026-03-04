@@ -3,7 +3,7 @@ import { query } from "../../db/db_utils";
 import bcrypt from "bcryptjs";
 import { db } from "../../db/db";
 
-export async function POST({ request, cookies }) {
+export async function POST({ request, cookies, redirect }) {
     const formData = await request.formData();
 
     const username = formData.get("username");
@@ -39,5 +39,5 @@ export async function POST({ request, cookies }) {
         expires: expiresAt,
     });
 
-    return new Response(JSON.stringify({ ok: true }))
+    return redirect("/admin");
 }
