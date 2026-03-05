@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs"
-import { query } from "../../db/db_utils.js"
+import { query, queryAsync } from "../../db/db_utils.js"
 import { db } from "../../db/db.js";
 
 export async function POST({ request, redirect }) {
@@ -11,7 +11,7 @@ export async function POST({ request, redirect }) {
   const passwordHash = await bcrypt.hash(password, 10);
 
   try {
-    await query(db,
+    await queryAsync(db,
       "INSERT INTO Utente (username, passwordHash) VALUES (?, ?)",
       [username, passwordHash]
     );

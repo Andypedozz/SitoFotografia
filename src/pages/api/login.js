@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { query } from "../../db/db_utils";
+import { query, queryAsync } from "../../db/db_utils";
 import bcrypt from "bcryptjs";
 import { db } from "../../db/db";
 
@@ -9,7 +9,7 @@ export async function POST({ request, cookies, redirect }) {
     const username = formData.get("username");
     const password = formData.get("password");
 
-    const data = await query(db, "SELECT * FROM Utente WHERE username = ?", [username]);
+    const data = query(db, "SELECT * FROM Utente WHERE username = ?", [username]);
     const user = data[0];
 
     if (!user) {
@@ -25,7 +25,7 @@ export async function POST({ request, cookies, redirect }) {
     const sessionId = uuidv4();
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-    await query(
+    query(
         db,
         "INSERT INTO Sessione (id, userId, expiresAt) VALUES (?, ?, ?)",
         [sessionId, user.id, expiresAt.toISOString()]

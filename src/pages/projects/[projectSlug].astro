@@ -1,9 +1,11 @@
 ---
 import ProjectTemplate from "../../components/ProjectTemplate/ProjectTemplate.astro";
-import { progettoService } from "../../scripts/progettoService";
 
 const { projectSlug } = Astro.params;
-// const project = await progettoService.getBySlug(projectSlug);
+const url = new URL("/api/projects?slug="+projectSlug, Astro.request.url);
+const res = await fetch(url);
+const project = await res.json();
+
 ---
-<!-- <ProjectTemplate project={project}/> -->
-<h1>{projectSlug}</h1>
+
+<ProjectTemplate project={project}/>

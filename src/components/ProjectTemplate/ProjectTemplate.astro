@@ -2,8 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import Header from "../Home/Header.astro";
 import PhotoCard from "../Home/PhotoCard.astro";
-import VideoPlayer from "../Home/VideoPlayer.astro";
-import logo from "../../../public/logo-nobg.png"
+import VideoPlayer from "../../components/Home/VideoPlayer.astro"
 import "../../global.css";
 
 const { project } = Astro.props;
@@ -11,12 +10,12 @@ const { project } = Astro.props;
 // Fetch related media
 const url = new URL("/api/media/project/"+project.id, Astro.request.url);
 const res = await fetch(url);
-const medias = await res.json();
+const media = await res.json();
 
-const photos = medias.filter((media: any) => media.tipo === "photo");
-const video = medias.find((media: any) => media.tipo === "video");
+const photos = media.filter((media: any) => media.tipo === "image");
+const video = media.find((media: any) => media.tipo === "video");
+
 ---
-
 <style>
     .content {
         color: white;
@@ -27,7 +26,7 @@ const video = medias.find((media: any) => media.tipo === "video");
     }
 </style>
 <Layout>
-    <Header logo={logo} />
+    <!-- <Header /> -->
     <div class="project-header">
         <h1>{project.nome}</h1>
         <p>{project.descrizione}</p>

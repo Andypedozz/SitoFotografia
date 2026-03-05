@@ -22,8 +22,8 @@ export async function GET({ request }) {
         const slug = url.searchParams.get("slug");
 
         const result = slug 
-            ? await progettoService.getBySlug(slug)
-            : await progettoService.getAll();
+            ? progettoService.getBySlug(slug)
+            : progettoService.getAll();
 
         return jsonResponse(result);
 
