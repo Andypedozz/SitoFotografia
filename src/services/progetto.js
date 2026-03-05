@@ -1,10 +1,13 @@
-import { db } from "../db/db";
-import { query, queryAsync } from "../db/db_utils";
-import fs from "node:fs";
+import { db } from "../db/db"
+import { query } from "../db/db_utils"
 
-export const progettoService = {
+export const Progetto = {
     getAll() {
-        return query(db, "SELECT * FROM Progetto ORDER BY id DESC");
+        return query(db, "SELECT * FROM Progetto");
+    },
+
+    getHomePageProjects() {
+        return query(db, "SELECT * FROM Progetto WHERE homepage = 1");
     },
 
     getBySlug(slug) {
@@ -19,7 +22,6 @@ export const progettoService = {
 
     create(data) {
         const { nome, slug, copertina } = data;
-        
         const result = query(db, `
             INSERT INTO Progetto (nome, slug, copertina)
             VALUES (?, ?, ?)
@@ -39,8 +41,9 @@ export const progettoService = {
         return this.getById(id);
     },
 
-    async delete(id) {
+    delete(id) {
         const result = query(db, "DELETE FROM Progetto WHERE id = ?", [id]);
         return result.changes > 0;
     }
-};
+}
+

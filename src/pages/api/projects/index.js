@@ -1,5 +1,6 @@
-import { progettoService } from "../../../scripts/progettoService";
+import { Progetto } from "../../../services/progetto";
 
+// Response Utils
 const jsonResponse = (data, status = 200) => {
     return new Response(JSON.stringify(data), {
         status,
@@ -22,8 +23,8 @@ export async function GET({ request }) {
         const slug = url.searchParams.get("slug");
 
         const result = slug 
-            ? progettoService.getBySlug(slug)
-            : progettoService.getAll();
+            ? Progetto.getBySlug(slug)
+            : Progetto.getAll();
 
         return jsonResponse(result);
 
@@ -45,7 +46,7 @@ export async function POST({ request, locals }) {
             }, 400);
         }
 
-        const newProject = await progettoService.create(data);
+        const newProject = await Progetto.create(data);
         
         return jsonResponse({
             success: true,
@@ -70,7 +71,7 @@ export async function PUT({ request, locals }) {
             }, 400);
         }
 
-        const updatedProject = await progettoService.update(id, data);
+        const updatedProject = await Progetto.update(id, data);
 
         if (!updatedProject) {
             return jsonResponse({
@@ -102,7 +103,7 @@ export async function DELETE({ request, locals }) {
             }, 400);
         }
 
-        const deleted = await progettoService.delete(id);
+        const deleted = await Progetto.delete(id);
 
         if (!deleted) {
             return jsonResponse({
