@@ -21,7 +21,7 @@ export async function PUT({ request }) {
     let result;
 
     try {
-        const sql = "UPDATE Progetto SET homepage = CASE WHEN id IN (?) THEN 1 ELSE 0 END";
+        const sql = "UPDATE Progetto SET homepage = CASE WHEN id IN ("+ projectIds.map((_, i) => "?").join(", ") + ") THEN 1 ELSE 0 END";
         result = query(db, sql, [...projectIds]);
     } catch (error) {
         result = error;
