@@ -1,5 +1,7 @@
 import { db } from "../db/db"
 import { query } from "../db/db_utils"
+import fs from "node:fs"
+const IMAGES_PATH = import.meta.env.IMAGES_PATH;
 
 export const Progetto = {
     getAll() {
@@ -27,6 +29,8 @@ export const Progetto = {
             VALUES (?, ?, ?)
         `, [nome, slug, copertina]);
 
+        fs.mkdirSync(IMAGES_PATH+"/"+slug);
+
         return this.getById(result.lastInsertRowid);
     },
 
@@ -43,6 +47,18 @@ export const Progetto = {
 
     delete(id) {
         const result = query(db, "DELETE FROM Progetto WHERE id = ?", [id]);
+
+        const sql = "SELECT slug FROM Progetto WHERE id = ?";
+        const slug = query(db, sql, [id])[0];
+
+        fs.rmdirSync(IMAGES_PATH+"/"+slug);
+        
+        return result.changes > 0;
+    },
+    
+    deleteBySlug(slug) {
+        const result = query(db, "DELETE FROM Progetto WHERE slug = ?", [slug]);
+        fs.rmdirSync(IMAGES_PATH+"/"+slug);
         return result.changes > 0;
     }
 }

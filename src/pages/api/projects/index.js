@@ -1,20 +1,6 @@
+import { handleError, jsonResponse } from "../../../scripts/responseUtils";
 import { Progetto } from "../../../services/progetto";
 
-// Response Utils
-const jsonResponse = (data, status = 200) => {
-    return new Response(JSON.stringify(data), {
-        status,
-        headers: { 'Content-Type': 'application/json' }
-    });
-};
-
-const handleError = (error) => {
-    console.error('API Error:', error);
-    return jsonResponse({ 
-        error: true, 
-        message: error.message 
-    }, 500);
-};
 
 // GET /api/projects?slug=xxx
 export async function GET({ request }) {
@@ -47,7 +33,7 @@ export async function POST({ request, locals }) {
         }
 
         const newProject = await Progetto.create(data);
-        
+
         return jsonResponse({
             success: true,
             data: newProject
