@@ -58,6 +58,10 @@ export default function GestioneMedia() {
         }
     ]);
 
+    // useEffect(() => {
+    //     fetchMedia();
+    // }, [])
+
     const handleUpload = (files) => {
         console.log("File caricati:", files);
         // Qui aggiungeremo i nuovi file alla lista
