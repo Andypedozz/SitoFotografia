@@ -1,15 +1,10 @@
-import { db } from "../../db/db.js";
-import { query, queryAsync } from "../../db/db_utils.js";
+import { db } from "../../db/db_knex.js";
 
 export async function POST({ cookies, redirect }) {
     const sessionId = cookies.get("session")?.value;
 
     if (sessionId) {
-        await queryAsync(
-            db,
-            "DELETE FROM Sessione WHERE id = ?",
-            [sessionId]
-        )
+        await db("Sessione").delete().where("id", sessionId);
     }
 
     cookies.delete("session", { path: "/" });

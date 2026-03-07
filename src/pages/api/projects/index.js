@@ -1,65 +1,68 @@
 import { handleError, jsonResponse } from "../../../scripts/responseUtils";
-import { Progetto } from "../../../services/progetto";
+import { db } from "../../../db/db_knex"
 
-
-// GET /api/projects?slug=xxx
+// GET /api/projects
 export async function GET({ request }) {
     try {
         const url = new URL(request.url);
+        const id = url.searchParams.get("id");
         const slug = url.searchParams.get("slug");
+        const homepage = url.searchParams.get("homepage");
 
-        const result = slug 
-            ? Progetto.getBySlug(slug)
-            : Progetto.getAll();
+        // /api/projects?id=xxx
+        if(id) {
+            const result = await db("Progetto").select("*").where("id", id);
+            return jsonResponse(result);
+        }
+        
+        // /api/projects?slug=xxx
+        if(slug) {
+            const result = await db("Progetto").select("*").where("slug", slug);
+            return jsonResponse(result);
+        }
 
+        if(homepage) {
+            const result = await db("Progetto").select("*").where("homepage", homepage);
+            return jsonResponse(result);
+        }
+
+        // /api/projects
+        const result = await db("Progetto").select("*");
         return jsonResponse(result);
-
     } catch (error) {
         return handleError(error);
     }
 }
 
 // POST /api/projects
-export async function POST({ request, locals }) {
+export async function POST({ request }) {
     try {
         const data = await request.json();
-        console.log(data);
-        
-        if (!data.nome || !data.slug) {
-            return jsonResponse({
-                error: true,
-                message: 'Nome e slug sono obbligatori'
-            }, 400);
-        }
-
-        const newProject = await Progetto.create(data);
-
+        const newProject = await db("Progetto").insert(data).returning("*").first();
         return jsonResponse({
             success: true,
             data: newProject
         }, 201);
-
     } catch (error) {
         return handleError(error);
     }
 }
 
 // PUT /api/projects
-export async function PUT({ request, locals }) {
+export async function PUT({ request }) {
     try {
         const { id, ...data } = await request.json();
-        console.log({ id, data });
 
-        if (!id) {
+        if(!id) {
             return jsonResponse({
                 error: true,
                 message: 'ID progetto obbligatorio'
             }, 400);
         }
 
-        const updatedProject = await Progetto.update(id, data);
+        const updatedProject = await db("Progetto").update(data).where("id", id).returning("*").first();
 
-        if (!updatedProject) {
+        if(!updatedProject) {
             return jsonResponse({
                 error: true,
                 message: 'Progetto non trovato'
@@ -69,29 +72,27 @@ export async function PUT({ request, locals }) {
         return jsonResponse({
             success: true,
             data: updatedProject
-        });
-
+        })
     } catch (error) {
         return handleError(error);
     }
 }
 
 // DELETE /api/projects
-export async function DELETE({ request, locals }) {
+export async function DELETE({ request }) {
     try {
         const { id } = await request.json();
-        console.log(id);
 
-        if (!id) {
+        if(!id) {
             return jsonResponse({
                 error: true,
                 message: 'ID progetto obbligatorio'
             }, 400);
         }
 
-        const deleted = await Progetto.delete(id);
+        const deleted = await db("Progetto").delete().where("id", id);
 
-        if (!deleted) {
+        if(!deleted) {
             return jsonResponse({
                 error: true,
                 message: 'Progetto non trovato'
@@ -101,8 +102,7 @@ export async function DELETE({ request, locals }) {
         return jsonResponse({
             success: true,
             message: 'Progetto eliminato con successo'
-        });
-
+        })
     } catch (error) {
         return handleError(error);
     }

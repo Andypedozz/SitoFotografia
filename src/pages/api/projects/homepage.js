@@ -1,33 +1,24 @@
-import { db } from "../../../db/db";
-import { query } from "../../../db/db_utils";
+import { db } from "../../../db/db_knex";
+import { jsonResponse, handleError } from "../../../scripts/responseUtils";
 
 // GET homepage projects
 export async function GET({ request }) {
-    let result;
     try {
-        const sql = "SELECT * FROM Progetto WHERE homepage = 1";
-        result = query(db, sql);
+        const result = await db("Progetto").select("*").where("homepage", 1);
+        return jsonResponse(result);
     } catch (error) {
-        result = error;
+        return handleError(error);
     }
-
-    return new Response(JSON.stringify(result), {
-        headers: { 'Content-Type': 'application/json' }
-    })
 }
 
+// PUT /api/projects/homepage
 export async function PUT({ request }) {
-    const { projectIds } = await request.json();
-    let result;
-
     try {
-        const sql = "UPDATE Progetto SET homepage = CASE WHEN id IN ("+ projectIds.map((_, i) => "?").join(", ") + ") THEN 1 ELSE 0 END";
-        result = query(db, sql, [...projectIds]);
+        const { projectIds } = await request.json();
+        await db("Progetto").update({ homepage: 1 }).whereIn("id", projectIds);
+        await db("Progetto").update({ homepage: 0 }).whereNotIn("id", projectIds);
+        return jsonResponse({ success: true });
     } catch (error) {
-        result = error;
+        return handleError(error);
     }
-
-    return new Response(JSON.stringify(result), {
-        headers: { 'Content-Type': 'application/json' }
-    })
 }

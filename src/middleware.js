@@ -1,5 +1,4 @@
-import { db } from "./db/db.js";
-import { query } from "./db/db_utils.js"
+import { db } from "./db/db_knex.js";
 
 export async function onRequest({ cookies, locals }, next) {
     const sessionId = cookies.get("session")?.value;
@@ -9,11 +8,7 @@ export async function onRequest({ cookies, locals }, next) {
         return next();
     }
 
-    const session = await query(
-        db,
-        "SELECT * FROM Sessione WHERE id = ?",
-        [sessionId]
-    )
+    const session = await db("Sessione").select("*").where("id", sessionId).first();
 
     if (!session) {
         locals.user = null;
@@ -21,20 +16,12 @@ export async function onRequest({ cookies, locals }, next) {
     }
 
     if (new Date(session.expiresAt) < new Date()) {
-        await query(
-            db,
-            "DELETE FROM Session WHERE id = ?",
-            [sessionId]
-        );
+        await db("Sessione").delete().where("id", sessionId);
         locals.user = null;
         return next();
     }
 
-    const user = await query(
-        db,
-        "SELECT id, username, ruolo FROM Utente WHERE id = ?",
-        [session.userId]
-    )
+    const user = await db("Utente").select(["id", "username", "ruolo"]).where("id", session.userId).first();
 
     locals.user = user;
     return next();

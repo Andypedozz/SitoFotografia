@@ -10,9 +10,8 @@ import Services from "../components/Home/Services.astro";
 import Layout from "../layouts/Layout.astro";
 import "../global.css"
 
-import { Progetto } from "../services/progetto.js"
-
-const homeProjects = Progetto.getHomePageProjects();
+const res = await fetch(new URL("/api/projects/homepage", Astro.request.url), { method: "GET" });
+const homeProjects = await res.json();
 ---
 
 <Layout>

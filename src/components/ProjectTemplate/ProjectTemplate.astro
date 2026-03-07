@@ -8,7 +8,7 @@ import "../../global.css";
 const { project } = Astro.props;
 
 // Fetch related media
-const url = new URL("/api/media/project/"+project.id, Astro.request.url);
+const url = new URL("/api/media?slug="+project.slug, Astro.request.url);
 const res = await fetch(url);
 const media = await res.json();
 

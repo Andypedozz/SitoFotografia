@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
-import "./src/db/db.js"
+import "./src/db/db_knex.js"
 
 // https://astro.build/config
 export default defineConfig({
