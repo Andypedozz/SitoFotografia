@@ -8,70 +8,93 @@ const IMAGES_PATH = process.env.IMAGES_PATH;
 
 async function createDatabase() {
     
+    const utenteExists = await db.schema.hasTable("Utente");
+    const progettoExists = await db.schema.hasTable("Progetto");
+    const mediaExists = await db.schema.hasTable("Media");
+    const sessioneExists = await db.schema.hasTable("Sessione");
+
     // Creazione della tabella Utente
-    await db.schema.createTableIfNotExists("Utente", table => {
-        table.increments("id").primary().notNullable();
-        table.string("username").notNullable().unique();
-        table.string("passwordHash").notNullable();
-        table.string("ruolo").notNullable().defaultTo("user").checkIn(["user", "admin"]);
-        table.timestamp("lastLogin").notNullable().defaultTo(db.fn.now());
-        table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
-        table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
-    })
+    if (!utenteExists) {
+        await db.schema.createTable("Utente", table => {
+            table.increments("id").primary().notNullable();
+            table.string("username").notNullable().unique();
+            table.string("passwordHash").notNullable();
+            table.string("ruolo").notNullable().defaultTo("user").checkIn(["user", "admin"]);
+            table.timestamp("lastLogin").notNullable().defaultTo(db.fn.now());
+            table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
+            table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
+        })
+    } else { console.log("Tabella Utente già esistente"); }
 
     // Creazione della tabella Progetto
-    await db.schema.createTableIfNotExists('Progetto', (table) => {
-        table.increments('id').primary().notNullable();
-        table.string('nome').notNullable().unique();
-        table.string('slug').notNullable().unique();
-        table.string('copertina').notNullable();
-        table.integer("homepage").notNullable().defaultTo(0);
-        table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
-        table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
-    });
+    if (!progettoExists) {
+        await db.schema.createTable('Progetto', (table) => {
+            table.increments('id').primary().notNullable();
+            table.string('nome').notNullable().unique();
+            table.string('slug').notNullable().unique();
+            table.string('copertina').notNullable();
+            table.integer("homepage").notNullable().defaultTo(0);
+            table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
+            table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
+        });
+    } else { console.log("Tabella Progetto già esistente"); }
     
     // Creazione della tabella Media
-    await db.schema.createTableIfNotExists("Media", table => {
-        table.increments("id").primary().notNullable();
-        table.string("percorso").notNullable();
-        table.string("nome").notNullable();
-        table.string("tipo").notNullable();
-        table.integer("idProgetto").references("id").inTable("Progetto");
-        table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
-        table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
-    })
+    if (!mediaExists) {
+        await db.schema.createTable("Media", table => {
+            table.increments("id").primary().notNullable();
+            table.string("percorso").notNullable();
+            table.string("nome").notNullable();
+            table.string("tipo").notNullable();
+            table.integer("idProgetto").references("id").inTable("Progetto");
+            table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
+            table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
+        })
+    } else { console.log("Tabella Media già esistente"); }
     
     // Creazione della tabella Sessione
-    await db.schema.createTableIfNotExists("Sessione", table => {
-        table.increments("id").primary().notNullable();
-        table.timestamp("expiresAt").notNullable();
-        table.integer("userId").references("id").inTable("Utente");
-        table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
-        table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
-    })
+    if(!sessioneExists) {
+        await db.schema.createTable("Sessione", table => {
+            table.increments("id").primary().notNullable();
+            table.timestamp("expiresAt").notNullable();
+            table.integer("userId").references("id").inTable("Utente");
+            table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
+            table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
+        })
+    } else { console.log("Tabella Sessione già esistente"); }
+}
+
+async function insertStandardData() {
+    const projects = await db("Progetto").select("*");
+    if(projects.length > 0) return;
+
+    await db("Progetto").insert([
+        { nome: "Opia", slug: "opia", copertina: "opia.jpg" },
+        { nome: "Pizzeria Roby's", slug: "robys", copertina: "robys.jpg" },
+        { nome: "Supermoto", slug: "supermoto", copertina: "supermoto.jpg" },
+        { nome: "Enoteca Montevecchio", slug: "enoteca", copertina: "enoteca.jpg" },
+        { nome: "Moda", slug: "moda", copertina: "moda.jpg" }
+    ])
 }
 
 async function fillMediaTable() {
     
     // Controllo se la tabella Media è vuota
     const medias = await db("Media").select("*");
-    const isMediaEmpty = medias.length === 0;
+    if (medias.length > 0) return;
 
-    // Carica le immagini
-    if(isMediaEmpty) {
-
-        // Elimina tutte le immagini
-        const files = fs.readdirSync(IMAGES_PATH);
-        files.forEach(async file => {
-            const media = { percorso: IMAGES_PATH+"/"+file, nome: file, tipo: "image" };
-            await db("Media").insert(media);
-        })
-    }
+    const files = fs.readdirSync(IMAGES_PATH);
+    files.forEach(async file => {
+        const media = { percorso: IMAGES_PATH+"/"+file, nome: file, tipo: "image" };
+        await db("Media").insert(media);
+    })
 }
 
 async function main() {
     await createDatabase();
+    await insertStandardData();
     await fillMediaTable();
+    process.exit(0);
 }
 
 main();
