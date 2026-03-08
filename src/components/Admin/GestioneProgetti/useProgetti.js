@@ -1,10 +1,9 @@
 // hooks/useProgetti.js
 import { useState, useEffect, useCallback } from 'react';
-import { create, destroy, getAll, update } from '../../../../scripts/progettiApi';
+import { create, destroy, getAll, update } from '../../../scripts/progettiApi';
 
 const INITIAL_FORM_STATE = {
     nome: '',
-    descrizione: '',
     slug: '',
     copertina: ''
 };

@@ -9,7 +9,7 @@ export default function MediaContainer({ mediaItems, onDelete }) {
                     <span className="w-1.5 h-1.5 bg-red-600 rounded-full mr-2"></span>
                     Libreria Media ({mediaItems.length})
                 </h3>
-                
+
                 {/* Opzioni di visualizzazione */}
                 <div className="flex items-center space-x-2">
                     <button className="p-1.5 bg-red-600/10 border border-red-900/30 rounded text-red-600">
@@ -22,14 +22,18 @@ export default function MediaContainer({ mediaItems, onDelete }) {
             </div>
 
             {/* Griglia delle media card */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {mediaItems.map((item) => (
-                    <MediaCard
-                        key={item.id}
-                        media={item}
-                        onDelete={onDelete}
-                    />
-                ))}
+            <div className="bg-black/50 border border-red-900/30 rounded-lg p-6 flex flex-col h-150">
+                <div className="flex-1 overflow-y-auto pr-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        {mediaItems.map((item) => (
+                            <MediaCard
+                                key={item.id}
+                                media={item}
+                                onDelete={onDelete}
+                            />
+                        ))}
+                    </div>
+                </div>
             </div>
 
             {/* Messaggio quando non ci sono media */}

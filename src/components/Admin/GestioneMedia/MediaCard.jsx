@@ -12,9 +12,8 @@ export default function MediaCard({ media, onDelete }) {
         <div className="group relative bg-black border border-red-900/30 rounded-lg overflow-hidden hover:border-red-600/50 transition-all duration-300">
             {/* Preview area */}
             <div className="aspect-video bg-linear-to-br from-red-950/20 to-black flex items-center justify-center">
-                <span className={`text-4xl ${getColor(media.tipo)}`}>
-                    {getIcon(media.tipo)}
-                </span>
+                <img src={media.percorso} alt="" />
+                <span className={`text-4xl ${getColor(media.tipo)}`}></span>
             </div>
 
             {/* Info overlay on hover */}

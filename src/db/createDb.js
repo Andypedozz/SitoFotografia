@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { db } from "./db_knex";
+import { db } from "./db_knex.js";
 import fs from "node:fs";
 
 dotenv.config();
@@ -14,7 +14,7 @@ async function createDatabase() {
         table.string("username").notNullable().unique();
         table.string("passwordHash").notNullable();
         table.string("ruolo").notNullable().defaultTo("user").checkIn(["user", "admin"]);
-        table.timestamp("lastLogin").notNullable();
+        table.timestamp("lastLogin").notNullable().defaultTo(db.fn.now());
         table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
         table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
     })
@@ -36,7 +36,7 @@ async function createDatabase() {
         table.string("percorso").notNullable();
         table.string("nome").notNullable();
         table.string("tipo").notNullable();
-        table.foreign("idProgetto").references("id").inTable("Progetto");
+        table.integer("idProgetto").references("id").inTable("Progetto");
         table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
         table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
     })
@@ -45,7 +45,7 @@ async function createDatabase() {
     await db.schema.createTableIfNotExists("Sessione", table => {
         table.increments("id").primary().notNullable();
         table.timestamp("expiresAt").notNullable();
-        table.foreign("userId").references("id").inTable("Utente");
+        table.integer("userId").references("id").inTable("Utente");
         table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
         table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
     })
@@ -61,7 +61,6 @@ async function fillMediaTable() {
     if(isMediaEmpty) {
 
         // Elimina tutte le immagini
-        await db("Media").clear();
         const files = fs.readdirSync(IMAGES_PATH);
         files.forEach(async file => {
             const media = { percorso: IMAGES_PATH+"/"+file, nome: file, tipo: "image" };
@@ -70,5 +69,9 @@ async function fillMediaTable() {
     }
 }
 
-createDatabase();
-fillMediaTable();
+async function main() {
+    await createDatabase();
+    await fillMediaTable();
+}
+
+main();

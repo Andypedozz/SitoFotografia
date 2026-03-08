@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { create, destroy, getAll } from "../../../../scripts/mediaApi";
+import { create, destroy, getAll } from "../../../scripts/mediaApi";
 
 export function useMedia() {
     const [media, setMedia] = useState([]);

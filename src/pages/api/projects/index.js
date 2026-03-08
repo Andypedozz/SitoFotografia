@@ -38,7 +38,8 @@ export async function GET({ request }) {
 export async function POST({ request }) {
     try {
         const data = await request.json();
-        const newProject = await db("Progetto").insert(data).returning("*").first();
+        console.log(data);
+        const newProject = await db("Progetto").insert(data).returning("*");
         return jsonResponse({
             success: true,
             data: newProject
