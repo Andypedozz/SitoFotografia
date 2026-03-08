@@ -14,7 +14,7 @@ async function createDatabase() {
     const sessioneExists = await db.schema.hasTable("Sessione");
 
     // Creazione della tabella Utente
-    if (!utenteExists) {
+    if(!utenteExists) {
         await db.schema.createTable("Utente", table => {
             table.increments("id").primary().notNullable();
             table.string("username").notNullable().unique();
@@ -24,10 +24,10 @@ async function createDatabase() {
             table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
             table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
         })
-    } else { console.log("Tabella Utente già esistente"); }
+    }
 
     // Creazione della tabella Progetto
-    if (!progettoExists) {
+    if(!progettoExists) {
         await db.schema.createTable('Progetto', (table) => {
             table.increments('id').primary().notNullable();
             table.string('nome').notNullable().unique();
@@ -37,10 +37,10 @@ async function createDatabase() {
             table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
             table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
         });
-    } else { console.log("Tabella Progetto già esistente"); }
-    
+    }
+
     // Creazione della tabella Media
-    if (!mediaExists) {
+    if(!mediaExists) {
         await db.schema.createTable("Media", table => {
             table.increments("id").primary().notNullable();
             table.string("percorso").notNullable();
@@ -50,18 +50,19 @@ async function createDatabase() {
             table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
             table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
         })
-    } else { console.log("Tabella Media già esistente"); }
-    
+
+    }
+
     // Creazione della tabella Sessione
     if(!sessioneExists) {
         await db.schema.createTable("Sessione", table => {
-            table.increments("id").primary().notNullable();
+            table.uuid("id").primary().notNullable();
             table.timestamp("expiresAt").notNullable();
             table.integer("userId").references("id").inTable("Utente");
             table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
             table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());
         })
-    } else { console.log("Tabella Sessione già esistente"); }
+    }
 }
 
 async function insertStandardData() {
@@ -75,6 +76,13 @@ async function insertStandardData() {
         { nome: "Enoteca Montevecchio", slug: "enoteca", copertina: "enoteca.jpg" },
         { nome: "Moda", slug: "moda", copertina: "moda.jpg" }
     ])
+
+    await db("Utente").insert({
+        id: 1,
+        username: "admin",
+        passwordHash: "$2b$10$3X.ruD82rX4d4oMiFNgdTOHBn0Ea7Q4Kw0B/vWiiEQ6SsMaU1.weO",
+        ruolo: "admin"
+    })
 }
 
 async function fillMediaTable() {
@@ -83,9 +91,10 @@ async function fillMediaTable() {
     const medias = await db("Media").select("*");
     if (medias.length > 0) return;
 
-    const files = fs.readdirSync(IMAGES_PATH);
+    const files = fs.readdirSync("./public/"+IMAGES_PATH);
     files.forEach(async file => {
         const media = { percorso: IMAGES_PATH+"/"+file, nome: file, tipo: "image" };
+        console.log(media)
         await db("Media").insert(media);
     })
 }
@@ -94,7 +103,6 @@ async function main() {
     await createDatabase();
     await insertStandardData();
     await fillMediaTable();
-    process.exit(0);
 }
 
 main();

@@ -1,5 +1,5 @@
 import Panel from "../common/Panel";
-import { useProgetti } from "./hooks/useProgetti";
+import { useProgetti } from "./useProgetti";
 import ProgettiFooter from "./ProgettiFooter";
 import ProgettiForm from "./ProgettiForm";
 import ProgettiHeader from "./ProgettiHeader";

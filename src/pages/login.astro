@@ -7,6 +7,7 @@ import "../styles/tailwind.css"
 
 // Meta data della pagina
 const pageTitle = "Login - Admin Dashboard";
+const error = Astro.url.searchParams.get("error");
 ---
 <Layout>
 <style>
@@ -183,12 +184,16 @@ const pageTitle = "Login - Admin Dashboard";
         </div>
         
         <!-- Messaggio di errore (esempio, nascosto di default) -->
-        <div class="mt-4 p-4 bg-red-600/10 border border-red-600/30 rounded-lg hidden">
-            <p class="text-red-500 text-sm flex items-center">
-                <span class="mr-2">⚠️</span>
-                Credenziali non valide. Riprova.
-            </p>
-        </div>
+        {
+            error === "invalid" && (
+                <div class="mt-4 p-4 bg-red-600/10 border border-red-600/30 rounded-lg">
+                    <p class="text-red-500 text-sm flex items-center">
+                        <span class="mr-2">⚠️</span>
+                        Credenziali non valide. Riprova.
+                    </p>
+                </div>
+            )
+        }
     </div>
 </div>
 </Layout>

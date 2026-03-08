@@ -11,19 +11,23 @@ export async function POST({ request, cookies, redirect }) {
     const user = await db("Utente").select("*").where("username", username).first();
 
     if (!user) {
-        return new Response("Credenziali non valide", { status: 401 });
+        return redirect("/login?error=invalid");
     }
 
     const valid = await bcrypt.compare(password, user.passwordHash);
 
     if (!valid) {
-        return new Response("Credenziali non valide", { status: 401 });
+        return redirect("/login?error=invalid");
     }
 
     const sessionId = uuidv4();
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-    await db("Sessione").insert({ id: sessionId, userId: user.id, expiresAt: expiresAt.toISOString() });
+    await db("Sessione").insert({
+        id: sessionId,
+        userId: user.id,
+        expiresAt: expiresAt.toISOString()
+    });
 
     cookies.set("session", sessionId, {
         httpOnly: true,
