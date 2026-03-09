@@ -57,7 +57,7 @@ const { project } = Astro.props;
     }
 </style>
 <div class="gallery-item fade-in" onclick=`window.location.href = '/projects/${project.slug}'`>
-    <img src={project.copertina} alt="Fotografia moda" />
+    <img src={project.copertina} alt="Fotografia moda" loading="lazy"/>
     <div class="gallery-overlay">
         <h3>{project.nome}</h3>
         <p>{project.descrizione}</p>

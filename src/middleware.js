@@ -38,7 +38,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  const session = await db("Sessione").select("*").where("id", sessionId).first();
+  let session;
+  try {
+    session = await db("Sessione").select("*").where("id", sessionId).first();
+  } catch (error) {
+    locals.user = null;
+    return next();
+  }
 
   if (!session) {
     locals.user = null;

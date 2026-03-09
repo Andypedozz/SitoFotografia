@@ -1,15 +1,16 @@
 // UploadMedia.jsx
 import { useState, useCallback } from 'react';
 
-export default function UploadMedia({ onUpload }) {
+export default function UploadMedia({ onUpload, disabled = false }) {
     const [isDragging, setIsDragging] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     const handleDragEnter = useCallback((e) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsDragging(true);
-    }, []);
+        if (!disabled) setIsDragging(true);
+    }, [disabled]);
 
     const handleDragLeave = useCallback((e) => {
         e.preventDefault();
@@ -26,16 +27,23 @@ export default function UploadMedia({ onUpload }) {
         e.preventDefault();
         e.stopPropagation();
         setIsDragging(false);
+        
+        if (disabled) {
+            alert("Seleziona prima un progetto");
+            return;
+        }
 
         const files = Array.from(e.dataTransfer.files);
         if (files.length > 0) {
+            setSelectedFiles(files);
             handleFiles(files);
         }
-    }, [onUpload]);
+    }, [onUpload, disabled]);
 
     const handleFileInput = useCallback((e) => {
         const files = Array.from(e.target.files);
         if (files.length > 0) {
+            setSelectedFiles(files);
             handleFiles(files);
         }
     }, [onUpload]);
@@ -48,13 +56,20 @@ export default function UploadMedia({ onUpload }) {
             setUploadProgress(prev => {
                 if (prev >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => setUploadProgress(null), 1000);
+                    setTimeout(() => {
+                        setUploadProgress(null);
+                        setSelectedFiles([]);
+                    }, 1000);
                     onUpload(files);
                     return null;
                 }
                 return prev + 10;
             });
         }, 200);
+    };
+
+    const removeFile = (indexToRemove) => {
+        setSelectedFiles(prev => prev.filter((_, index) => index !== indexToRemove));
     };
 
     return (
@@ -68,9 +83,10 @@ export default function UploadMedia({ onUpload }) {
                 className={`
                     relative border-2 border-dashed rounded-lg p-8
                     transition-all duration-300 cursor-pointer
-                    ${isDragging 
+                    ${disabled ? 'opacity-50 cursor-not-allowed border-gray-700' : ''}
+                    ${isDragging && !disabled
                         ? 'border-red-600 bg-red-600/10' 
-                        : 'border-red-900/30 hover:border-red-600/50 hover:bg-red-600/5'
+                        : !disabled ? 'border-red-900/30 hover:border-red-600/50 hover:bg-red-600/5' : ''
                     }
                 `}
             >
@@ -79,17 +95,20 @@ export default function UploadMedia({ onUpload }) {
                     multiple
                     accept="image/*,video/*"
                     onChange={handleFileInput}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    disabled={disabled}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
                 />
                 
                 <div className="text-center">
                     <div className="text-4xl mb-3">
-                        {isDragging ? '📂' : '📁'}
+                        {disabled ? '🔒' : (isDragging ? '📂' : '📁')}
                     </div>
                     <p className="text-gray-400 text-sm mb-1">
-                        {isDragging 
-                            ? 'Rilascia i file qui' 
-                            : 'Trascina i file qui o clicca per selezionare'
+                        {disabled 
+                            ? 'Seleziona un progetto per abilitare l\'upload'
+                            : isDragging 
+                                ? 'Rilascia i file qui' 
+                                : 'Trascina i file qui o clicca per selezionare'
                         }
                     </p>
                     <p className="text-xs text-gray-600">
@@ -97,6 +116,36 @@ export default function UploadMedia({ onUpload }) {
                     </p>
                 </div>
             </div>
+
+            {/* Lista file selezionati */}
+            {selectedFiles.length > 0 && uploadProgress === null && (
+                <div className="bg-black/50 border border-red-900/30 rounded-lg p-3">
+                    <p className="text-xs text-gray-400 mb-2">File selezionati ({selectedFiles.length})</p>
+                    <div className="space-y-2 max-h-32 overflow-y-auto">
+                        {selectedFiles.map((file, index) => (
+                            <div key={index} className="flex items-center justify-between text-xs">
+                                <div className="flex items-center space-x-2">
+                                    <span className="text-red-600/50">
+                                        {file.type.startsWith('video/') ? '🎥' : '🖼️'}
+                                    </span>
+                                    <span className="text-gray-300 truncate max-w-37.5">
+                                        {file.name}
+                                    </span>
+                                    <span className="text-gray-600">
+                                        ({(file.size / 1024 / 1024).toFixed(1)} MB)
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={() => removeFile(index)}
+                                    className="text-red-600 hover:text-red-500"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Barra di progresso */}
             {uploadProgress !== null && (

@@ -5,6 +5,10 @@ import tailwindcss from '@tailwindcss/vite';
 import path from "node:path";
 import fs from "node:fs/promises"; // Usa la versione promises
 import { fileURLToPath } from 'node:url';
+import { createTables } from "./src/db/createTables.js"
+
+createTables();
+
 import "./src/db/db_knex.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

@@ -46,6 +46,7 @@ async function createDatabase() {
             table.string("percorso").notNullable();
             table.string("nome").notNullable();
             table.string("tipo").notNullable();
+            table.boolean("visibile").notNullable().defaultTo(true);
             table.integer("idProgetto").references("id").inTable("Progetto");
             table.timestamp("createdAt").notNullable().defaultTo(db.fn.now());
             table.timestamp("updatedAt").notNullable().defaultTo(db.fn.now());

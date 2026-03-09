@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcryptjs";
 import { db } from "../../db/db_knex";
+import { jsonResponse } from "../../scripts/responseUtils.js"
 
 export async function POST({ request, cookies, redirect }) {
     const formData = await request.formData();
@@ -8,7 +9,12 @@ export async function POST({ request, cookies, redirect }) {
     const username = formData.get("username");
     const password = formData.get("password");
 
-    const user = await db("Utente").select("*").where("username", username).first();
+    let user;
+    try {
+        user = await db("Utente").select("*").where("username", username).first();
+    } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+    }
 
     if (!user) {
         return redirect("/login?error=invalid");

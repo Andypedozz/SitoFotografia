@@ -11,14 +11,15 @@ import Layout from "../layouts/Layout.astro";
 import "../global.css"
 
 const res = await fetch(new URL("/api/projects/homepage", Astro.request.url), { method: "GET" });
-const homeProjects = await res.json();
+let homeProjects = await res.json();
+if (homeProjects.error) homeProjects = [];
 ---
 
 <Layout>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <div class="homepage">
-        <Header />
+        <Header logoPath="logo-nobg.png"/>
         <Hero />
         <Gallery {homeProjects} />
         <About />

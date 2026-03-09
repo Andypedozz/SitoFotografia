@@ -2,20 +2,27 @@
 import Layout from "../../layouts/Layout.astro";
 import Header from "../Home/Header.astro";
 import PhotoCard from "../Home/PhotoCard.astro";
-import VideoPlayer from "../../components/Home/VideoPlayer.astro"
+import VideoPlayer from "../../components/Home/VideoPlayer.astro";
 import "../../global.css";
+import { db } from "../../db/db_knex";
+
+const LOCAL_PUBLIC_PATH = "../../../public/";
 
 const { project } = Astro.props;
 
 // Fetch related media
-const url = new URL("/api/media?slug="+project.slug, Astro.request.url);
-const res = await fetch(url);
-const media = await res.json();
-
-const photos = media.filter((media: any) => media.tipo === "image");
-const video = media.find((media: any) => media.tipo === "video");
-
+const media = await db("Media").select("*").where("idProgetto", project.id);
+const photos = media.filter((media: any) => media.tipo === "immagine");
+// const video = media.find((media: any) => media.tipo === "video");
+const video = {
+    id: 1,
+    nome: "video.mp4",
+    percorso: LOCAL_PUBLIC_PATH + "images/video.mp4",
+    tipo: "video",
+    idProgetto: project.id,
+}
 ---
+
 <style>
     .content {
         color: white;
@@ -24,23 +31,30 @@ const video = media.find((media: any) => media.tipo === "video");
     h1 {
         text-align: center;
     }
+
+    .photos-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 35px;
+        margin: 25px;
+    }
+
+    .video-container {
+        
+    }
 </style>
 <Layout>
-    <!-- <Header /> -->
+    <Header logoPath={LOCAL_PUBLIC_PATH + "logo-nobg.png"} />
     <div class="project-header">
         <h1>{project.nome}</h1>
-        <p>{project.descrizione}</p>
     </div>
     <div class="gallery">
+        <p>{project.descrizione}</p>
         <div class="video-container">
-            <VideoPlayer videoPath={video} controls={false}/>
+            <VideoPlayer videoPath={video.percorso} muted controls={false} autoPlay={true} loop={true} />
         </div>
         <div class="photos-container">
-            {
-                photos.map((photo: any) => (
-                    <PhotoCard photo={photo} />
-                ))
-            }
+            {photos.map((photo: any) => <PhotoCard photo={photo} />)}
         </div>
     </div>
 </Layout>
