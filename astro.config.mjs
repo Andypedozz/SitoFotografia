@@ -6,7 +6,7 @@ import path from "node:path";
 import fs from "node:fs/promises"; // Usa la versione promises
 import { fileURLToPath } from 'node:url';
 import { createTables } from "./src/db/createTables.js"
-import { vercel } from "@astrojs/vercel"
+import vercel from "@astrojs/vercel"
 
 // createTables();
 
