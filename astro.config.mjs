@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { createTables } from "./src/db/createTables.js"
 import vercel from "@astrojs/vercel"
 
-// createTables();
+createTables();
 
 import "./src/db/db_knex.js";
 
