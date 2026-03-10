@@ -6,6 +6,7 @@ import path from "node:path";
 import fs from "node:fs/promises"; // Usa la versione promises
 import { fileURLToPath } from 'node:url';
 import { createTables } from "./src/db/createTables.js"
+import { vercel } from "@astrojs/vercel"
 
 // createTables();
 
@@ -62,9 +63,10 @@ function copyDatabase() {
 
 export default defineConfig({
 	output: 'server',
-	adapter: node({
-		mode: 'standalone'
-	}),
+	// adapter: node({
+	// 	mode: 'standalone'
+	// }),
+	adapter: vercel(),
 	integrations: [react()],
 	
 	// Configurazione server
