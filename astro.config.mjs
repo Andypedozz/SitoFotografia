@@ -7,7 +7,7 @@ import fs from "node:fs/promises"; // Usa la versione promises
 import { fileURLToPath } from 'node:url';
 import { createTables } from "./src/db/createTables.js"
 
-createTables();
+// createTables();
 
 import "./src/db/db_knex.js";
 
