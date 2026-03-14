@@ -10,7 +10,7 @@ const { logoPath } = Astro.props;
         align-items: center;
         background-color: rgba(0, 0, 0, 0.9);
         z-index: 1000;
-        transition: var(--transition);
+        transition: all 0.3s ease;
     }
 
     header.scrolled {
@@ -39,7 +39,7 @@ const { logoPath } = Astro.props;
     }
 
     .logo-text span {
-        color: var(--primary);
+        color: rgb(164, 0, 0);
     }
 
     nav {
@@ -61,8 +61,8 @@ const { logoPath } = Astro.props;
         left: 0;
         width: 0;
         height: 2px;
-        background-color: var(--primary);
-        transition: var(--transition);
+        background-color: rgb(164, 0, 0);
+        transition: all 0.3s ease;
     }
 
     nav a:hover:after {

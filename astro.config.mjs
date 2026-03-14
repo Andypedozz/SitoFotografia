@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import dotenv from 'dotenv';
 import node from '@astrojs/node';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
@@ -8,7 +9,9 @@ import { fileURLToPath } from 'node:url';
 import { createTables } from "./src/db/createTables.js"
 import vercel from "@astrojs/vercel"
 
+dotenv.config();
 createTables();
+const DEVELOPMENT = process.env.DEVELOPMENT;
 
 import "./src/db/db_knex.js";
 
@@ -61,12 +64,19 @@ function copyDatabase() {
   };
 }
 
+function getAdapter() {
+  if (DEVELOPMENT) {
+	return node({
+	  mode: 'standalone'
+	});
+  } else {
+	return vercel();
+  }
+}
+
 export default defineConfig({
 	output: 'server',
-	// adapter: node({
-	// 	mode: 'standalone'
-	// }),
-	adapter: vercel(),
+	adapter: getAdapter(),
 	integrations: [react()],
 	
 	// Configurazione server

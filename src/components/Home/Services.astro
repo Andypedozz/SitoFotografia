@@ -19,11 +19,11 @@
     }
 
     .service-card {
-        background-color: var(--dark-gray);
-        border-radius: var(--radius);
+        background-color: #222222;
+        border-radius: 8px;
         padding: 40px 30px;
         text-align: center;
-        transition: var(--transition-slow);
+        transition: all 0.5s ease;
         border: 1px solid rgba(255, 255, 255, 0.05);
         position: relative;
         overflow: hidden;
@@ -51,7 +51,7 @@
     .service-card:hover {
         transform: translateY(-10px) scale(1.02);
         background-color: #2a2a2a;
-        border-color: var(--primary);
+        border-color: rgb(164, 0, 0);
         box-shadow: 0 15px 30px rgba(148, 119, 82, 0.15);
     }
 
@@ -70,12 +70,12 @@
 
     .service-card:hover .service-icon {
         transform: scale(1.1) translateY(-5px);
-        color: var(--primary);
+        color: rgb(164, 0, 0);
     }
 
     .service-card:hover h3 {
         transform: translateY(-5px);
-        color: var(--primary);
+        color: rgb(164, 0, 0);
     }
 
     .service-card:hover p {
@@ -84,26 +84,26 @@
 
     .service-card:hover .btn {
         transform: translateY(-3px);
-        background-color: var(--primary);
+        background-color: rgb(164, 0, 0);
     }
 
     .service-icon {
         font-size: 3.2rem;
-        color: var(--primary-dark);
+        color: #650000
         margin-bottom: 25px;
-        transition: var(--transition-slow);
+        transition: all 0.5s ease;
     }
 
     .service-card h3 {
         font-size: 1.6rem;
         margin-bottom: 18px;
-        transition: var(--transition-slow);
+        transition: all 0.5s ease;
     }
 
     .service-card p {
-        color: var(--text-gray);
+        color: #cccccc;
         margin-bottom: 28px;
-        transition: var(--transition-slow);
+        transition: all 0.5s ease;
     }
 </style>
 <section class="section services-section" id="services">
