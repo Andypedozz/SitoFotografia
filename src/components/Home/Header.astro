@@ -1,5 +1,5 @@
 ---
-const { logoPath } = Astro.props;
+const { logoPath, links } = Astro.props;
 ---
 <style>
     header {
@@ -86,11 +86,8 @@ const { logoPath } = Astro.props;
     </div>
 
     <nav id="mainNav">
-        <a href="#home">Home</a>
-        <a href="#gallery">Lavori</a>
-        <a href="#about">Chi Siamo</a>
-        <a href="#services">Servizi</a>
-        <a href="#contact">Contatti</a>
-        <a href="/admin">Admin</a>
+        {links.map((link: any) => (
+            <a href={link.href}>{link.name}</a>
+        ))}
     </nav>
 </header>

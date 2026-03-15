@@ -1,6 +1,5 @@
 ---
 const { photo } = Astro.props;
-const LOCAL_PUBLIC_PATH = "../../../public/";
 ---
 <style>
     .gallery-item {
@@ -58,5 +57,5 @@ const LOCAL_PUBLIC_PATH = "../../../public/";
     }
 </style>
 <div class="gallery-item">
-    <img src={LOCAL_PUBLIC_PATH + photo.percorso} alt="photo-card" loading="lazy"/>
+    <img src={photo.percorso} alt="photo-card" loading="lazy"/>
 </div>

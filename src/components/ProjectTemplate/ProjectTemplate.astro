@@ -1,26 +1,20 @@
 ---
+import { db } from "../../db/db_knex";
 import Layout from "../../layouts/Layout.astro";
 import Header from "../Home/Header.astro";
 import PhotoCard from "../Home/PhotoCard.astro";
-import VideoPlayer from "../../components/Home/VideoPlayer.astro";
 import "../../global.css";
-import { db } from "../../db/db_knex";
-
-const LOCAL_PUBLIC_PATH = "../../../public/";
 
 const { project } = Astro.props;
+
+const headerLinks = [
+    { name: "Home", href: "/" },
+    { name: "Admin", href: "/admin" },
+]
 
 // Fetch related media
 const media = await db("Media").select("*").where("idProgetto", project.id);
 const photos = media.filter((media: any) => media.tipo === "immagine");
-// const video = media.find((media: any) => media.tipo === "video");
-const video = {
-    id: 1,
-    nome: "video.mp4",
-    percorso: LOCAL_PUBLIC_PATH + "images/video.mp4",
-    tipo: "video",
-    idProgetto: project.id,
-}
 ---
 
 <style>
@@ -38,21 +32,14 @@ const video = {
         gap: 35px;
         margin: 25px;
     }
-
-    .video-container {
-        
-    }
 </style>
 <Layout>
-    <Header logoPath={LOCAL_PUBLIC_PATH + "logo-nobg.png"} />
+    <Header logoPath={"/logo-nobg.png"} links={headerLinks}/>
     <div class="project-header">
         <h1>{project.nome}</h1>
     </div>
     <div class="gallery">
         <p>{project.descrizione}</p>
-        <div class="video-container">
-            <VideoPlayer videoPath={video.percorso} muted controls={false} autoPlay={true} loop={true} />
-        </div>
         <div class="photos-container">
             {photos.map((photo: any) => <PhotoCard photo={photo} />)}
         </div>

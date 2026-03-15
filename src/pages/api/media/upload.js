@@ -66,7 +66,8 @@ export async function POST({ request }) {
 
             // Genera nome file univoco
             const fileExtension = path.extname(file.name);
-            const fileName = `${uuidv4()}${fileExtension}`;
+            // const fileName = `${uuidv4()}${fileExtension}`;
+            const fileName = `${file.name}`;
             const filePath = path.join(UPLOAD_DIR, fileName);
             const publicPath = `/images/${fileName}`;
 

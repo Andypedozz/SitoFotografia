@@ -68,7 +68,8 @@ export default function GestioneMedia() {
             });
 
             if (res.ok) {
-                const newMedia = await res.json();
+                const obj = await res.json();
+                const newMedia = obj.data;
                 setMediaItems(prev => [...newMedia, ...prev]);
             } else {
                 alert("Errore durante il caricamento");

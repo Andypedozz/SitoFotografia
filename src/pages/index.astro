@@ -13,13 +13,23 @@ import "../global.css"
 const res = await fetch(new URL("/api/projects/homepage", Astro.request.url), { method: "GET" });
 let homeProjects = await res.json();
 if (homeProjects.error) homeProjects = [];
+
+const headerLinks = [
+    { name: "Home", href: "#header" },
+    { name: "Lavori", href: "#gallery" },
+    { name: "Chi siamo", href: "#about" },
+    { name: "Serivizi", href: "#services" },
+    { name: "Contatti", href: "#contact" },
+    { name: "Admin", href: "/admin" },
+];
+
 ---
 
 <Layout>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <div class="homepage">
-        <Header logoPath="logo-nobg.png"/>
+        <Header logoPath="logo-nobg.png" links={headerLinks} />
         <Hero />
         <Gallery {homeProjects} />
         <About />

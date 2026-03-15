@@ -4,5 +4,7 @@ import { db } from "../../db/db_knex";
 
 const { projectSlug } = Astro.params;
 const project = await db("Progetto").select("*").where("slug", projectSlug).first();
+
 ---
+
 <ProjectTemplate project={project} />
