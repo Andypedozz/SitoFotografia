@@ -61,7 +61,7 @@ export async function PUT({ request }) {
             }, 400);
         }
 
-        const updatedProject = await db("Progetto").update(data).where("id", id).returning("*").first();
+        const updatedProject = await db("Progetto").update(data).where("id", id).returning("*");
 
         if(!updatedProject) {
             return jsonResponse({
