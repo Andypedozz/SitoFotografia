@@ -1,9 +1,11 @@
 // MediaContainer.jsx
 import MediaCard from './MediaCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function MediaContainer({ mediaItems, onDelete, progetti }) {
+export default function MediaContainer({ mediaItems, onDelete, onToggleVisibility, progetti }) {
     const [filterProject, setFilterProject] = useState("tutti");
+    const [filterVisibility, setFilterVisibility] = useState("tutti");
+    const [sortBy, setSortBy] = useState("data-desc");
 
     // Crea una mappa dei progetti per ID
     const progettiMap = progetti.reduce((acc, p) => {
@@ -11,13 +13,35 @@ export default function MediaContainer({ mediaItems, onDelete, progetti }) {
         return acc;
     }, {});
 
-    // Filtra per progetto selezionato
+    // Applica filtri
     const filteredByProject = filterProject === "tutti" 
         ? mediaItems 
         : mediaItems.filter(item => item.idProgetto === parseInt(filterProject));
 
+    const filteredByVisibility = filterVisibility === "tutti"
+        ? filteredByProject
+        : filterVisibility === "visibili"
+            ? filteredByProject.filter(item => item.visibile === 1 || item.visibile === true)
+            : filteredByProject.filter(item => item.visibile === 0 || item.visibile === false);
+
+    // Applica ordinamento
+    const sortedItems = [...filteredByVisibility].sort((a, b) => {
+        switch(sortBy) {
+            case "data-desc":
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            case "data-asc":
+                return new Date(a.createdAt) - new Date(b.createdAt);
+            case "nome-asc":
+                return a.nome.localeCompare(b.nome);
+            case "nome-desc":
+                return b.nome.localeCompare(a.nome);
+            default:
+                return 0;
+        }
+    });
+
     // Raggruppa media per progetto
-    const mediaByProject = filteredByProject.reduce((acc, item) => {
+    const mediaByProject = sortedItems.reduce((acc, item) => {
         const projectId = item.idProgetto;
         if (!acc[projectId]) {
             acc[projectId] = {
@@ -29,16 +53,32 @@ export default function MediaContainer({ mediaItems, onDelete, progetti }) {
         return acc;
     }, {});
 
+    // Statistiche visibilità
+    const visibleCount = mediaItems.filter(m => m.visibile === 1 || m.visibile === true).length;
+    const hiddenCount = mediaItems.filter(m => m.visibile === 0 || m.visibile === false).length;
+
     return (
         <div className="bg-black/50 border border-red-900/30 rounded-lg p-6">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-white font-medium flex items-center">
                     <span className="w-1.5 h-1.5 bg-red-600 rounded-full mr-2"></span>
-                    Libreria Media ({filteredByProject.length})
+                    Libreria Media ({filteredByVisibility.length})
                 </h3>
 
-                {/* Filtro per progetto */}
+                {/* Filtri e ordinamento */}
                 <div className="flex items-center space-x-3">
+                    {/* Filtro visibilità */}
+                    <select
+                        value={filterVisibility}
+                        onChange={(e) => setFilterVisibility(e.target.value)}
+                        className="px-3 py-1.5 bg-black border border-red-900/30 rounded-lg text-sm text-gray-300 focus:outline-none focus:border-red-600"
+                    >
+                        <option value="tutti">📁 Tutti i media</option>
+                        <option value="visibili">👁️ Visibili ({visibleCount})</option>
+                        <option value="nascosti">👁️‍🗨️ Nascosti ({hiddenCount})</option>
+                    </select>
+
+                    {/* Filtro progetto */}
                     <select
                         value={filterProject}
                         onChange={(e) => setFilterProject(e.target.value)}
@@ -52,20 +92,22 @@ export default function MediaContainer({ mediaItems, onDelete, progetti }) {
                         ))}
                     </select>
 
-                    {/* Opzioni di visualizzazione */}
-                    <div className="flex items-center space-x-2">
-                        <button className="p-1.5 bg-red-600/10 border border-red-900/30 rounded text-red-600">
-                            <span className="text-sm">🔲</span>
-                        </button>
-                        <button className="p-1.5 hover:bg-red-600/10 border border-transparent hover:border-red-900/30 rounded text-gray-500 hover:text-white transition-all">
-                            <span className="text-sm">☰</span>
-                        </button>
-                    </div>
+                    {/* Ordinamento */}
+                    <select
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                        className="px-3 py-1.5 bg-black border border-red-900/30 rounded-lg text-sm text-gray-300 focus:outline-none focus:border-red-600"
+                    >
+                        <option value="data-desc">📅 Più recenti</option>
+                        <option value="data-asc">📅 Meno recenti</option>
+                        <option value="nome-asc">🔤 Nome A-Z</option>
+                        <option value="nome-desc">🔤 Nome Z-A</option>
+                    </select>
                 </div>
             </div>
 
             {/* Griglia delle media card raggruppate per progetto */}
-            <div className="bg-black/50 border border-red-900/30 rounded-lg p-6 flex flex-col h-[600px]">
+            <div className="bg-black/50 border border-red-900/30 rounded-lg p-6 flex flex-col h-150">
                 <div className="flex-1 overflow-y-auto pr-2">
                     {Object.keys(mediaByProject).length > 0 ? (
                         Object.entries(mediaByProject).map(([projectId, group]) => (
@@ -77,7 +119,9 @@ export default function MediaContainer({ mediaItems, onDelete, progetti }) {
                                             {group.progetto?.nome || 'Progetto sconosciuto'}
                                         </h4>
                                         <span className="text-xs text-gray-500">
-                                            ({group.items.length} file)
+                                            ({group.items.length} file, {
+                                                group.items.filter(i => i.visibile).length
+                                            } visibili)
                                         </span>
                                     </div>
                                 )}
@@ -87,6 +131,7 @@ export default function MediaContainer({ mediaItems, onDelete, progetti }) {
                                             key={item.id}
                                             media={item}
                                             onDelete={onDelete}
+                                            onToggleVisibility={onToggleVisibility}
                                             progetto={group.progetto}
                                         />
                                     ))}
@@ -100,9 +145,36 @@ export default function MediaContainer({ mediaItems, onDelete, progetti }) {
                             <p className="text-xs text-gray-700 mt-1">
                                 {filterProject === "tutti" 
                                     ? "Carica immagini o video utilizzando l'area di upload"
-                                    : "Nessun media per questo progetto"}
+                                    : filterVisibility !== "tutti"
+                                        ? "Nessun media con questo filtro di visibilità"
+                                        : "Nessun media per questo progetto"}
                             </p>
                         </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Riepilogo visibilità */}
+            <div className="mt-4 pt-4 border-t border-red-900/30">
+                <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center space-x-4">
+                        <span className="text-gray-500">
+                            Totale: <span className="text-white font-medium">{mediaItems.length}</span>
+                        </span>
+                        <span className="text-gray-500">
+                            <span className="text-green-500">👁️ Visibili:</span> <span className="text-white font-medium">{visibleCount}</span>
+                        </span>
+                        <span className="text-gray-500">
+                            <span className="text-gray-400">👁️‍🗨️ Nascosti:</span> <span className="text-white font-medium">{hiddenCount}</span>
+                        </span>
+                    </div>
+                    {filterVisibility !== "tutti" && (
+                        <button
+                            onClick={() => setFilterVisibility("tutti")}
+                            className="text-red-600 hover:text-red-500"
+                        >
+                            Reset filtro
+                        </button>
                     )}
                 </div>
             </div>

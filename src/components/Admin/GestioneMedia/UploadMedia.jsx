@@ -1,7 +1,7 @@
 // UploadMedia.jsx
 import { useState, useCallback } from 'react';
 
-export default function UploadMedia({ onUpload, disabled = false }) {
+export default function UploadMedia({ onUpload, disabled = false, selectedProject }) {
     const [isDragging, setIsDragging] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -33,23 +33,36 @@ export default function UploadMedia({ onUpload, disabled = false }) {
             return;
         }
 
-        const files = Array.from(e.dataTransfer.files);
+        const files = Array.from(e.dataTransfer.files).filter(file => {
+            const isValidType = file.type.startsWith('image/') || file.type.startsWith('video/');
+            const isValidSize = file.size <= 100 * 1024 * 1024; // 100MB
+            return isValidType && isValidSize;
+        });
+
         if (files.length > 0) {
             setSelectedFiles(files);
             handleFiles(files);
+        } else {
+            alert("Alcuni file non sono supportati o superano i 100MB");
         }
     }, [onUpload, disabled]);
 
     const handleFileInput = useCallback((e) => {
-        const files = Array.from(e.target.files);
+        const files = Array.from(e.target.files).filter(file => {
+            const isValidType = file.type.startsWith('image/') || file.type.startsWith('video/');
+            const isValidSize = file.size <= 100 * 1024 * 1024; // 100MB
+            return isValidType && isValidSize;
+        });
+
         if (files.length > 0) {
             setSelectedFiles(files);
             handleFiles(files);
+        } else {
+            alert("I file selezionati non sono supportati o superano i 100MB");
         }
     }, [onUpload]);
 
     const handleFiles = (files) => {
-        // Simulazione upload
         setUploadProgress(0);
         
         const interval = setInterval(() => {
@@ -112,8 +125,13 @@ export default function UploadMedia({ onUpload, disabled = false }) {
                         }
                     </p>
                     <p className="text-xs text-gray-600">
-                        Supporta immagini e video (max 100MB)
+                        Supporta immagini e video (max 100MB per file)
                     </p>
+                    {selectedProject && (
+                        <p className="text-xs text-green-500 mt-2">
+                            ✓ Upload per progetto ID: {selectedProject}
+                        </p>
+                    )}
                 </div>
             </div>
 
@@ -128,7 +146,7 @@ export default function UploadMedia({ onUpload, disabled = false }) {
                                     <span className="text-red-600/50">
                                         {file.type.startsWith('video/') ? '🎥' : '🖼️'}
                                     </span>
-                                    <span className="text-gray-300 truncate max-w-37.5">
+                                    <span className="text-gray-300 truncate max-w-60">
                                         {file.name}
                                     </span>
                                     <span className="text-gray-600">

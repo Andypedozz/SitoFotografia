@@ -4,50 +4,45 @@ import UploadMedia from "./UploadMedia";
 import MediaContainer from "./MediaContainer";
 import Panel from "../common/Panel";
 import FormGroup from "../common/FormGroup";
-
-/**
- * Struttura Media:
- * - id
- * - nome
- * - tipo
- * - percorso
- * - idProgetto
- * - dimensione
- * - data
- * - durata (se video)
- * - dimensioni (se immagine)
- */
+import { useMedia } from "./useMedia";
 
 export default function GestioneMedia() {
     const [mediaType, setMediaType] = useState("tutti");
-    const [mediaItems, setMediaItems] = useState([]);
     const [progetti, setProgetti] = useState([]);
     const [selectedProject, setSelectedProject] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingProgetti, setIsLoadingProgetti] = useState(true);
+    
+    const { 
+        media: mediaItems, 
+        isLoading: isLoadingMedia, 
+        error,
+        fetchMedia,
+        uploadMedia,
+        toggleVisibility,
+        deleteMedia 
+    } = useMedia();
 
-    // Fetch media e progetti
+    // Fetch progetti
     useEffect(() => {
-        async function fetchData() {
-            setIsLoading(true);
+        async function fetchProgetti() {
+            setIsLoadingProgetti(true);
             try {
-                const [mediaRes, progettiRes] = await Promise.all([
-                    fetch("/api/media"),
-                    fetch("/api/projects")
-                ]);
-                
-                const media = await mediaRes.json();
-                const progetti = await progettiRes.json();
-                
-                setMediaItems(media);
-                setProgetti(progetti);
+                const response = await fetch("/api/projects");
+                const data = await response.json();
+                setProgetti(data);
             } catch (error) {
-                console.error("Errore nel caricamento dei dati:", error);
+                console.error("Errore nel caricamento dei progetti:", error);
             } finally {
-                setIsLoading(false);
+                setIsLoadingProgetti(false);
             }
         }
-        fetchData();
+        fetchProgetti();
     }, []);
+
+    // Fetch media
+    useEffect(() => {
+        fetchMedia();
+    }, [fetchMedia]);
 
     const handleUpload = async (files) => {
         if (!selectedProject) {
@@ -61,43 +56,25 @@ export default function GestioneMedia() {
         });
         formData.append("idProgetto", selectedProject);
 
-        try {
-            const res = await fetch("/api/media/upload", {
-                method: "POST",
-                body: formData
-            });
+        const result = await uploadMedia(formData);
+        if (!result.success) {
+            alert("Errore durante il caricamento: " + result.error);
+        }
+    };
 
-            if (res.ok) {
-                const obj = await res.json();
-                const newMedia = obj.data;
-                setMediaItems(prev => [...newMedia, ...prev]);
-            } else {
-                alert("Errore durante il caricamento");
-            }
-        } catch (error) {
-            console.error("Errore upload:", error);
-            alert("Errore durante il caricamento");
+    const handleToggleVisibility = async (id, visibile) => {
+        const result = await toggleVisibility(id, visibile);
+        if (!result.success) {
+            alert("Errore durante l'aggiornamento della visibilità: " + result.error);
         }
     };
 
     const handleDelete = async (id) => {
         if (!confirm("Sei sicuro di voler eliminare questo file?")) return;
         
-        try {
-            const res = await fetch("/api/media", {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id })
-            });
-
-            if (res.ok) {
-                setMediaItems(prev => prev.filter(item => item.id !== id));
-            } else {
-                alert("Errore durante l'eliminazione");
-            }
-        } catch (error) {
-            console.error("Errore eliminazione:", error);
-            alert("Errore durante l'eliminazione");
+        const result = await deleteMedia(id);
+        if (!result.success) {
+            alert("Errore durante l'eliminazione: " + result.error);
         }
     };
 
@@ -105,17 +82,29 @@ export default function GestioneMedia() {
         ? mediaItems 
         : mediaItems.filter(item => item.tipo === mediaType);
 
-    // Statistiche per progetto
+    // Statistiche per progetto e visibilità
     const getProjectStats = () => {
         const stats = {};
         mediaItems.forEach(item => {
             const projectId = item.idProgetto;
-            stats[projectId] = (stats[projectId] || 0) + 1;
+            if (!stats[projectId]) {
+                stats[projectId] = { totale: 0, visibili: 0, nascosti: 0 };
+            }
+            stats[projectId].totale++;
+            if (item.visibile) {
+                stats[projectId].visibili++;
+            } else {
+                stats[projectId].nascosti++;
+            }
         });
         return stats;
     };
 
     const projectStats = getProjectStats();
+    const visibleCount = mediaItems.filter(m => m.visibile).length;
+    const hiddenCount = mediaItems.filter(m => !m.visibile).length;
+
+    const isLoading = isLoadingMedia || isLoadingProgetti;
 
     if (isLoading) {
         return (
@@ -124,6 +113,25 @@ export default function GestioneMedia() {
                     <div className="text-center">
                         <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                         <p className="text-gray-500">Caricamento...</p>
+                    </div>
+                </div>
+            </Panel>
+        );
+    }
+
+    if (error) {
+        return (
+            <Panel>
+                <div className="flex items-center justify-center h-64">
+                    <div className="text-center">
+                        <span className="text-4xl block mb-3 text-red-600">⚠️</span>
+                        <p className="text-red-500 text-sm">Errore: {error}</p>
+                        <button 
+                            onClick={() => fetchMedia()}
+                            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700"
+                        >
+                            Riprova
+                        </button>
                     </div>
                 </div>
             </Panel>
@@ -141,6 +149,18 @@ export default function GestioneMedia() {
                     <span className="px-2 py-1 bg-red-600/10 border border-red-600/30 rounded text-xs text-red-600">
                         {mediaItems.length} file
                     </span>
+                </div>
+
+                {/* Statistiche rapide */}
+                <div className="flex items-center space-x-4 text-xs">
+                    <div className="flex items-center space-x-2">
+                        <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                        <span className="text-gray-400">Visibili: <span className="text-white">{visibleCount}</span></span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
+                        <span className="text-gray-400">Nascosti: <span className="text-white">{hiddenCount}</span></span>
+                    </div>
                 </div>
             </header>
 
@@ -167,11 +187,14 @@ export default function GestioneMedia() {
                                     className="w-full px-3 py-2 bg-[rgb(19,19,19)] border border-red-900/30 rounded-lg text-white focus:outline-none focus:border-red-600 transition-all duration-300"
                                 >
                                     <option value="">Seleziona un progetto</option>
-                                    {progetti.map(progetto => (
-                                        <option key={progetto.id} value={progetto.id}>
-                                            {progetto.nome} ({projectStats[progetto.id] || 0} file)
-                                        </option>
-                                    ))}
+                                    {progetti.map(progetto => {
+                                        const stats = projectStats[progetto.id] || { totale: 0, visibili: 0, nascosti: 0 };
+                                        return (
+                                            <option key={progetto.id} value={progetto.id}>
+                                                {progetto.nome} ({stats.totale} file, {stats.visibili} visibili)
+                                            </option>
+                                        );
+                                    })}
                                 </select>
                                 {!selectedProject && (
                                     <p className="text-xs text-red-500 mt-1">
@@ -183,6 +206,7 @@ export default function GestioneMedia() {
                             <UploadMedia 
                                 onUpload={handleUpload} 
                                 disabled={!selectedProject}
+                                selectedProject={selectedProject}
                             />
                             
                             {/* Selettore tipo media */}
@@ -209,21 +233,31 @@ export default function GestioneMedia() {
                                 </div>
                             </div>
 
-                            {/* Statistiche rapide */}
+                            {/* Statistiche dettagliate */}
                             <div className="mt-4 pt-4 border-t border-red-900/30">
-                                <div className="text-xs text-gray-500 space-y-2">
-                                    <div className="flex justify-between">
-                                        <span>Immagini:</span>
-                                        <span className="text-white">{mediaItems.filter(m => m.tipo === "immagine").length}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Video:</span>
-                                        <span className="text-white">{mediaItems.filter(m => m.tipo === "video").length}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Progetti con media:</span>
-                                        <span className="text-white">{Object.keys(projectStats).length}</span>
-                                    </div>
+                                <h4 className="text-xs font-medium text-gray-400 mb-3">Statistiche per progetto</h4>
+                                <div className="space-y-2 max-h-40 overflow-y-auto">
+                                    {progetti.map(progetto => {
+                                        const stats = projectStats[progetto.id] || { totale: 0, visibili: 0, nascosti: 0 };
+                                        return (
+                                            <div key={progetto.id} className="text-xs">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-gray-500 truncate max-w-32">{progetto.nome}</span>
+                                                    <div className="flex items-center space-x-2">
+                                                        <span className="text-green-500">{stats.visibili}</span>
+                                                        <span className="text-gray-600">/</span>
+                                                        <span className="text-gray-400">{stats.totale}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="w-full h-1 bg-gray-800 rounded-full mt-1 overflow-hidden">
+                                                    <div 
+                                                        className="h-full bg-linear-to-r from-green-500 to-green-600"
+                                                        style={{ width: `${stats.totale ? (stats.visibili / stats.totale) * 100 : 0}%` }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </FormGroup>
@@ -234,6 +268,7 @@ export default function GestioneMedia() {
                         <MediaContainer 
                             mediaItems={filteredMedia}
                             onDelete={handleDelete}
+                            onToggleVisibility={handleToggleVisibility}
                             progetti={progetti}
                         />
                     </div>
