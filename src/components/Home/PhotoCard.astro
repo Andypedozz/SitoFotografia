@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+
 const { photo } = Astro.props;
 ---
 <style>
@@ -57,5 +59,6 @@ const { photo } = Astro.props;
     }
 </style>
 <div class="gallery-item">
-    <img src={photo.percorso} alt="photo-card" loading="lazy"/>
+    <Image src={photo.percorso} width={400} height={500} alt="photo-card" loading={"lazy"}/>
+    <!-- <img src={photo.percorso} alt="photo-card" loading="lazy"/> -->
 </div>
