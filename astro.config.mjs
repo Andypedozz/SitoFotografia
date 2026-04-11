@@ -174,12 +174,4 @@ export default defineConfig({
 			exclude: ['knex', 'sqlite3'] // Escludi knex e sqlite3 dal pre-bundling
 		}
 	},
-	
-	// Markdown e altri settings (opzionale)
-	markdown: {
-		shikiConfig: {
-			theme: 'github-dark',
-			wrap: true
-		}
-	}
 });

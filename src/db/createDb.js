@@ -71,11 +71,11 @@ async function insertStandardData() {
     if(projects.length > 0) return;
 
     await db("Progetto").insert([
-        { nome: "Opia", slug: "opia", copertina: "opia.jpg" },
-        { nome: "Pizzeria Roby's", slug: "robys", copertina: "robys.jpg" },
-        { nome: "Supermoto", slug: "supermoto", copertina: "supermoto.jpg" },
-        { nome: "Enoteca Montevecchio", slug: "enoteca", copertina: "enoteca.jpg" },
-        { nome: "Moda", slug: "moda", copertina: "moda.jpg" }
+        { nome: "Opia", slug: "opia", copertina: "images/opia.jpg" },
+        { nome: "Pizzeria Roby's", slug: "robys", copertina: "images/robys.jpg" },
+        { nome: "Supermoto", slug: "supermoto", copertina: "images/supermoto.jpg" },
+        { nome: "Enoteca Montevecchio", slug: "enoteca", copertina: "images/enoteca.jpg" },
+        { nome: "Moda", slug: "moda", copertina: "images/moda.jpg" }
     ])
 
     await db("Utente").insert({
@@ -103,7 +103,7 @@ async function fillMediaTable() {
 async function main() {
     await createDatabase();
     await insertStandardData();
-    await fillMediaTable();
+    // await fillMediaTable();
 }
 
 main();
