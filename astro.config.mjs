@@ -76,7 +76,7 @@ function getAdapter() {
 
 export default defineConfig({
 	output: 'server',
-	adapter: getAdapter(),
+	adapter: vercel(),
 	integrations: [react()],
 	
 	// Configurazione server
