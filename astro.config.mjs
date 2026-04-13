@@ -65,10 +65,10 @@ function copyDatabase() {
 
 export default defineConfig({
 	output: 'server',
-	// adapter: vercel(),
-	adapter: node({
-		mode: 'standalone'
-	}),
+	adapter: vercel(),
+	// adapter: node({
+	// 	mode: 'standalone'
+	// }),
 	integrations: [react()],
 	
 	// Configurazione server
