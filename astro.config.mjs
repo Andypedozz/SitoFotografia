@@ -65,7 +65,9 @@ function copyDatabase() {
 
 export default defineConfig({
 	output: 'server',
-	adapter: vercel(),
+	adapter: vercel({
+		includeFiles: ['data/**/*'],
+	}),
 	// adapter: node({
 	// 	mode: 'standalone'
 	// }),
