@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcryptjs";
-import { db } from "../../db/db_knex";
 import { jsonResponse } from "../../scripts/responseUtils.js"
+import { db } from "../../db/db.js";
 
 export async function POST({ request, cookies, redirect }) {
     const formData = await request.formData();
@@ -11,7 +11,7 @@ export async function POST({ request, cookies, redirect }) {
 
     let user;
     try {
-        user = await db("Utente").select("*").where("username", username).first();
+        user = await db.execute("SELECT * FROM Utente WHERE username = ?", [username]);
     } catch (error) {
         return jsonResponse({ error: error.message }, 500);
     }

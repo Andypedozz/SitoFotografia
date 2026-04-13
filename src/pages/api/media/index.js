@@ -1,4 +1,4 @@
-import { db } from "../../../db/db_knex.js"
+import { db } from "../../../db/db.js"
 import { handleError, jsonResponse } from "../../../scripts/responseUtils.js";
 
 // GET /api/media
@@ -44,7 +44,7 @@ export async function POST({ request }) {
 export async function DELETE({ request }) {
     try {
         const { id } = await request.json();
-        const result = await db("Media").delete().where("id", id);
+        const result = await db.execute("DELETE FROM Media WHERE id = ?", [id]);
         return jsonResponse(result);
     } catch (error) {
         return handleError(error);

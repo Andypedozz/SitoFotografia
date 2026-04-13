@@ -1,5 +1,5 @@
 import { handleError, jsonResponse } from "../../../scripts/responseUtils";
-import { db } from "../../../db/db_knex"
+import { db } from "../../../db/db.js"
 
 // GET /api/projects
 export async function GET({ request }) {
@@ -11,23 +11,23 @@ export async function GET({ request }) {
 
         // /api/projects?id=xxx
         if(id) {
-            const result = await db("Progetto").select("*").where("id", id);
+            const result = await db.execute("SELECT * FROM Progetto WHERE id = ?", [id]);
             return jsonResponse(result);
         }
         
         // /api/projects?slug=xxx
         if(slug) {
-            const result = await db("Progetto").select("*").where("slug", slug);
+            const result = await db.execute("SELECT * FROM Progetto WHERE slug = ?", [slug]);
             return jsonResponse(result);
         }
 
         if(homepage) {
-            const result = await db("Progetto").select("*").where("homepage", homepage);
+            const result = await db.execute("SELECT * FROM Progetto WHERE homepage = ?", [homepage]);
             return jsonResponse(result);
         }
 
         // /api/projects
-        const result = await db("Progetto").select("*");
+        const result = await db.execute("SELECT * FROM Progetto");
         return jsonResponse(result);
     } catch (error) {
         return handleError(error);
@@ -39,7 +39,7 @@ export async function POST({ request }) {
     try {
         const data = await request.json();
         console.log(data);
-        const newProject = await db("Progetto").insert(data).returning("*");
+        const newProject = await db.execute("INSERT INTO Progetto (nome, slug, homepage) VALUES (?, ?, ?)", [data.nome, data.slug, data.homepage]); 
         return jsonResponse({
             success: true,
             data: newProject
@@ -61,7 +61,7 @@ export async function PUT({ request }) {
             }, 400);
         }
 
-        const updatedProject = await db("Progetto").update(data).where("id", id).returning("*");
+        const updatedProject = await db.execute("UPDATE Progetto SET ? WHERE id = ?", [data, id]);
 
         if(!updatedProject) {
             return jsonResponse({
@@ -91,7 +91,7 @@ export async function DELETE({ request }) {
             }, 400);
         }
 
-        const deleted = await db("Progetto").delete().where("id", id);
+        const deleted = await db.execute("DELETE FROM Progetto WHERE id = ?", [id]);
 
         if(!deleted) {
             return jsonResponse({

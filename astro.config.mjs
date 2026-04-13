@@ -16,53 +16,6 @@ import "./src/db/db_knex.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Funzione migliorata per copiare il database
-function copyDatabase() {
-  return {
-    name: 'copy-database',
-    closeBundle: async () => {
-      const source = path.join(__dirname, 'data', 'db.sqlite');
-      const destDir = path.join(__dirname, 'dist', 'data');
-      const destination = path.join(destDir, 'db.sqlite');
-      
-      try {
-        // Verifica se il file source esiste
-        await fs.access(source);
-        
-        // Crea la cartella di destinazione
-        await fs.mkdir(destDir, { recursive: true });
-        
-        // Copia il file
-        await fs.copyFile(source, destination);
-        
-        console.log('\n✅ Database copiato in dist/data/db.sqlite');
-        
-        // Opzionale: copia anche altri file nella cartella data se necessario
-        try {
-          const otherFiles = await fs.readdir(path.join(__dirname, 'data'));
-          for (const file of otherFiles) {
-            if (file !== 'db.sqlite' && file.endsWith('.sqlite')) {
-              const otherSource = path.join(__dirname, 'data', file);
-              const otherDest = path.join(destDir, file);
-              await fs.copyFile(otherSource, otherDest);
-              console.log(`   📄 Copiato anche: ${file}`);
-            }
-          }
-        } catch (readError) {
-          // Ignora errori nella lettura di altri file
-        }
-        
-      } catch (error) {
-        if (error.code === 'ENOENT') {
-          console.log('\n⚠️  File database non trovato in data/db.sqlite');
-        } else {
-          console.error('\n❌ Errore nella copia del database:', error.message);
-        }
-      }
-    }
-  };
-}
-
 export default defineConfig({
 	output: 'server',
 	adapter: vercel({
@@ -98,10 +51,6 @@ export default defineConfig({
 						
 						// Pattern di file sensibili da bloccare
 						const sensitivePatterns = [
-							"/data/db.sqlite",
-							"/data/",
-							".sqlite",
-							".db",
 							".env",
 							".git",
 							"node_modules",
@@ -126,7 +75,7 @@ export default defineConfig({
 				// Permetti solo queste cartelle
 				allow: ['public', 'src', 'node_modules'],
 				// Nega esplicitamente la cartella data
-				deny: ['.env', '.sqlite', '.db', 'data/', './data/']
+				deny: ['.env']
 			}
 		},
 		

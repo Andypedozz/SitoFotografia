@@ -1,5 +1,5 @@
 // src/pages/api/media/upload.js
-import { db } from "../../../db/db_knex";
+import { db } from "../../../db/db.js";
 import { v4 as uuidv4 } from "uuid";
 import path from "node:path";
 import fs from "node:fs/promises";
@@ -37,7 +37,7 @@ export async function POST({ request }) {
         }
 
         // Verifica che il progetto esista
-        const progetto = await db("Progetto").where("id", idProgetto).first();
+        const progetto = await db.execute("SELECT * FROM Progetto WHERE id = ?", [idProgetto]);
         if (!progetto) {
             return new Response(
                 JSON.stringify({ error: "Progetto non trovato" }),

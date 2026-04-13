@@ -1,4 +1,4 @@
-import { db } from "../../../db/db_knex";
+import { db } from "../../../db/db.js";
 import { jsonResponse, handleError } from "../../../scripts/responseUtils";
 
 // GET homepage projects
