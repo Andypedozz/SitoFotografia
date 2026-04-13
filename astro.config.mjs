@@ -68,9 +68,6 @@ export default defineConfig({
 	adapter: vercel({
 		includeFiles: ['data/**/*'],
 	}),
-	// adapter: node({
-	// 	mode: 'standalone'
-	// }),
 	integrations: [react()],
 	
 	// Configurazione server
@@ -92,7 +89,7 @@ export default defineConfig({
 	vite: {
 		plugins: [
 			tailwindcss(),
-			copyDatabase(), // Aggiunto il plugin per copiare il database
+			// copyDatabase(), // Aggiunto il plugin per copiare il database
 			{
 				name: "block-sensitive-files",
 				configureServer(server) {
