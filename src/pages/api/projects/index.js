@@ -11,23 +11,23 @@ export async function GET({ request }) {
 
         // /api/projects?id=xxx
         if(id) {
-            const result = await db.execute("SELECT * FROM Progetto WHERE id = ?", [id]);
+            const result = (await db.execute("SELECT * FROM Progetto WHERE id = ?", [id])).rows[0];
             return jsonResponse(result);
         }
         
         // /api/projects?slug=xxx
         if(slug) {
-            const result = await db.execute("SELECT * FROM Progetto WHERE slug = ?", [slug]);
+            const result = (await db.execute("SELECT * FROM Progetto WHERE slug = ?", [slug])).rows[0];
             return jsonResponse(result);
         }
 
         if(homepage) {
-            const result = await db.execute("SELECT * FROM Progetto WHERE homepage = ?", [homepage]);
+            const result = (await db.execute("SELECT * FROM Progetto WHERE homepage = ?", [homepage])).rows;
             return jsonResponse(result);
         }
 
         // /api/projects
-        const result = await db.execute("SELECT * FROM Progetto");
+        const result = (await db.execute("SELECT * FROM Progetto")).rows;
         return jsonResponse(result);
     } catch (error) {
         return handleError(error);

@@ -6,21 +6,15 @@ import tailwindcss from '@tailwindcss/vite';
 import path from "node:path";
 import fs from "node:fs/promises"; // Usa la versione promises
 import { fileURLToPath } from 'node:url';
-import { createTables } from "./src/db/createTables.js"
 import vercel from "@astrojs/vercel"
 
 dotenv.config();
-createTables();
-
-import "./src/db/db_knex.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
 	output: 'server',
-	adapter: vercel({
-		includeFiles: ['data/**/*'],
-	}),
+	adapter: vercel(),
 	integrations: [react()],
 	
 	// Configurazione server
@@ -42,7 +36,6 @@ export default defineConfig({
 	vite: {
 		plugins: [
 			tailwindcss(),
-			// copyDatabase(), // Aggiunto il plugin per copiare il database
 			{
 				name: "block-sensitive-files",
 				configureServer(server) {

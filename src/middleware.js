@@ -1,5 +1,5 @@
 import { defineMiddleware } from 'astro/middleware';
-import { db } from './db/db_knex.js';
+import { db } from './db/db.js';
 
 // Paths da bloccare
 const BLOCKED_PATHS = [
@@ -40,7 +40,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   let session;
   try {
-    session = await db("Sessione").select("*").where("id", sessionId).first();
+    session = await db.execute("SELECT * FROM Sessione WHERE id = ?", [sessionId]);
   } catch (error) {
     locals.user = null;
     return next();
@@ -52,12 +52,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   if (new Date(session.expiresAt) < new Date()) {
-    await db("Sessione").delete().where("id", sessionId);
+    await db.execute("DELETE FROM Sessione WHERE id = ?", [sessionId]);
     locals.user = null;
     return next();
   }
 
-  const user = await db("Utente").select(["id", "username", "ruolo"]).where("id", session.userId).first();
+  const user = await db.execute("SELECT * FROM Utente WHERE id = ?", [session.userId]);
 
   locals.user = user;
   return next();

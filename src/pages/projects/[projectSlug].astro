@@ -1,9 +1,9 @@
 ---
 import ProjectTemplate from "../../components/ProjectTemplate/ProjectTemplate.astro";
-import { db } from "../../db/db_knex";
 
 const { projectSlug } = Astro.params;
-const project = await db("Progetto").select("*").where("slug", projectSlug).first();
+const res = await fetch(new URL("/api/projects?slug="+projectSlug, Astro.request.url), { method: "GET" });
+const project = await res.json();
 
 ---
 

@@ -10,19 +10,19 @@ export async function GET({ request }) {
 
         // /api/media?id=xxx
         if(id) {
-            const result = await db("Media").select("*").where("id", id).first();
+            const result = (await db.execute("SELECT * FROM Media WHERE id = ?", [id])).rows[0];
             return jsonResponse(result);
         }
 
         // /api/media?slug=xxx
         if(slug) {
-            const project = await db("Progetto").select("*").where("slug", slug).first();
-            const result = await db("Media").select("*").where("idProgetto", project.id);
+            const project = (await db.execute("SELECT * FROM Progetto WHERE slug = ?", [slug])).rows[0];
+            const result = await db("Media").select("*").where("idProgetto", project.id).rows;
             return jsonResponse(result);
         }
 
         // /api/media
-        const result = await db("Media").select("*");
+        const result = (await db.execute("SELECT * FROM Media")).rows;
         return jsonResponse(result);
     } catch (error) {
         return handleError(error);
@@ -33,7 +33,7 @@ export async function GET({ request }) {
 export async function POST({ request }) {
     try {
         const data = await request.json();
-        const result = await db("Media").insert(data).returning("*").first();
+        const result = await db.execute("INSERT INTO Media (nome, idProgetto) VALUES (?, ?)", [data.nome, data.idProgetto]);
         return jsonResponse(result);
     } catch (error) {
         return handleError(error);

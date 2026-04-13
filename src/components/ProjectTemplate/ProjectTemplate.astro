@@ -1,5 +1,5 @@
 ---
-import { db } from "../../db/db_knex";
+import { db } from "../../db/db.js";
 import Layout from "../../layouts/Layout.astro";
 import Header from "../Home/Header.astro";
 import PhotoCard from "../Home/PhotoCard.astro";
@@ -13,7 +13,8 @@ const headerLinks = [
 ]
 
 // Fetch related media
-const media = await db("Media").select("*").where("idProgetto", project.id);
+const res = await fetch(new URL("/api/media?slug="+project.slug, Astro.request.url), { method: "GET" });
+const media = await res.json();
 const photos = media.filter((media: any) => media.tipo === "immagine");
 ---
 
