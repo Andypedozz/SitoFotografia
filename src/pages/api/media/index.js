@@ -17,7 +17,7 @@ export async function GET({ request }) {
         // /api/media?slug=xxx
         if(slug) {
             const project = (await db.execute("SELECT * FROM Progetto WHERE slug = ?", [slug])).rows[0];
-            const result = await db("Media").select("*").where("idProgetto", project.id).rows;
+            const result = (await db.execute("SELECT * FROM Media WHERE idProgetto = ?", [project.id])).rows;
             return jsonResponse(result);
         }
 

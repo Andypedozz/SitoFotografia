@@ -4,7 +4,6 @@ import node from '@astrojs/node';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import path from "node:path";
-import fs from "node:fs/promises"; // Usa la versione promises
 import { fileURLToPath } from 'node:url';
 import vercel from "@astrojs/vercel"
 
@@ -18,14 +17,14 @@ export default defineConfig({
 	integrations: [react()],
 	
 	// Configurazione server
-	// server: {
-	// 	headers: {
-	// 		'X-Content-Type-Options': 'nosniff',
-	// 		'X-Frame-Options': 'DENY',
-	// 		'X-XSS-Protection': '1; mode=block',
-	// 		'Referrer-Policy': 'strict-origin-when-cross-origin'
-	// 	}
-	// },
+	server: {
+		headers: {
+			'X-Content-Type-Options': 'nosniff',
+			'X-Frame-Options': 'DENY',
+			'X-XSS-Protection': '1; mode=block',
+			'Referrer-Policy': 'strict-origin-when-cross-origin'
+		}
+	},
 	
 	// Configurazione build
 	build: {
@@ -71,32 +70,5 @@ export default defineConfig({
 				deny: ['.env']
 			}
 		},
-		
-		// Ottimizzazioni build
-		build: {
-			rollupOptions: {
-				external: ['data/**/*', '**/*.sqlite', '**/*.db'],
-				output: {
-					manualChunks: {
-						react: ['react', 'react-dom'],
-					}
-				}
-			},
-			sourcemap: process.env.NODE_ENV === 'development'
-		},
-		
-		// Risoluzione moduli
-		resolve: {
-			alias: {
-				'@': path.resolve(__dirname, './src'),
-				'@db': path.resolve(__dirname, './src/db')
-			}
-		},
-		
-		// Ottimizzazioni dipendenze
-		optimizeDeps: {
-			include: ['react', 'react-dom'],
-			exclude: ['knex', 'sqlite3'] // Escludi knex e sqlite3 dal pre-bundling
-		}
 	},
 });

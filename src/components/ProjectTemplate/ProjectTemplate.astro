@@ -1,5 +1,4 @@
 ---
-import { db } from "../../db/db.js";
 import Layout from "../../layouts/Layout.astro";
 import Header from "../Home/Header.astro";
 import PhotoCard from "../Home/PhotoCard.astro";
@@ -14,7 +13,8 @@ const headerLinks = [
 
 // Fetch related media
 const res = await fetch(new URL("/api/media?slug="+project.slug, Astro.request.url), { method: "GET" });
-const media = await res.json();
+let media = await res.json();
+if (media.error) media = [];
 const photos = media.filter((media: any) => media.tipo === "immagine");
 ---
 
@@ -35,7 +35,7 @@ const photos = media.filter((media: any) => media.tipo === "immagine");
     }
 </style>
 <Layout>
-    <Header logoPath={"/logo-nobg.png"} links={headerLinks}/>
+    <Header logoPath="../common/logo-nobg.png" links={headerLinks}/>
     <div class="project-header">
         <h1>{project.nome}</h1>
     </div>
