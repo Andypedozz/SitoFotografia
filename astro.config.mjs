@@ -11,7 +11,6 @@ import vercel from "@astrojs/vercel"
 
 dotenv.config();
 createTables();
-const DEVELOPMENT = process.env.DEVELOPMENT;
 
 import "./src/db/db_knex.js";
 
@@ -64,19 +63,12 @@ function copyDatabase() {
   };
 }
 
-function getAdapter() {
-  if (DEVELOPMENT) {
-	return node({
-	  mode: 'standalone'
-	});
-  } else {
-	return vercel();
-  }
-}
-
 export default defineConfig({
 	output: 'server',
-	adapter: vercel(),
+	// adapter: vercel(),
+	adapter: node({
+		mode: 'standalone'
+	}),
 	integrations: [react()],
 	
 	// Configurazione server
@@ -122,14 +114,6 @@ export default defineConfig({
 						const isSensitive = sensitivePatterns.some(pattern => 
 							url.includes(pattern) || url.endsWith('.sqlite') || url.endsWith('.db')
 						);
-
-						// if (isSensitive && !url.includes('@vite') && !url.includes('@id')) {
-						// 	console.log(`🚫 Bloccato accesso a: ${url}`);
-						// 	res.statusCode = 403;
-						// 	res.setHeader('Content-Type', 'text/plain');
-						// 	res.end('Accesso a file sensibili non consentito');
-						// 	return;
-						// }
 
 						next();
 					});
