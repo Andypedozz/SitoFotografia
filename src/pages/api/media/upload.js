@@ -1,5 +1,5 @@
 // src/pages/api/media/upload.js
-import { db } from "../../../db/db.js";
+import { db } from "../../../db/db.js"
 import { v4 as uuidv4 } from "uuid";
 import path from "node:path";
 import fs from "node:fs/promises";
@@ -37,7 +37,7 @@ export async function POST({ request }) {
         }
 
         // Verifica che il progetto esista
-        const progetto = await db.execute("SELECT * FROM Progetto WHERE id = ?", [idProgetto]);
+        const progetto = (await db.execute("SELECT * FROM Progetto WHERE id = ?", [idProgetto])).rows[0];
         if (!progetto) {
             return new Response(
                 JSON.stringify({ error: "Progetto non trovato" }),
@@ -78,9 +78,6 @@ export async function POST({ request }) {
             // Determina il tipo di media
             const tipo = file.type.startsWith("video/") ? "video" : "immagine";
 
-            // Calcola dimensioni in formato leggibile
-            const dimensione = formatFileSize(file.size);
-
             // Estrai metadati specifici
             let durata = null;
             let dimensioni = null;
@@ -94,13 +91,8 @@ export async function POST({ request }) {
             }
 
             // Inserisci nel database
-            const [newMedia] = await db("Media").insert({
-                nome: file.name,
-                tipo: tipo,
-                percorso: publicPath,
-                idProgetto: idProgetto,
-            }).returning("*");
-
+            await db.execute("INSERT INTO Media (nome, tipo, percorso, idProgetto) VALUES (?, ?, ?, ?) ", [file.name, tipo, publicPath, idProgetto]);
+            const [newMedia] = (await db.execute("SELECT * FROM Media WHERE percorso = ?", [publicPath])).rows;
             uploadedMedia.push(newMedia);
         }
 

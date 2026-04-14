@@ -40,7 +40,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   let session;
   try {
-    session = await db.execute("SELECT * FROM Sessione WHERE id = ?", [sessionId]);
+    session = (await db.execute("SELECT * FROM Sessione WHERE id = ?", [sessionId])).rows[0];
   } catch (error) {
     locals.user = null;
     return next();
@@ -57,7 +57,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  const user = await db.execute("SELECT * FROM Utente WHERE id = ?", [session.userId]);
+  const user = (await db.execute("SELECT * FROM Utente WHERE id = ?", [session.userId])).rows[0];
 
   locals.user = user;
   return next();

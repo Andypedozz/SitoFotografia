@@ -11,7 +11,7 @@ export async function POST({ request, cookies, redirect }) {
 
     let user;
     try {
-        user = await db.execute("SELECT * FROM Utente WHERE username = ?", [username]);
+        user = (await db.execute("SELECT * FROM Utente WHERE username = ?", [username])).rows[0];
     } catch (error) {
         return jsonResponse({ error: error.message }, 500);
     }
@@ -29,11 +29,7 @@ export async function POST({ request, cookies, redirect }) {
     const sessionId = uuidv4();
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-    await db("Sessione").insert({
-        id: sessionId,
-        userId: user.id,
-        expiresAt: expiresAt.toISOString()
-    });
+    await db.execute("INSERT INTO Sessione (id, userId, expiresAt) VALUES (?, ?, ?)", [sessionId, user.id, expiresAt.toISOString()]);
 
     cookies.set("session", sessionId, {
         httpOnly: true,
