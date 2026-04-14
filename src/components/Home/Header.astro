@@ -1,6 +1,7 @@
 ---
 const { logoPath, links } = Astro.props;
 ---
+
 <style>
     header {
         width: 100%;
@@ -11,6 +12,9 @@ const { logoPath, links } = Astro.props;
         background-color: rgba(0, 0, 0, 0.9);
         z-index: 1000;
         transition: all 0.3s ease;
+        position: fixed;
+        top: 0;
+        left: 0;
     }
 
     header.scrolled {
@@ -24,6 +28,7 @@ const { logoPath, links } = Astro.props;
         display: flex;
         align-items: center;
         gap: 15px;
+        z-index: 1001;
     }
 
     .logo img {
@@ -53,6 +58,9 @@ const { logoPath, links } = Astro.props;
         font-weight: 500;
         position: relative;
         padding: 5px 0;
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
     }
 
     nav a:after {
@@ -72,10 +80,145 @@ const { logoPath, links } = Astro.props;
 
     .mobile-toggle {
         display: none;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         cursor: pointer;
+        z-index: 1001;
+        color: white;
+        transition: color 0.3s ease;
+    }
+
+    .mobile-toggle:hover {
+        color: rgb(164, 0, 0);
+    }
+
+    /* Overlay per il menu mobile */
+    .mobile-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 400px;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.98);
+        backdrop-filter: blur(20px);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        transition: right 0.3s ease;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .mobile-nav.active {
+        right: 0;
+    }
+
+    .mobile-nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.3rem;
+        font-weight: 500;
+        padding: 10px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .mobile-nav a:hover {
+        color: rgb(164, 0, 0);
+        transform: translateX(-5px);
+    }
+
+    .mobile-nav a:before {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 2px;
+        background-color: rgb(164, 0, 0);
+        transition: width 0.3s ease;
+    }
+
+    .mobile-nav a:hover:before {
+        width: 15px;
+    }
+
+    .close-menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2rem;
+        cursor: pointer;
+        color: white;
+        transition: color 0.3s ease;
+    }
+
+    .close-menu:hover {
+        color: rgb(164, 0, 0);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .logo-text {
+            font-size: 1.2rem;
+        }
+        
+        .logo img {
+            width: 120px;
+            height: 53px;
+        }
+
+        nav.desktop-nav {
+            display: none;
+        }
+
+        .mobile-toggle {
+            display: block;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .logo-text {
+            display: none;
+        }
+        
+        .logo img {
+            width: 100px;
+            height: 44px;
+        }
+        
+        header {
+            padding: 15px 5%;
+        }
+        
+        header.scrolled {
+            padding: 10px 5%;
+        }
     }
 </style>
+
 <header id="header">
     <div class="logo">
         <img src={logoPath} alt="logo-image">
@@ -86,9 +229,74 @@ const { logoPath, links } = Astro.props;
         <i class="fas fa-bars"></i>
     </div>
 
-    <nav id="mainNav">
+    <!-- Desktop navigation -->
+    <nav class="desktop-nav">
         {links.map((link: any) => (
             <a href={link.href}>{link.name}</a>
         ))}
     </nav>
+
+    <!-- Mobile menu overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    
+    <!-- Mobile navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="close-menu" id="closeMenu">
+            <i class="fas fa-times"></i>
+        </div>
+        {links.map((link: any) => (
+            <a href={link.href}>{link.name}</a>
+        ))}
+    </div>
 </header>
+
+<script is:inline>
+    // Mobile menu functionality
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    const closeMenu = document.getElementById('closeMenu');
+
+    function openMobileMenu() {
+        mobileNav.classList.add('active');
+        mobileOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+        mobileNav.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    mobileToggle.addEventListener('click', openMobileMenu);
+    closeMenu.addEventListener('click', closeMobileMenu);
+    mobileOverlay.addEventListener('click', closeMobileMenu);
+
+    // Close menu when clicking on a link
+    const mobileLinks = mobileNav.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Scroll effect for header
+    const header = document.getElementById('header');
+    
+    function handleScroll() {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call
+
+    // Handle window resize - close mobile menu if screen becomes larger
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            closeMobileMenu();
+        }
+    });
+</script>
