@@ -10,17 +10,6 @@ import fs from "node:fs";
 
 dotenv.config();
 
-function createImagesDir() {
-	const DEVELOPMENT = process.env.DEVELOPMENT;
-
-	if(!DEVELOPMENT) {
-		if(fs.existsSync("./images")) return;
-		fs.mkdirSync("./images");
-	}
-}
-
-createImagesDir();
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
