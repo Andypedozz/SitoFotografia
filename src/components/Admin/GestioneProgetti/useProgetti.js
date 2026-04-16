@@ -46,7 +46,7 @@ export function useProgetti() {
     const createProgetto = async (projectData) => {
         try {
             const newProject = await create(projectData);
-            setProgetti(prev => [...prev, newProject]);
+            setProgetti(prev => [...prev, newProject.data]);
             return { success: true };
         } catch (err) {
             console.error('Errore creazione progetto:', err);

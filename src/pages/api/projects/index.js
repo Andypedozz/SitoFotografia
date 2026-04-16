@@ -39,7 +39,8 @@ export async function POST({ request }) {
     try {
         const data = await request.json();
         console.log(data);
-        const newProject = await db.execute("INSERT INTO Progetto (nome, slug, copertina, homepage) VALUES (?, ?, ?, ?)", [data.nome, data.slug, data.copertina, 1]); 
+        await db.execute("INSERT INTO Progetto (nome, slug, copertina, homepage) VALUES (?, ?, ?, ?)", [data.nome, data.slug, data.copertina, 1]); 
+        const newProject = (await db.execute("SELECT * FROM Progetto WHERE slug = ?", [data.slug])).rows[0];
         return jsonResponse({
             success: true,
             data: newProject

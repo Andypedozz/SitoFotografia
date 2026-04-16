@@ -42,32 +42,6 @@ const Sidebar = ({ buttons, setPage }) => {
           }}/> 
         </div>
       </nav>
-
-      {/* Footer con informazioni sistema e contatore sezioni */}
-      <div className="p-4 border-t border-red-900/30">
-        <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center space-x-2">
-            <div className="w-1.5 h-1.5 bg-red-600/50 rounded-full" />
-            <span className="text-gray-600">SYSTEM v1.0</span>
-          </div>
-          <span className="text-gray-700 font-mono">
-            {buttonEntries.length} sec
-          </span>
-        </div>
-        
-        {/* Barra di stato delle sezioni */}
-        <div className="mt-3 h-1 bg-red-950/30 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-red-600/50 rounded-full"
-            style={{ width: `${Math.min(buttonEntries.length * 10, 100)}%` }}
-          />
-        </div>
-        
-        <div className="mt-2 text-[10px] text-gray-800 flex justify-between">
-          <span>© 2024 DARK GUI</span>
-          <span className="text-red-900/50">v2.0</span>
-        </div>
-      </div>
     </aside>
   );
 };

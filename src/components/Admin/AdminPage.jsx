@@ -52,11 +52,6 @@ export default function AdminPage() {
                             </span>
                         </div>
                         
-                        {/* Indicatore di sistema */}
-                        <div className="flex items-center space-x-2 text-sm">
-                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                            <span className="text-gray-500">Sistema attivo</span>
-                        </div>
                     </div>
 
                     {/* Container principale con Panel */}
@@ -75,12 +70,6 @@ export default function AdminPage() {
                             {pages[page]}
                         </div>
                     </Panel>
-
-                    {/* Footer area (opzionale) */}
-                    <div className="mt-8 text-xs text-gray-700 flex justify-between items-center">
-                        <span>© 2024 DARK GUI - Admin Panel</span>
-                        <span className="text-red-600/50">v2.0.1</span>
-                    </div>
                 </div>
             </main>
         </div>
