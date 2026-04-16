@@ -53,6 +53,8 @@ export async function POST({ request }) {
 export async function PUT({ request }) {
     try {
         const { id, ...data } = await request.json();
+        console.log(id);
+        console.log(data);
 
         if(!id) {
             return jsonResponse({
@@ -61,7 +63,9 @@ export async function PUT({ request }) {
             }, 400);
         }
 
-        const updatedProject = await db.execute("UPDATE Progetto SET ? WHERE id = ?", [data, id]);
+        await db.execute("UPDATE Progetto SET (nome, slug, copertina) = (?, ?, ?) WHERE id = ?", [data.nome, data.slug, data.copertina, id]);
+
+        const updatedProject = (await db.execute("SELECT * FROM Progetto WHERE id = ?", [id])).rows[0];
 
         if(!updatedProject) {
             return jsonResponse({

@@ -7,7 +7,7 @@ export async function DELETE({ request, params }) {
         const { id } = params;
 
         // Delete the file
-        const media = await db.execute("SELECT * FROM Media WHERE id = ?", [id]);
+        const media = (await db.execute("SELECT * FROM Media WHERE id = ?", [id])).rows[0];
 
         fs.rmSync("./public/images/" + media.nome);
 
