@@ -6,8 +6,20 @@ import tailwindcss from '@tailwindcss/vite';
 import path from "node:path";
 import { fileURLToPath } from 'node:url';
 import vercel from "@astrojs/vercel"
+import fs from "node:fs";
 
 dotenv.config();
+
+function createImagesDir() {
+	const DEVELOPMENT = process.env.DEVELOPMENT;
+
+	if(!DEVELOPMENT) {
+		if(fs.existsSync("./images")) return;
+		fs.mkdirSync("./images");
+	}
+}
+
+createImagesDir();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

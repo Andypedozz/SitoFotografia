@@ -24,8 +24,8 @@ pnpm-debug.log*
 .idea/
 
 # VIDEO FILES - Escludi tutti i file video
-public/videos/*
-public/images/*
+public/videos/*.mp4
+public/images/*.jpg
 # Mantieni la directory vuota con un file .gitkeep
 !public/videos/.gitkeep
 .vercel
